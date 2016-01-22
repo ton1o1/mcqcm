@@ -36,24 +36,14 @@
 
 				<label class="checkbox-inline">
 				  <input type="checkbox" name="answer1" value="good" id="inlineCheckbox1"><input type="text" name="choice1"><br/>
-				</label>
+				</label><br/>
 				<label class="checkbox-inline">
 				  <input type="checkbox" name="answer2" value="good" id="inlineCheckbox2"><input type="text" name="choice2">
 				</label><br/>
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer3" value="good" id="inlineCheckbox3"><input type="text" name="choice3"><br/>
+				  <input type="checkbox" name="answer3" value="good" id="inlineCheckbox3"><input type="text" name="choice3"><br/><br/>
 				</label>
-
-
-
-
-
-
-
-
-
-
 
 
 			</div>

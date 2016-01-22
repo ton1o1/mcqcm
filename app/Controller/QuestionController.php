@@ -10,19 +10,22 @@ class QuestionController extends Controller
 	 * Question builder page 
 	 */
 	public function questionBuild()
-	{
+	{ 
 		echo "<pre>";
 		print_r($_POST);
 		echo "</pre>";
 		//POST variables declaration
-		    $questionTitle = $_POST['questionTitle'];
-    		$questionType = $_POST['questionType'];
-    		$answer1 = $_POST['answer1'];
-    		$choice1 = $_POST['choice1'];
-    		$answer2 = $_POST['answer2'];
-    		$choice2 = $_POST['choice2'];
-    		$answer3 = $_POST['answer3'];
-    		$choice3 = $_POST['choice3'];
+		if($_POST){
+			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
+			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
+			if(!empty($_POST['answer1'])){$answer1 = $_POST['answer1'];}
+			if(!empty($_POST['choice1'])){$choice1 = $_POST['choice1'];}
+			if(!empty($_POST['answer2'])){$answer2 = $_POST['answer2'];}
+			if(!empty($_POST['choice2'])){$choice2 = $_POST['choice2'];}
+			if(!empty($_POST['answer3'])){$answer3 = $_POST['answer3'];}
+			if(!empty($_POST['choice3'])){$choice3 = $_POST['choice3'];}
+		}
+		    
 		//after submission, I won't test every single input because I'm fucking lazy
 		$errorMessage = [];
 		//fine, I'll test them, TEST of all post variables 
@@ -44,18 +47,15 @@ class QuestionController extends Controller
 		if (empty($choice3)){
 			$errorMessage['answer'] = "Le choix 3 n'a pas été rédigé.";
 		}		
-		$this->show('quiz/question_build'); //this is the route name, right? go check the documentation
+		$this->show('quiz/question_build', ["errorMessage" => $errorMessage]); //this is the route name, right? go check the documentation, and then the array is [index(isTheNameOfTheVariableInTheTemplate) => value="is the value"]
+
+		echo "<pre>";
+		print_r($errorMessage);
+		echo "</pre>";	
 	}
 
 
 
-
-	// public function empty ($string){
-	// 	if($string === ""){
-	// 		return false;
-	// 	}
-	// 	return true;
-	// }
 
 
 
