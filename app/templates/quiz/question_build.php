@@ -35,20 +35,22 @@
 
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer1" value="good" id="inlineCheckbox1"><input type="text" name="choice1"><br/>
+				  <input type="checkbox" name="answer1" value="good" id="inlineCheckbox1"><input type="text" name="choice1">
 				</label><br/>
 				<label class="checkbox-inline">
 				  <input type="checkbox" name="answer2" value="good" id="inlineCheckbox2"><input type="text" name="choice2">
 				</label><br/>
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer3" value="good" id="inlineCheckbox3"><input type="text" name="choice3"><br/><br/>
+				  <input type="checkbox" name="answer3" value="good" id="inlineCheckbox3"><input type="text" name="choice3"><br/>
 				</label>
 
 
 			</div>
 <!--   -->			
-			<div class="warning">Ici : Message d'erreur en cas de mauvaise saisie de formulaire</div>
+			<div class="warning">
+				<?= $finalErrorMessage ?>
+			</div>
 			<div class="form-group">
 				<input type="submit" value="Ajouter la question au portefeuille">
 			</div>

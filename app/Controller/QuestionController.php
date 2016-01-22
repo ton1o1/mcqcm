@@ -11,10 +11,7 @@ class QuestionController extends Controller
 	 */
 	public function questionBuild()
 	{ 
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
-		//POST variables declaration
+
 		if($_POST){
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
@@ -26,39 +23,59 @@ class QuestionController extends Controller
 			if(!empty($_POST['choice3'])){$choice3 = $_POST['choice3'];}
 		}
 		    
-		//after submission, I won't test every single input because I'm fucking lazy
-		$errorMessage = [];
-		//fine, I'll test them, TEST of all post variables 
+		$errorMessages = [];
 
 		if(empty($questionTitle)){
-			$errorMessage['title'] = "L'intitulé de la question est vide.";
+			$errorMessages['title'] = "L'intitulé de la question est vide.";
 		}
 		//test if at least one choice has been checked as a good answer
 		if(empty($answer1) && empty($answer2) && empty($answer3)){
-			$errorMessage['answer'] = "Il n'y a pas de bonne réponse choisie.";
+			$errorMessages['answer'] = "Il n'y a pas de bonne réponse choisie.";
 		}
 		//test if all choices have been written
 		if (empty($choice1)){
-			$errorMessage['answer'] = "Le choix 1 n'a pas été rédigé.";
+			$errorMessages['choice1'] = "Le choix 1 n'a pas été rédigé.";
 		}
 		if (empty($choice2)){
-			$errorMessage['answer'] = "Le choix 2 n'a pas été rédigé.";
+			$errorMessages['choice2'] = "Le choix 2 n'a pas été rédigé.";
 		}
 		if (empty($choice3)){
-			$errorMessage['answer'] = "Le choix 3 n'a pas été rédigé.";
+			$errorMessages['choice3'] = "Le choix 3 n'a pas été rédigé.";
 		}		
-		$this->show('quiz/question_build', ["errorMessage" => $errorMessage]); //this is the route name, right? go check the documentation, and then the array is [index(isTheNameOfTheVariableInTheTemplate) => value="is the value"]
 
-		echo "<pre>";
-		print_r($errorMessage);
-		echo "</pre>";	
+		//Instance QuestionManager to insert the question in db
+		$questionManager = new \Manager\QuestionManager;
+
+		//si c'est valide
+		$finalErrorMessage = ""; 
+		if(!empty($errorMessages)){
+			//on insere en bdd
+			$questionManager = new \Manager\QuestionManager();
+			$questionManager->setTable('question');
+			if($_POST){
+				$questionManager->insert([
+					"quiz_id" => 1,
+					"title" => $questionTitle,
+				]);
+			}
+			//on redirige l'utilisateur
+			// $this->redirectToRoute("quiz/question_build");
+		} else {
+			foreach ($errorMessages as $key => $errorMessage) {
+				$finalErrorMessage .= $errorMessage . "<br/>";
+			}
+		}
+		foreach ($errorMessages as $key => $errorMessage) {
+			$finalErrorMessage .= $errorMessage . "<br/>";
+		}
+		//the show method must always be at the end of the function that display because it contains a die() 
+		$this->show('quiz/question_build', [
+			"finalErrorMessage" => $finalErrorMessage 
+		]); //this is the route name, right? go check the documentation, and then the array is [index(isTheNameOfTheVariableInTheTemplate) => value="is the value"]
+
+
+
 	}
-
-
-
-
-
-
 }
 
 
