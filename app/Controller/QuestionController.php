@@ -48,18 +48,52 @@ class QuestionController extends Controller
 
 		//si c'est valide
 		$finalErrorMessage = ""; 
-		if(!empty($errorMessages)){
-			//on insere en bdd
+		if(empty($errorMessages)){
+			//insert question title in question table
 			$questionManager = new \Manager\QuestionManager();
 			$questionManager->setTable('question');
 			if($_POST){
 				$questionManager->insert([
-					"quiz_id" => 1,
+					"quiz_id" => 1, //WARNING : value 1 is only for tests
 					"title" => $questionTitle,
 				]);
+			//insert answers title in question table
+			$lastId = $questionManager->findLast();
+			//step 1 : select the last index of the question table
+
+			print_r($foo);
+			//step 2 : insert choice in choice table
 			}
-			//on redirige l'utilisateur
-			// $this->redirectToRoute("quiz/question_build");
+
+			$questionManager->setTable('choice');
+			if($_POST){
+				$questionManager->insert([
+					"question_id" => $lastId,
+					"title" => $questionTitle,
+					"is_true" => $questionTitle,
+				]); 
+				//id, question_id, title, is_true
+
+			$answer1
+			$choice1
+			$answer2
+			$choice2
+			$answer3
+			$choice3
+
+
+			// $questionManager = new \Manager\QuestionManager();
+			// $questionManager->setTable('question');
+			// if($_POST){
+				// $questionManager->insert([
+					// "quiz_id" => 1,
+					// "title" => $questionTitle,
+				// ]);
+			// }
+
+
+
+
 		} else {
 			foreach ($errorMessages as $key => $errorMessage) {
 				$finalErrorMessage .= $errorMessage . "<br/>";
@@ -79,7 +113,7 @@ class QuestionController extends Controller
 }
 
 
-
+//line 55 to 59 : what is the purpose of the test of $_POST
 
 
 
