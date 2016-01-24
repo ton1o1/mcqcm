@@ -7,20 +7,23 @@ use \W\Controller\Controller;
 class QuestionController extends Controller
 {
 	/**
-	 * Question builder page 
+	 * Question builder page
+	 * 3 main parts in this function : test $_POST, insert question and choices, refill the inputs if the submit wasn't ok.
 	 */
 	public function questionBuild()
 	{ 
-
 		if($_POST){
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
-			if(!empty($_POST['answer1'])){$answer1 = $_POST['answer1'];}
-			if(!empty($_POST['choice1'])){$choice1 = $_POST['choice1'];}
-			if(!empty($_POST['answer2'])){$answer2 = $_POST['answer2'];}
-			if(!empty($_POST['choice2'])){$choice2 = $_POST['choice2'];}
-			if(!empty($_POST['answer3'])){$answer3 = $_POST['answer3'];}
-			if(!empty($_POST['choice3'])){$choice3 = $_POST['choice3'];}
+			//choices values are stored in an array
+			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
+			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
+			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}
+			//answers that are true are also stored in an array
+			if(!empty($_POST['solution1'])){$solutions[1] = true;}else{$solutions[1] = false;}
+			if(!empty($_POST['solution2'])){$solutions[2] = true;}else{$solutions[2] = false;}
+			if(!empty($_POST['solution3'])){$solutions[3] = true;}else{$solutions[3] = false;}
+			//print_r($_POST);
 		}
 		    
 		$errorMessages = [];
@@ -28,94 +31,69 @@ class QuestionController extends Controller
 		if(empty($questionTitle)){
 			$errorMessages['title'] = "L'intitulé de la question est vide.";
 		}
-		//test if at least one choice has been checked as a good answer
-		if(empty($answer1) && empty($answer2) && empty($answer3)){
-			$errorMessages['answer'] = "Il n'y a pas de bonne réponse choisie.";
+		//test if at least one choice has been checked as a good solution
+		if(empty($solutions[1]) && empty($solutions[2]) && empty($solutions[3])){
+			$errorMessages['solution'] = "Il n'y a pas eu de bonne réponse choisie.";
 		}
 		//test if all choices have been written
-		if (empty($choice1)){
+		if (empty($choices[1])){
 			$errorMessages['choice1'] = "Le choix 1 n'a pas été rédigé.";
 		}
-		if (empty($choice2)){
+		if (empty($choices[2])){
 			$errorMessages['choice2'] = "Le choix 2 n'a pas été rédigé.";
 		}
-		if (empty($choice3)){
+		if (empty($choices[3])){
 			$errorMessages['choice3'] = "Le choix 3 n'a pas été rédigé.";
 		}		
 
-		//Instance QuestionManager to insert the question in db
-		$questionManager = new \Manager\QuestionManager;
-
-		//si c'est valide
+		//init finalErrorMessage
 		$finalErrorMessage = ""; 
+		//no error messages means it's okay to insert data
 		if(empty($errorMessages)){
-			//insert question title in question table
+		//insert question title in question table
 			$questionManager = new \Manager\QuestionManager();
 			$questionManager->setTable('question');
 			if($_POST){
 				$questionManager->insert([
-					"quiz_id" => 1, //WARNING : value 1 is only for tests
+					"quiz_id" => 1, //WARNING : value 1 is only temporary, how do we select the quiz id?
 					"title" => $questionTitle,
 				]);
-			//insert answers title in question table
-			$lastId = $questionManager->findLast();
+
+		//insert choices in choices table
 			//step 1 : select the last index of the question table
-
-			print_r($foo);
+			$lastId = $questionManager->findLast();
+			print_r($lastId) ;
+			
 			//step 2 : insert choice in choice table
-			}
-
+			$questionManager = new \Manager\QuestionManager();
 			$questionManager->setTable('choice');
 			if($_POST){
-				$questionManager->insert([
-					"question_id" => $lastId,
-					"title" => $questionTitle,
-					"is_true" => $questionTitle,
-				]); 
-				//id, question_id, title, is_true
-
-			$answer1
-			$choice1
-			$answer2
-			$choice2
-			$answer3
-			$choice3
-
-
-			// $questionManager = new \Manager\QuestionManager();
-			// $questionManager->setTable('question');
-			// if($_POST){
-				// $questionManager->insert([
-					// "quiz_id" => 1,
-					// "title" => $questionTitle,
-				// ]);
-			// }
-
-
-
+				foreach ($choices as $k => $v) {
+					$questionManager->insert([
+						"question_id" => $lastId['id'],
+						"title" => $v,
+						"is_true" => $solutions[$k],
+					]); 
+					
+				}
+			}
+			}
 
 		} else {
-			foreach ($errorMessages as $key => $errorMessage) {
-				$finalErrorMessage .= $errorMessage . "<br/>";
+			if ($_POST){
+				foreach ($errorMessages as $key => $errorMessage) {
+					$finalErrorMessage .= $errorMessage . "<br/>";
+				}
+				
 			}
 		}
-		foreach ($errorMessages as $key => $errorMessage) {
-			$finalErrorMessage .= $errorMessage . "<br/>";
-		}
+
+		print_r($_POST);
+
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
-			"finalErrorMessage" => $finalErrorMessage 
+			"finalErrorMessage" => $finalErrorMessage,
+			"dataPosted" => $_POST,
 		]); //this is the route name, right? go check the documentation, and then the array is [index(isTheNameOfTheVariableInTheTemplate) => value="is the value"]
-
-
-
 	}
-}
-
-
-//line 55 to 59 : what is the purpose of the test of $_POST
-
-
-
-
-
+}	

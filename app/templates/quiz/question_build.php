@@ -1,8 +1,8 @@
-<?php $this->layout('layout', ['title' => 'Formulaire de création']) ?>
+<?php $this->layout('layout', ['title' => 'Formulaire de création de question']) ?>
 
-<?php $this->start('main_content') ?>
-	<h2>Formulaire de création de question</h2>
-	<p>Vous avez atteint la page de création de question</p>
+<?php $this->start('main_content'); ?>
+<!-- 	<h2>Formulaire de création de question</h2>
+<p>Vous avez atteint la page de création de question</p> -->
 	<div class="process">
 		<ol>
 			<li>Saisir l'intitulé de la question</li>
@@ -19,7 +19,7 @@
 			<h2>Votre question</h2>
 			<div class="form-group">
 				<label for="question-title">Intitulé</label>
-				<textarea name="questionTitle" id="question-title" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"></textarea>
+				<textarea name="questionTitle" id="question-title" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?= $dataPosted['questionTitle'] ?></textarea>
 			</div>
 			<div class="form-group">
 				<label for="questionType">Type de question</label>
@@ -35,21 +35,21 @@
 
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer1" value="good" id="inlineCheckbox1"><input type="text" name="choice1">
+				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1"><input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
 				</label><br/>
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer2" value="good" id="inlineCheckbox2"><input type="text" name="choice2">
+				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2"><input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
 				</label><br/>
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="answer3" value="good" id="inlineCheckbox3"><input type="text" name="choice3"><br/>
+				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3"><input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
 				</label>
 
 
 			</div>
 <!--   -->			
-			<div class="warning">
-				<?= $finalErrorMessage ?>
+			<div class="warning">***TO DO : mettre en rouge***
+				<?=$finalErrorMessage ?>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Ajouter la question au portefeuille">
