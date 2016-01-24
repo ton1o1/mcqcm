@@ -12,17 +12,20 @@ class QuestionController extends Controller
 	 */
 	public function questionBuild()
 	{ 
-		if($_POST){
+		if($_POST)
+		{
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
 			//choices values are stored in an array
 			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
 			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
 			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}
+
 			//answers that are true are also stored in an array
 			if(!empty($_POST['solution1'])){$solutions[1] = true;}else{$solutions[1] = false;}
 			if(!empty($_POST['solution2'])){$solutions[2] = true;}else{$solutions[2] = false;}
 			if(!empty($_POST['solution3'])){$solutions[3] = true;}else{$solutions[3] = false;}
+
 			//print_r($_POST);
 		}
 		    
@@ -48,52 +51,98 @@ class QuestionController extends Controller
 
 		//init finalErrorMessage
 		$finalErrorMessage = ""; 
+
 		//no error messages means it's okay to insert data
-		if(empty($errorMessages)){
-		//insert question title in question table
+		if(empty($errorMessages))
+		{
 			$questionManager = new \Manager\QuestionManager();
 			$questionManager->setTable('question');
-			if($_POST){
-				$questionManager->insert([
-					"quiz_id" => 1, //WARNING : value 1 is only temporary, how do we select the quiz id?
-					"title" => $questionTitle,
-				]);
-
-		//insert choices in choices table
-			//step 1 : select the last index of the question table
-			$lastId = $questionManager->findLast();
-			print_r($lastId) ;
-			
-			//step 2 : insert choice in choice table
-			$questionManager = new \Manager\QuestionManager();
-			$questionManager->setTable('choice');
-			if($_POST){
-				foreach ($choices as $k => $v) {
+			//insert question title in question table
+				if($_POST){
 					$questionManager->insert([
-						"question_id" => $lastId['id'],
-						"title" => $v,
-						"is_true" => $solutions[$k],
-					]); 
-					
+						"quiz_id" => 1, //WARNING : value 1 is only temporary, how do we select the quiz id?
+						"title" => $questionTitle,
+					]);
+	
+			//insert choices in choices table
+				//step 1 : select the last index of the question table
+				$lastId = $questionManager->findLast();
+				print_r($lastId) ;
+				
+				//step 2 : insert choice in choice table
+				$questionManager = new \Manager\QuestionManager();
+				$questionManager->setTable('choice');
+				if($_POST){
+					foreach ($choices as $k => $v) {
+						$questionManager->insert([
+							"question_id" => $lastId['id'],
+							"title" => $v,
+							"is_true" => $solutions[$k],
+						]); 
+					}
 				}
 			}
-			}
-
-		} else {
+		} else 
+		{
 			if ($_POST){
 				foreach ($errorMessages as $key => $errorMessage) {
 					$finalErrorMessage .= $errorMessage . "<br/>";
 				}
-				
 			}
 		}
-
-		print_r($_POST);
-
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
 			"finalErrorMessage" => $finalErrorMessage,
 			"dataPosted" => $_POST,
-		]); //this is the route name, right? go check the documentation, and then the array is [index(isTheNameOfTheVariableInTheTemplate) => value="is the value"]
+		]);
 	}
-}	
+
+	/**
+	 * List of all the questions in order to have a global view
+	 * 
+	 */
+	public function questionList($orderBy = "id", $orderDir = "ASC")
+	{
+
+		$questionManager = new \Manager\QuestionManager();
+		$questionManager->setTable('question');
+		$list = $questionManager->findAll($orderBy, $orderDir);
+		$rows = "";
+		//debug($list);
+		foreach ($list as $k => $v) { //add in href link to route question-id or quiz-id
+			$rows .= "<tr>
+						<td>" .
+							$v['id'] .
+						"</td>
+						<td>
+							<a href='/question" .  "'>" . $v['title'] . "</a> 
+						</td> 
+						<td> 
+							<a href=''>" . $v['quiz_id'] . "</a>
+						</td>
+					</tr>";
+		}
+
+		$this->show('quiz/question_list', ["rows" => $rows]);		
+	}
+
+	/**
+	 * List of all the questions in order to have a global view
+	 * 
+	 */
+	public function questionModify(){}
+		
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
