@@ -115,7 +115,7 @@ class QuestionController extends Controller
 							$v['id'] .
 						"</td>
 						<td>
-							<a href='/question" .  "'>" . $v['title'] . "</a> 
+							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
 						</td> 
 						<td> 
 							<a href=''>" . $v['quiz_id'] . "</a>
@@ -127,11 +127,21 @@ class QuestionController extends Controller
 	}
 
 	/**
-	 * List of all the questions in order to have a global view
-	 * 
+	 * Display the content of a question with its choices
 	 */
-	public function questionModify(){}
-		
+	public function questionConsult($id){
+		$questionManager = new \Manager\QuestionManager();
+		$questionManager->setTable('question');
+		$question = $questionManager->find($id);
+		$mainContent = "";
+
+
+		$question = $questionManager->find($id);
+
+		$this->show('quiz/question_consult', ["question" => $question]);
+
+
+	}
 }
 
 
