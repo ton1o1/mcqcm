@@ -25,7 +25,7 @@
                         <li><a class="navigation__item" href="<?= $this->url("apropos", []);?>">quizz</a></li>
                     </ul>
 
-                <a class="navigation__connexion" href="<?= $this->url("user_login", []);?>">se connecter |se deconnecter</a>
+                <a class="navigation__connexion" href="<?= $this->url("home", []);?>">se connecter |se deconnecter</a>
 
               </nav>
            
