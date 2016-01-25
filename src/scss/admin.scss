@@ -1,0 +1,33 @@
+@import "partials/variables";
+@import "partials/cf";
+/* @import "partials/reset";
+@import "partials/typography";
+ */
+.header {
+	background-color: $blue;
+	color: #FFF;
+}
+
+.header a {
+	color: #FFF;
+}
+
+.page{
+	padding: 20px;
+	
+	border:1px solid $blue; 
+	border-radius: 4px;
+
+	@extends .cf;
+
+}
+
+.page__identification{
+	width: 50%;
+	min-width: 320px;
+	margin: 20px auto;
+}
+
+.row {
+	padding: 20px;
+}

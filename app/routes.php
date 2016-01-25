@@ -5,6 +5,5 @@
 		['GET', '/', 'Default#home', 'question_builder'],
 		['GET', '/', 'Default#home', 'apropos'],
 		['GET', '/', 'Default#home', 'contact'],
-		['GET', '/', 'Default#home', 'legalnotice'],
-		['GET', '/', 'Default#home', 'user_connection']
+		['GET', '/', 'Default#home', 'legalnotice']
 	);
