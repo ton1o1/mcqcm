@@ -107,6 +107,9 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
+        $success = false;
+        $message = null;
+
         // Get user
         // Dev mode START
         // $loggedUser = $this->getUser();
@@ -116,25 +119,34 @@ class QuizController extends Controller
         // Get quiz
         $quizManager = new QuizManager();
         $quizManager->setTable('quiz');
-        $quiz = $quizManager->find($quizId);
+        $quiz = $quizManager->findActive($quizId);
 
-        // User is the owner ?
-        if($loggedUser['id'] === $quiz['user_id']){
+        // Quiz exists ?
+        if($quiz){
+            
+            // User is the owner ?
+            if($loggedUser['id'] == $quiz['user_id']){
+        
+                $title = $quiz['title'];
 
-            // Confirmation has been sent ?
-            if($_POST){
+                // Confirmation has been sent ?
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                // Is he sure wants to delete ?
-                if($_POST['sure'] == 1){
+                    // Is he sure wants to delete ?
+                    if(!empty($_POST['sure']) && $_POST['sure'] == 1){
 
-                    $quizManager->update(['is_active' => false], $quizId, true);
+                        $quizManager->update(['is_active' => false], $quizId, true);
 
-                    $this->show('quiz/delete', ['message' => 'Le quiz a bien été supprimé.']);
+                        $success = true;
+                        $message = 'Le quiz a bien été supprimé.';
 
-                } else $this->show('quiz/delete', ['message' => 'Veuillez confirmer la suppression en cochant la case.']);
+                    } else $message = 'Veuillez confirmer la suppression en cochant la case.';
+                }
 
-            } else $this->show('quiz/delete', ['title' => $quiz['title']]);
+                $this->show('quiz/delete', ['title' => $title, 'success' => $success, 'message' => $message]);
 
-        } else $this->show('default/home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
+            } else $this->show('default/home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
+
+        } else $this->show('default/home', ['message' => 'Quiz non trouvé.']);
     }
 }
