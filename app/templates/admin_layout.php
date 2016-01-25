@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title><?= $this->e($title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= $this->e($metadesc) ?>">
     <link rel="stylesheet" type="text/css" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/admin.min.css') ?>">
 </head>
