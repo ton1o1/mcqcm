@@ -10,7 +10,6 @@
 			<div class="form-group">
 				<label for="question-title">Intitulé</label>
 				<textarea name="questionTitle" id="question-title" rows="5" cols="100"><?= $question['title']?></textarea>
-
 			</div>
 			<h2>Choix</h2>
 			
@@ -24,7 +23,7 @@
 				<label class="checkbox-inline">
 				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3"><input type="text" name="choice3" value="<?php ?>"><br/>
 				</label>
-				<?php //debug($question); ?>
+				<?php debug($question); ?>
 
 			</div>
 <!--   -->			

@@ -17,16 +17,32 @@ class QuestionController extends Controller
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
 			//choices values are stored in an array
-			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}else{$_POST['choice1'] = false;}
-			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}else{$_POST['choice2'] = false;}
-			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}else{$_POST['choice3'] = false;}
+			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
+			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
+			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}
 
 			//answers that are true are also stored in an array, 
-			if(!empty($_POST['solution1'])){$solutions[1] = true;$_POST['solution1'] = "checked";} else {$_POST['solution1'] = false;}
-			if(!empty($_POST['solution2'])){$solutions[2] = true;$_POST['solution2'] = "checked";} else {$_POST['solution2'] = false;}
-			if(!empty($_POST['solution3'])){$solutions[3] = true;$_POST['solution3'] = "checked";} else {$_POST['solution3'] = false;}
+			if(!empty($_POST['solution1'])){
+				$solutions[1] = true;
+				$_POST['solution1'] = "checked";
+			} else {$solutions[1] = false;}
+			if(!empty($_POST['solution2'])){
+				$solutions[2] = true;
+				$_POST['solution2'] = "checked";
+			} else {$solutions[2] = false;}
+			if(!empty($_POST['solution3'])){
+				$solutions[3] = true;
+				$_POST['solution3'] = "checked";
+			} else {$solutions[3] = false;}
 
-			//debug($_POST);
+
+		} else {
+			$_POST['questionTitle']= false;
+
+ 			$_POST['choice1'] = false;
+			$_POST['choice2'] = false;
+			$_POST['choice3'] = false;
+
 		}
 		    
 		$errorMessages = [];
@@ -37,11 +53,6 @@ class QuestionController extends Controller
 		//test if at least one choice has been checked as a good solution
 		if(empty($solutions[1]) && empty($solutions[2]) && empty($solutions[3])){
 			$errorMessages['solution'] = "Il n'y a pas eu de bonne réponse choisie.";
-			//Line below is to save checked checkbox
-			// $_POST['solution1'] = "checked";
-			// $_POST['solution2'] = "checked";
-			// $_POST['solution3'] = "checked";
-			print_r($_POST);
 		}
 		//test if all choices have been written
 		if (empty($choices[1])){
@@ -72,11 +83,11 @@ class QuestionController extends Controller
 			//insert choices in choices table
 				//step 1 : select the last index of the question table
 				$lastId = $questionManager->findLast();
-				print_r($lastId);
 				
 				//step 2 : insert choice in choice table
 				$questionManager = new \Manager\QuestionManager();
 				$questionManager->setTable('choice');
+
 				if($_POST){
 					foreach ($choices as $k => $v) {
 						$questionManager->insert([
@@ -90,14 +101,14 @@ class QuestionController extends Controller
 		} else 
 		{
 			if ($_POST){
-				debug($errorMessages);
+				//debug($errorMessages);
 				foreach ($errorMessages as $key => $errorMessage) {
 					$finalErrorMessage .= $errorMessage . "<br/>";
 				}
 			}
 		}
 		//the show method must always be at the end of the function that display because it contains a die() 
-		debug($_POST);
+
 		$this->show('quiz/question_build', [
 			"finalErrorMessage" => $finalErrorMessage,
 			"dataPosted" => $_POST,
@@ -106,8 +117,6 @@ class QuestionController extends Controller
 
 
 
-
-////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -122,7 +131,7 @@ class QuestionController extends Controller
 		$questionManager->setTable('question');
 		$list = $questionManager->findAll($orderBy, $orderDir);
 		$rows = "";
-		debug($list);
+
 		foreach ($list as $k => $v) { //add in href link to route question-id or quiz-id
 			$rows .= "<tr>
 						<td>" .
@@ -145,41 +154,38 @@ class QuestionController extends Controller
 	 */
 	public function questionConsult($id){
 		$questionManager = new \Manager\QuestionManager();
+		//get question info
 		$questionManager->setTable('question');
 		$question = $questionManager->find($id);
-		$mainContent = "";
+		
 
 
-		$question = $questionManager->find($id);
+		//get choices info
+		$questionManager->setTable('choice');
+		$id = $question["id"];
+		$choices = $questionManager->findWhereQuestionId($id);
+		$choicesContent =""; //is it necessary to init this variable
 
-		$this->show('quiz/question_consult', ["question" => $question]);
+		// foreach ($choices as $k => $v) {
+		// 	$choicesContent .= "<label class='checkbox-inline'>
+		// 			  <input type='checkbox' name='solution1' value='" .
+		// 			  $v["solution$k"] .
+		// 			  "' id='inlineCheckbox1'>
+		// 			  <input type='text' name='choice1' value='" .
+		// 			  $v["choice$k"]
+		// 			  ">
+		// 			</label><br/>";
+			
+		// }
+
+
+		$this->show('quiz/question_consult', [
+			"question" => $question,
+			"choices" => $choices,
+		]);
 
 
 	}
-
-	/**
-	 * Page A propos
-	 */	
-
-	// public function about()
-	// {
-	// 	$this->show('default/about');
-	// }
-	// /**
-	//  * Page Mentions légales
-	//  */	
-	// public function legalnotices()
-	// {
-	// 	$this->show('default/legal_notices');
-	// }
-	// /**
-	//  * Page Blog
-	//  */	
-	// public function blog()
-	// {
-	// 	$this->show('default/legalnotices');
-	// }
-
 
 }
 

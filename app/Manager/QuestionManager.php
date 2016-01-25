@@ -14,27 +14,40 @@
 		{
 			//SELECT les_colonnes FROM la_table WHERE id=LAST_INSERT_ID();
 			$sql = "SELECT * FROM " . $this->table . " WHERE $this->primaryKey 	= LAST_INSERT_ID()";
-			$sth = $this->dbh->prepare($sql);
-			
-			$sth->execute();
-	
+			$sth = $this->dbh->prepare($sql);			
+			$sth->execute();	
 			return $sth->fetch();
 		}
+		//Fonction de guillaume pour récupérer l'id de la dernière ligne insérée
+		// public function lastId(){
+		// 	return $this->dbh->lastInsertId();
+		// }
 
-
-		public function find($id)
+		public function findWhereQuestionId($id)
 		{
 			if (!is_numeric($id)){
 				return false;
 			}
 	
-			$sql = "SELECT * FROM " . $this->table . " WHERE $this->primaryKey = :id LIMIT 1";
+			$sql = "SELECT * FROM " . $this->table . " WHERE question_id = :id";
+			echo $sql;
 			$sth = $this->dbh->prepare($sql);
-			$sth->bindValue(":id", $id);
+			$sth->bindValue(":id", $id/*, PDO::PARAM_STR*/);
 			$sth->execute();
-	
-			return $sth->fetch();
+			
+			return $sth->fetchAll();
 		}
+
+
+
+
+
+
+
+
+
+
+
 
 
 	}

@@ -15,4 +15,20 @@ class DefaultController extends Controller
 		$this->show('default/home');
 	}
 
+	public function about()
+	{
+		$this->show('default/about');
+	}
+
+	public function legal()
+	{
+		$this->show('default/legal'); //attention, ici legal est bien le nom de la fonction et non, le nom de la route
+	}
+
+	public function blog()
+	{
+		$this->show('default/blog');
+	}
+
+
 }
