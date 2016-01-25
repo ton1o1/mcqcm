@@ -17,6 +17,6 @@ class QuizManager extends \W\Manager\Manager
         $sth->bindValue(":userId", $userId);
         $sth->execute();
 
-        return $sth->fetch();
+        return $sth->fetchAll();
     }
 }
