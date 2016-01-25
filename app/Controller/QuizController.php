@@ -9,7 +9,7 @@ use Service\QuizValidator;
 class QuizController extends Controller
 {
     /**
-     * List all the quizzes or display one quiz by id if given
+     * List all quizzes or display one quiz by id, if given
      */
     public function view($quizId = null)
     {
@@ -19,12 +19,12 @@ class QuizController extends Controller
         $quizManager->setTable('quiz');
 
         if($quizId){
-            $quizzes = $quizManager->find($quizId);
+            $quizzes = $quizManager->findActive($quizId);
         }
         else{
             $orderBy = 'id';
             $orderDir = 'DESC'; //Display newer first
-            $quizzes = $quizManager->findAll($orderBy, $orderDir);
+            $quizzes = $quizManager->findAllActive($orderBy, $orderDir);
         }
 
         var_dump($quizzes);
@@ -32,7 +32,7 @@ class QuizController extends Controller
     }
 
     /**
-     * List all the quizzes by user id
+     * List all quizzes by user id
      */
     public function viewByUser($userId)
     {
@@ -79,19 +79,19 @@ class QuizController extends Controller
                 $this->show('question_build');
             }
             else{
-                // Display the form
-                // We set in params errors and data submitted
+                // Display form
+                // with params : errors and data submitted
                 $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST]);
             }
         }
         else{
-            // Display the form
+            // Display form
             $this->show('quiz/create');
         }
     }
 
     /**
-     * Quiz edit form
+     * Quiz editor form
      */
     public function edit()
     {
@@ -124,16 +124,17 @@ class QuizController extends Controller
             // Confirmation has been sent ?
             if($_POST){
 
-                // Is he sure want to delete ?
+                // Is he sure wants to delete ?
                 if($_POST['sure'] == 1){
-                    $quizManager->delete($quizId);
 
-                    $this->show('quiz/delete', ['messages' => 'Le quiz a bien été supprimé.']);
+                    $quizManager->update(['is_active' => false], $quizId, true);
 
-                } else $this->show('quiz/delete', ['messages' => 'Veuillez confirmer la suppression en cochant la case.']);
-                
-            } else $this->show('quiz/delete');
+                    $this->show('quiz/delete', ['message' => 'Le quiz a bien été supprimé.']);
 
-        } else $this->show('quiz/delete', ['messages' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
+                } else $this->show('quiz/delete', ['message' => 'Veuillez confirmer la suppression en cochant la case.']);
+
+            } else $this->show('quiz/delete', ['title' => $quiz['title']]);
+
+        } else $this->show('default/home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
     }
 }
