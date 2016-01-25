@@ -15,9 +15,6 @@ class QuizController extends Controller
     {
         $quizManager = new QuizManager();
 
-        // Our table names are not plural, so we set a custom table name
-        $quizManager->setTable('quiz');
-
         if($quizId){
             $quizzes = $quizManager->findActive($quizId);
         }
@@ -37,7 +34,6 @@ class QuizController extends Controller
     public function viewByUser($userId)
     {
         $quizManager = new QuizManager();
-        $quizManager->setTable('quiz');
 
         $quizzes = $quizManager->findByUserId($userId);
         var_dump($quizzes);
@@ -68,7 +64,6 @@ class QuizController extends Controller
                 $dateCreated = new \DateTime();
 
                 $quizManager = new QuizManager();
-                $quizManager->setTable('quiz');
                 $quizManager->insert([
                     'user_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
@@ -76,7 +71,7 @@ class QuizController extends Controller
                 ]);
 
                 // Redirect to question creator page
-                $this->show('question_build');
+                $this->redirectToRoute('question_build', ['message' => 'Quiz créé avec succès.']);
             }
             else{
                 // Display form
@@ -93,9 +88,56 @@ class QuizController extends Controller
     /**
      * Quiz editor form
      */
-    public function edit()
+    public function edit($quizId)
     {
+        // Dev mode START
+        // $this->allowTo('user');
+        // Dev mode END
 
+        $message = null;
+
+        // Get user
+        // Dev mode START
+        // $loggedUser = $this->getUser();
+        $loggedUser = ['id' => 1];
+        // Dev mode END
+
+        // Get quiz
+        $quizManager = new QuizManager();
+        $quiz = $quizManager->findActive($quizId);
+
+        // Quiz exists ?
+        if($quiz){
+            
+            // User is the owner ?
+            if($loggedUser['id'] == $quiz['user_id']){
+
+                // Confirmation has been sent ?
+                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                    $validator = new QuizValidator();
+                    $validation = $validator->check($_POST);
+
+                    if($validation['success']){
+
+                        // Update quiz in database
+                        $quizManager->update(['title' => $_POST['title']], $quizId, true);
+
+                        // Redirect to question creator page
+                        $this->show('question_build');
+                    }
+                    else{
+                        // Display form
+                        // with params : errors and data submitted
+                        $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST]);
+                    }
+                }
+
+                $this->show('quiz/delete', ['data' => $quiz, 'message' => $message]);
+
+            } else $this->redirectToRoute('home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
+
+        } else $this->redirectToRoute('home', ['message' => 'Quiz non trouvé.']);
     }
 
     /**
@@ -107,7 +149,6 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
-        $success = false;
         $message = null;
 
         // Get user
@@ -118,7 +159,6 @@ class QuizController extends Controller
 
         // Get quiz
         $quizManager = new QuizManager();
-        $quizManager->setTable('quiz');
         $quiz = $quizManager->findActive($quizId);
 
         // Quiz exists ?
@@ -126,8 +166,6 @@ class QuizController extends Controller
             
             // User is the owner ?
             if($loggedUser['id'] == $quiz['user_id']){
-        
-                $title = $quiz['title'];
 
                 // Confirmation has been sent ?
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -137,16 +175,15 @@ class QuizController extends Controller
 
                         $quizManager->update(['is_active' => false], $quizId, true);
 
-                        $success = true;
-                        $message = 'Le quiz a bien été supprimé.';
+                        $this->redirectToRoute('home', ['message' => 'Le quiz a bien été supprimé.']);
 
                     } else $message = 'Veuillez confirmer la suppression en cochant la case.';
                 }
 
-                $this->show('quiz/delete', ['title' => $title, 'success' => $success, 'message' => $message]);
+                $this->show('quiz/delete', ['data' => $quiz, 'message' => $message]);
 
-            } else $this->show('default/home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
+            } else $this->redirectToRoute('home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
 
-        } else $this->show('default/home', ['message' => 'Quiz non trouvé.']);
+        } else $this->redirectToRoute('home', ['message' => 'Quiz non trouvé.']);
     }
 }

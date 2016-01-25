@@ -2,13 +2,7 @@
 
 <?php $this->start('main_content') ?>
 	<h2>Supprimer un quiz</h2>
-	<?php
-	if($success){
-		echo '<div class="error-message">' . $message . '</div>';
-	}
-	else{
-	?>
-	<p>Etes-vous sûr de vouloir supprimer le quiz "<?=$title?>" ?</p>
+	<p>Etes-vous sûr de vouloir supprimer le quiz "<?=$data['title']?>" ?</p>
 	<form method="POST">
 	<?php
 	if(!empty($message)){
@@ -19,7 +13,4 @@
 	<label for="sure">Oui, je confirme la suppression</label>
 	<button type="submit">Supprimer</button>
 	</form>
-	<?php
-	}
-	?>
 <?php $this->stop('main_content') ?>
