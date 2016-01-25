@@ -54,6 +54,10 @@
   margin: 20px auto;
 }
 
+.page--error {
+  border: 1px solid #ff005c;
+}
+
 .row {
   padding: 20px;
 }

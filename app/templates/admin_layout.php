@@ -5,6 +5,7 @@
     <title><?= $this->e($title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>">
+     <link rel="stylesheet" href="<?= $this->assetUrl('css/animate.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/admin.min.css') ?>">
 </head>
 <body>
@@ -19,9 +20,9 @@
                 <a class="navigation__button" href="#">menu</a>
 
                     <ul class="navigation__list">
-                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">accueil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("question_builder", []);?>">profil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("apropos", []);?>">quizz</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">accueil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">profil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">quizz</a></li>
                     </ul>
 
                 <a class="navigation__connexion" href="<?= $this->url("user_login", []);?>">se connecter |se deconnecter</a>

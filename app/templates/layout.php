@@ -28,7 +28,7 @@
                     <li><a class="navigation__item" href="<?= $this->url("contact", []);?>">contactez-nous</a></li>
                 </ul>
 
-                <a class="navigation__connexion" href="<?= $this->url("user_connection", []);?>">se connecter</a>
+                <a class="navigation__connexion" href="<?= $this->url("home", []);?>">se connecter</a>
 
               </nav>
            

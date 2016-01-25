@@ -1,0 +1,4 @@
+- Copier le dossier "fonts" à la racine du projet
+- Appeler le fichier "fonts.css" dans le <head> du layout
+- Pour afficher l'icône MCQCM : <span class="icon-mcqcm"></span>
+- Pour afficher le logo MCQCM : <span class="icon-mcqcm-logo"></span>
