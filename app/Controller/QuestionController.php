@@ -101,7 +101,7 @@ class QuestionController extends Controller
 		} else 
 		{
 			if ($_POST){
-				//debug($errorMessages);
+
 				foreach ($errorMessages as $key => $errorMessage) {
 					$finalErrorMessage .= $errorMessage . "<br/>";
 				}
@@ -155,34 +155,26 @@ class QuestionController extends Controller
 		$questionManager->setTable('question');
 		$question = $questionManager->find($id);
 		
-
-
 		//get choices info
 		$questionManager->setTable('choice');
-		$id = $question["id"];
-		echo $id;
+		$id = $question["id"];	
 		$choices = $questionManager->findWhereQuestionId($id);
-		debug($choices);
 		$choicesContent =""; //is it necessary to init this variable
 		$checked = [];
 		foreach ($choices as $k => $v) {
 			$checked[$k] = ($v['is_true']) ? "checked" : "";
 		}
 
-
-		debug($choices);
-
 		$this->show('quiz/question_consult', [
 			"question" => $question,
 			"choices" => $choices,
 			"checked" => $checked,
 		]);
-
-
 	}
 
-}
 
+
+}
 
 
 

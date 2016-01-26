@@ -30,7 +30,7 @@
 			}
 	
 			$sql = "SELECT * FROM " . $this->table . " WHERE question_id = :id";
-			echo $sql;
+			//echo $sql;
 			$sth = $this->dbh->prepare($sql);
 			$sth->execute([":id" => $id]);
 			
