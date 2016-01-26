@@ -1,9 +1,9 @@
-<?php $this->layout('layout', ['title' => 'Accueil']) ?>
+<?php $this->layout('layout', ['title' => 'A propos']) ?>
 
 <?php $this->start('main_content') ?>
 	<h2>Let's code.</h2>
-	<p>Vous avez atteint la page d'accueil. Bravo.</p>
-	<h3>Liste des pages</h3>
+	<p>Vous avez atteint la page A propos</p>
+	<h3>A propos de nous</h3>
 
 
 
