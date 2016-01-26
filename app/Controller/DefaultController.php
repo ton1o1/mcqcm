@@ -15,4 +15,26 @@ class DefaultController extends Controller
 		$this->show('default/home');
 	}
 
+
+public function answerviewerinput()
+{
+	$this->show('view/answerviewerinput');
+}
+
+/**
+* Page à propos
+*/
+public function answerviewer()
+{
+	$this->show('view/answerviewer');
+}
+
+
+public function answerviewerresults()
+{
+	$this->show('view/answerviewerresults');
+}
+
+
+
 }
