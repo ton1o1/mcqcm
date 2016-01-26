@@ -210,3 +210,61 @@ abstract class Manager
 		return $sth->execute();
 	}
 }
+
+public function list_quizs($userId)
+	{
+		$sql = "SELECT title FROM quizs WHERE user_id = '$userId'";
+	}
+
+public function list_user_quiz($userId, $quizId)
+	{
+		$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
+		WHERE (u.id = '$userId') AND (q.user_id = u.id) AND (q.id = '$quizId')";
+		$statementUserQuiz = $pdo->prepare($sqlUserQuiz);
+		$statementUserQuiz->execute();
+		$resultUserQuiz = $statementUserQuiz->fetchAll();
+	}
+
+public function list_choices_user_quiz($userId, $quizId)
+	{
+		$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
+		WHERE (q.question_id = a.question_id) AND (a.user_id = '$userId') AND (q.quiz_id = '$quizId')";
+		$statement = $pdo->prepare($sql);
+		$statement->execute();
+		$result = $statement->fetchAll();
+	}
+
+public function list_solution_choice($choiId)
+	{
+		$sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$choiId'";
+		$statementSolution = $pdo->prepare($sqlSolution);
+		$statementSolution->execute();
+		$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); 
+		$tabSolution[$key] = intval($resultSolution[0]);
+	}
+
+
+public function list_quizs_deroulante($userId) {
+
+  	$sqlList = "SELECT q.title FROM quizs q WHERE q.user_id = '$userId'";
+	$statementList = $pdo->prepare($sqlList);
+	$statementList->execute();
+	$resultList = $statementList->fetchAll(PDO::FETCH_COLUMN, 0);
+
+  $selected = '';
+  echo '<select name="quizs">',"n";
+  foreach($resultList as $key => $titleQuiz)
+  {
+    echo "\t",'<option value="', $key ,'"', $selected ,'>', $titleQuiz ,'</option>',"\n";
+  }
+  echo '</select>',"\n";
+}
+
+?>
+
+
+
+
+
+
+

@@ -4,7 +4,7 @@
 
 	<h2>Résultats individuels</h2>
 
-	<form method="POST" novalidate>
+	<form method = "POST" action = "<?= $this->assetUrl('answerviewerresults.php') ?>" novalidate>
 		<input type="text" name="quiz" placeholder="Quel quiz ?">
 		<button type="submit">Consulter</button>
 	</form>

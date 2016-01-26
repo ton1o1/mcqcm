@@ -1,4 +1,4 @@
-<?php $this->layout('layout', ['title' => 'Résultats']) ?>
+<?php $this->layout('layout', ['title' => 'Résultats numériques']) ?>
 
 <?php $this->start('main_content') ?>
 
