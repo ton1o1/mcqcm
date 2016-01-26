@@ -23,7 +23,7 @@
 		// 	return $this->dbh->lastInsertId();
 		// }
 
-		public function findWhereQuestionId($id)
+		public function findChoiceByQuestionId($id)
 		{
 			if (!is_numeric($id)){
 				return false;
@@ -37,7 +37,19 @@
 			return $sth->fetchAll();
 		}
 
-
+		public function findQuestion($id)
+		{
+			if (!is_numeric($id)){
+				return false;
+			}
+	
+			$sql = "SELECT * FROM questions, quizs, quizs__questions WHERE questions.id = :id AND questions.id = quizs__questions.question_id AND quizs.id = quizs__questions.quiz_id";
+			//echo $sql;
+			$sth = $this->dbh->prepare($sql);
+			$sth->execute([":id" => $id]);
+			
+			return $sth->fetchAll();
+		}
 
 
 

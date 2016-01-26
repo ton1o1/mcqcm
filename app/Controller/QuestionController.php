@@ -72,11 +72,11 @@ class QuestionController extends Controller
 		if(empty($errorMessages))
 		{
 			$questionManager = new \Manager\QuestionManager();
-			$questionManager->setTable('question');
 			//insert question title in question table
 				if($_POST){
 					$questionManager->insert([
-						"quiz_id" => $quizId,
+						//"quiz_id" => $quizId,
+						"user_id" => 1, //a cha,ger
 						"title" => $questionTitle,
 					]);
 	
@@ -86,14 +86,14 @@ class QuestionController extends Controller
 				
 				//step 2 : insert choice in choice table
 				$questionManager = new \Manager\QuestionManager();
-				$questionManager->setTable('choice');
-
+				$questionManager->setTable('choices');
 				if($_POST){
 					foreach ($choices as $k => $v) {
 						$questionManager->insert([
 							"question_id" => $lastId['id'],
 							"title" => $v,
 							"is_true" => $solutions[$k],
+							"is_active" => 1,
 						]); 
 					}
 				}
@@ -152,13 +152,12 @@ class QuestionController extends Controller
 	public function questionConsult($id){
 		$questionManager = new \Manager\QuestionManager();
 		//get question info
-		$questionManager->setTable('question');
 		$question = $questionManager->find($id);
 		
 		//get choices info
-		$questionManager->setTable('choice');
+		$questionManager->setTable('choices');
 		$id = $question["id"];	
-		$choices = $questionManager->findWhereQuestionId($id);
+		$choices = $questionManager->findChoiceByQuestionId($id);
 		$choicesContent =""; //is it necessary to init this variable
 		$checked = [];
 		foreach ($choices as $k => $v) {
