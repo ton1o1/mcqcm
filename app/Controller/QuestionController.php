@@ -16,6 +16,7 @@ class QuestionController extends Controller
 		{
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
+			if(!empty($_POST['quizId'])){$quizId = $_POST['quizId'];}			
 			//choices values are stored in an array
 			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
 			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
@@ -75,7 +76,7 @@ class QuestionController extends Controller
 			//insert question title in question table
 				if($_POST){
 					$questionManager->insert([
-						"quiz_id" => 1, //WARNING : value 1 is only temporary, how do we select the quiz id?
+						"quiz_id" => $quizId,
 						"title" => $questionTitle,
 					]);
 	
@@ -128,6 +129,7 @@ class QuestionController extends Controller
 		$rows = "";
 
 		foreach ($list as $k => $v) { //add in href link to route question-id or quiz-id
+			//Line 140 : route name needs to be tested with anthony
 			$rows .= "<tr>
 						<td>" .
 							$v['id'] .
@@ -136,8 +138,8 @@ class QuestionController extends Controller
 							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
 						</td> 
 						<td> 
-							<a href=''>" . $v['quiz_id'] . "</a>
-						</td>
+							<a href='/quiz/'>" . $v['quiz_id'] . "?</a>
+						</td> 
 					</tr>";
 		}
 
@@ -158,25 +160,22 @@ class QuestionController extends Controller
 		//get choices info
 		$questionManager->setTable('choice');
 		$id = $question["id"];
+		echo $id;
 		$choices = $questionManager->findWhereQuestionId($id);
+		debug($choices);
 		$choicesContent =""; //is it necessary to init this variable
+		$checked = [];
+		foreach ($choices as $k => $v) {
+			$checked[$k] = ($v['is_true']) ? "checked" : "";
+		}
 
-		// foreach ($choices as $k => $v) {
-		// 	$choicesContent .= "<label class='checkbox-inline'>
-		// 			  <input type='checkbox' name='solution1' value='" .
-		// 			  $v["solution$k"] .
-		// 			  "' id='inlineCheckbox1'>
-		// 			  <input type='text' name='choice1' value='" .
-		// 			  $v["choice$k"]
-		// 			  ">
-		// 			</label><br/>";
-			
-		// }
 
+		debug($choices);
 
 		$this->show('quiz/question_consult', [
 			"question" => $question,
 			"choices" => $choices,
+			"checked" => $checked,
 		]);
 
 

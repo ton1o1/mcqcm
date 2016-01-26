@@ -32,8 +32,7 @@
 			$sql = "SELECT * FROM " . $this->table . " WHERE question_id = :id";
 			echo $sql;
 			$sth = $this->dbh->prepare($sql);
-			$sth->bindValue(":id", $id/*, PDO::PARAM_STR*/);
-			$sth->execute();
+			$sth->execute([":id" => $id]);
 			
 			return $sth->fetchAll();
 		}

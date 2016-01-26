@@ -15,15 +15,15 @@
 			
 <!--   -->  <div class="choices">
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" checked><input type="text" name="choice1" value="<?php ?>">
+				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" <?= $checked[0] ?> ><input type="text" name="choice1" value="<?= $choices[0]['title'] ?>">
 				</label><br/>
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2"><input type="text" name="choice2" value="<?php ?>">
+				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" <?= $checked[1] ?> ><input type="text" name="choice2" value="<?= $choices[1]['title'] ?>">
 				</label><br/>
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3"><input type="text" name="choice3" value="<?php ?>"><br/>
+				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" <?= $checked[2] ?> ><input type="text" name="choice3" value="<?= $choices[2]['title'] ?>"><br/>
 				</label>
-				<?php debug($question); ?>
+				<?php //debug($question); ?>
 
 			</div>
 <!--   -->			
