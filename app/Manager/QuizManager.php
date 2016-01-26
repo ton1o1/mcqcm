@@ -50,6 +50,7 @@ class QuizManager extends \W\Manager\Manager
      */
     public function findAllActive($orderBy = "", $orderDir = "ASC")
     {
+        $sql = "SELECT * FROM " . $this->table . " WHERE is_active = :isActive";
 
         if (!empty($orderBy)){
 
@@ -65,7 +66,6 @@ class QuizManager extends \W\Manager\Manager
             $sql .= " ORDER BY $orderBy $orderDir";
         }
         
-        $sql = "SELECT * FROM " . $this->table . " WHERE is_active = :isActive";
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(":isActive", true);
         $sth->execute();

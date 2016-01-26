@@ -3,28 +3,44 @@
 namespace Controller;
 
 use \W\Controller\Controller;
-use Manager\QuizManager;
-use Service\QuizValidator;
 
 class QuizController extends Controller
 {
+    private $alerts;
+    private $manager;
+    private $validator;
+
+    public function __construct()
+    {
+        $this->alerts = new \Service\Alerts();
+        $this->manager = new \Manager\QuizManager();
+        $this->validator = new \Service\Validator\Quiz();
+    }
+
     /**
      * List all quizzes or display one quiz by id, if given
      */
     public function view($quizId = null)
     {
-        $quizManager = new QuizManager();
-
         if($quizId){
-            $quizzes = $quizManager->findActive($quizId);
+            $quizzes = $this->manager->findActive($quizId);
+
+            if(!$quizzes){
+                $this->showNotFound();
+            }
         }
         else{
             $orderBy = 'id';
             $orderDir = 'DESC'; //Display newer first
-            $quizzes = $quizManager->findAllActive($orderBy, $orderDir);
+            $quizzes = $this->manager->findAllActive($orderBy, $orderDir);
         }
 
-        var_dump($quizzes);
+        if(!$quizzes){
+            echo 'Aucun quiz trouvé.';
+        }
+        else{
+            var_dump($quizzes);
+        }
         // $this->show('quiz/view', ['quizzes' => $quizzes]);
     }
 
@@ -33,10 +49,14 @@ class QuizController extends Controller
      */
     public function viewByUser($userId)
     {
-        $quizManager = new QuizManager();
-
-        $quizzes = $quizManager->findByUserId($userId);
-        var_dump($quizzes);
+        $quizzes = $this->manager->findByUserId($userId);
+        
+        if(!$quizzes){
+            echo 'Cet utilisateur n\'a créé aucun quiz.';
+        }
+        else{
+            var_dump($quizzes);
+        }
     }
 
     /**
@@ -48,9 +68,9 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
-        if($_POST){
-            $validator = new QuizValidator();
-            $validation = $validator->check($_POST);
+        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+            $validation = $this->validator->check($_POST);
 
             if($validation['success']){
 
@@ -63,20 +83,26 @@ class QuizController extends Controller
                 // Save new quiz in database
                 $dateCreated = new \DateTime();
 
-                $quizManager = new QuizManager();
-                $quizManager->insert([
+                $this->manager->insert([
                     'user_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
-                    'title' => $_POST['title']
+                    'title' => $_POST['title'],
+                    'is_active' => true
                 ]);
 
+                // Flash message
+                $this->alerts->add(['type' => 'success', 'content' => 'Quiz créé avec succès.']);
+
                 // Redirect to question creator page
-                $this->redirectToRoute('question_build', ['message' => 'Quiz créé avec succès.']);
+                $this->redirectToRoute('question_build', ['alerts' => $this->alerts->getAll()]);
             }
             else{
+                // Flash message
+                $this->alerts->add(['type' => 'danger', 'content' => 'Le formulaire contient des erreurs !']);
+
                 // Display form
                 // with params : errors and data submitted
-                $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST]);
+                $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST, 'alerts' => $this->alerts->getAll()]);
             }
         }
         else{
@@ -94,8 +120,6 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
-        $message = null;
-
         // Get user
         // Dev mode START
         // $loggedUser = $this->getUser();
@@ -103,8 +127,7 @@ class QuizController extends Controller
         // Dev mode END
 
         // Get quiz
-        $quizManager = new QuizManager();
-        $quiz = $quizManager->findActive($quizId);
+        $quiz = $this->manager->findActive($quizId);
 
         // Quiz exists ?
         if($quiz){
@@ -115,29 +138,42 @@ class QuizController extends Controller
                 // Confirmation has been sent ?
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-                    $validator = new QuizValidator();
-                    $validation = $validator->check($_POST);
+                    $validation = $this->validator->check($_POST);
 
                     if($validation['success']){
 
                         // Update quiz in database
-                        $quizManager->update(['title' => $_POST['title']], $quizId, true);
+                        $this->manager->update(['title' => $_POST['title']], $quizId, true);
 
-                        // Redirect to question creator page
-                        $this->show('question_build');
+                        // Flash message
+                        $this->alerts->add(['type' => 'success', 'content' => 'Quiz modifié avec succès.']);
+
+                        // Display form
+                        $this->show('quiz/edit', ['quiz' => $quiz['title'], 'alerts' => $this->alerts->getAll()]);
                     }
                     else{
+                        // Flash message
+                        $this->alerts->add(['type' => 'danger', 'content' => 'Le formulaire contient des erreurs !']);
+
                         // Display form
                         // with params : errors and data submitted
-                        $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST]);
+                        $this->show('quiz/edit', ['quiz' => $quiz['title'], 'errors' => $validation['errors'], 'data' => $_POST, 'alerts' => $this->alerts->getAll()]);
                     }
                 }
-
-                $this->show('quiz/delete', ['data' => $quiz, 'message' => $message]);
-
-            } else $this->redirectToRoute('home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
-
-        } else $this->redirectToRoute('home', ['message' => 'Quiz non trouvé.']);
+                else{
+                    // Display form
+                    $this->show('quiz/edit', ['quiz' => $quiz['title']]);
+                }
+            }
+            else {
+                $this->alerts->add(['type' => 'danger', 'content' => 'Vous n\'avez pas les droits nécessaires pour modifier ce quiz.']);
+                $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+            }
+        }
+        else{
+            $this->alerts->add(['type' => 'danger', 'content' => 'Quiz non trouvé.']);
+            $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+        }
     }
 
     /**
@@ -149,8 +185,6 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
-        $message = null;
-
         // Get user
         // Dev mode START
         // $loggedUser = $this->getUser();
@@ -158,8 +192,7 @@ class QuizController extends Controller
         // Dev mode END
 
         // Get quiz
-        $quizManager = new QuizManager();
-        $quiz = $quizManager->findActive($quizId);
+        $quiz = $this->manager->findActive($quizId);
 
         // Quiz exists ?
         if($quiz){
@@ -173,17 +206,31 @@ class QuizController extends Controller
                     // Is he sure wants to delete ?
                     if(!empty($_POST['sure']) && $_POST['sure'] == 1){
 
-                        $quizManager->update(['is_active' => false], $quizId, true);
+                        $this->manager->update(['is_active' => false], $quizId, true);
 
-                        $this->redirectToRoute('home', ['message' => 'Le quiz a bien été supprimé.']);
+                        // Flash message
+                        $this->alerts->add(['type' => 'success', 'content' => 'Le quiz a bien été supprimé.']);
 
-                    } else $message = 'Veuillez confirmer la suppression en cochant la case.';
+                        // Redirect to homepage
+                        $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+
+                    }
+                    else {
+                        $this->alerts->add(['type' => 'danger', 'content' => 'Veuillez confirmer la suppression en cochant la case.']);
+                    }
                 }
 
-                $this->show('quiz/delete', ['data' => $quiz, 'message' => $message]);
+                $this->show('quiz/delete', ['data' => $quiz, 'alerts' => $this->alerts->getAll()]);
 
-            } else $this->redirectToRoute('home', ['message' => 'Vous n\'avez pas les droits nécessaires pour supprimer ce quiz.']);
-
-        } else $this->redirectToRoute('home', ['message' => 'Quiz non trouvé.']);
+            }
+            else {
+                $this->alerts->add(['type' => 'danger', 'content' => 'Vous n\'avez pas les droits nécessaires pour modifier ce quiz.']);
+                $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+            }
+        }
+        else{
+            $this->alerts->add(['type' => 'danger', 'content' => 'Quiz non trouvé.']);
+            $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+        }
     }
 }

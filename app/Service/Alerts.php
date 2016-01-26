@@ -2,7 +2,7 @@
 
 namespace Service;
 
-class AlertManager
+class Alerts
 {
     public function add($params = array())
     {
@@ -63,10 +63,9 @@ class AlertManager
             foreach($_SESSION['alerts'] as $key => $value) {
                 $html .= '<div class="alert alert-' . $value['type'] . '" role="alert">' . $value['content'] . '</div>';
             }
+            // Clear all alerts
+            $this->clear($_SESSION['alerts']);
         }
-
-        // Clear all alerts
-        $this->clear($_SESSION['alerts']);
 
         return $html;
     }
