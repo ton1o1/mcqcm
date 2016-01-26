@@ -22,6 +22,7 @@
 				<label for="question-title">Intitulé</label>
 				<textarea name="questionTitle" id="question-title" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?= $dataPosted['questionTitle'] ?></textarea>
 			</div>
+			<label>Choisir le quiz</label><input type="quiz" value="">
 			<div class="form-group">
 				<label for="questionType">Type de question</label>
 				<select name="questionType" id="questionType">

@@ -42,7 +42,6 @@ class QuestionController extends Controller
  			$_POST['choice1'] = false;
 			$_POST['choice2'] = false;
 			$_POST['choice3'] = false;
-
 		}
 		    
 		$errorMessages = [];
@@ -114,10 +113,6 @@ class QuestionController extends Controller
 			"dataPosted" => $_POST,
 		]);
 	}
-
-
-
-
 
 
 	/**
