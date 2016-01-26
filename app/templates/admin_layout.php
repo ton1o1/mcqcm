@@ -25,7 +25,17 @@
                         <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">quizz</a></li>
                     </ul>
 
-                <a class="navigation__connexion" href="<?= $this->url("user_login", []);?>">se connecter |se deconnecter</a>
+                
+                <?php 
+                    if(empty($w_user)){
+                ?>
+                        <a class="navigation__connexion" href="<?= $this->url("user_login", []);?>">se connecter</a>
+                <?php
+                        }
+                    else {
+                ?>
+                        <a class="navigation__connexion" href="<?= $this->url("user_logout", []);?>">se déconnecter</a>
+                <?php }?>
 
               </nav>
            

@@ -52,7 +52,7 @@
                 <li><a href="<?= $this->url("question_builder", []);?>">questions</a></li>
                 <li><a href="<?= $this->url("apropos", []);?>">à propos</a></li>
                 <li><a href="<?= $this->url("contact", []);?>">contactez-nous</a></li>
-                <li><a href="<?= $this->url("user_connection", []);?>">se connecter</a></li>
+                <li><a href="<?= $this->url("home", []);?>">se connecter</a></li>
             </ul>           
         </nav>
         </div>
