@@ -14,7 +14,7 @@ class QuizManager extends \W\Manager\Manager
             return false;
         }
 
-        $sql = "SELECT * FROM " . $this->table . " WHERE user_id = :userId ORDER BY id DESC";
+        $sql = "SELECT * FROM " . $this->table . " WHERE creator_id = :userId ORDER BY id DESC";
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(":userId", $userId);
         $sth->execute();
@@ -71,5 +71,9 @@ class QuizManager extends \W\Manager\Manager
         $sth->execute();
 
         return $sth->fetchAll();
+    }
+
+    public function lastId(){
+        return $this->dbh->lastInsertId();
     }
 }

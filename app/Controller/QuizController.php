@@ -18,6 +18,14 @@ class QuizController extends Controller
     }
 
     /**
+     * Search quizzes by skills
+     */
+    public function search()
+    {
+
+    }
+
+    /**
      * List all quizzes or display one quiz by id, if given
      */
     public function view($quizId = null)
@@ -47,17 +55,17 @@ class QuizController extends Controller
     /**
      * List all quizzes by user id
      */
-    public function viewByUser($userId)
-    {
-        $quizzes = $this->manager->findByUserId($userId);
+    // public function viewByUser($userId)
+    // {
+    //     $quizzes = $this->manager->findByUserId($userId);
         
-        if(!$quizzes){
-            echo 'Cet utilisateur n\'a créé aucun quiz.';
-        }
-        else{
-            var_dump($quizzes);
-        }
-    }
+    //     if(!$quizzes){
+    //         echo 'Cet utilisateur n\'a créé aucun quiz.';
+    //     }
+    //     else{
+    //         var_dump($quizzes);
+    //     }
+    // }
 
     /**
      * Quiz creator form
@@ -68,9 +76,10 @@ class QuizController extends Controller
         // $this->allowTo('user');
         // Dev mode END
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // If form submitted
+        if(!empty($_POST['quiz'])){
 
-            $validation = $this->validator->check($_POST);
+            $validation = $this->validator->check($_POST['quiz']);
 
             if($validation['success']){
 
@@ -81,12 +90,16 @@ class QuizController extends Controller
                 // Dev mode END
 
                 // Save new quiz in database
+
                 $dateCreated = new \DateTime();
+                $skills = []; // à faire
 
                 $this->manager->insert([
                     'user_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
                     'title' => $_POST['title'],
+                    'description' => $_POST['description'],
+                    'skills_id' => serialize($skills),
                     'is_active' => true
                 ]);
 
@@ -94,7 +107,7 @@ class QuizController extends Controller
                 $this->alerts->add(['type' => 'success', 'content' => 'Quiz créé avec succès.']);
 
                 // Redirect to question creator page
-                $this->redirectToRoute('question_build', ['alerts' => $this->alerts->getAll()]);
+                $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
             }
             else{
                 // Flash message
@@ -102,7 +115,7 @@ class QuizController extends Controller
 
                 // Display form
                 // with params : errors and data submitted
-                $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST, 'alerts' => $this->alerts->getAll()]);
+                $this->show('quiz/create', ['errors' => $validation['errors'], 'data' => $_POST['quiz'], 'alerts' => $this->alerts->getAll()]);
             }
         }
         else{
@@ -135,10 +148,10 @@ class QuizController extends Controller
             // User is the owner ?
             if($loggedUser['id'] == $quiz['user_id']){
 
-                // Confirmation has been sent ?
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                // If form submitted
+                if(!empty($_POST['quiz'])){
 
-                    $validation = $this->validator->check($_POST);
+                    $validation = $this->validator->check($_POST['quiz']);
 
                     if($validation['success']){
 
@@ -149,7 +162,7 @@ class QuizController extends Controller
                         $this->alerts->add(['type' => 'success', 'content' => 'Quiz modifié avec succès.']);
 
                         // Display form
-                        $this->show('quiz/edit', ['quiz' => $quiz['title'], 'alerts' => $this->alerts->getAll()]);
+                        $this->show('quiz/edit', ['quiz' => $quiz, 'alerts' => $this->alerts->getAll()]);
                     }
                     else{
                         // Flash message
@@ -157,12 +170,12 @@ class QuizController extends Controller
 
                         // Display form
                         // with params : errors and data submitted
-                        $this->show('quiz/edit', ['quiz' => $quiz['title'], 'errors' => $validation['errors'], 'data' => $_POST, 'alerts' => $this->alerts->getAll()]);
+                        $this->show('quiz/edit', ['quiz' => $quiz, 'errors' => $validation['errors'], 'data' => $_POST['quiz'], 'alerts' => $this->alerts->getAll()]);
                     }
                 }
                 else{
                     // Display form
-                    $this->show('quiz/edit', ['quiz' => $quiz['title']]);
+                    $this->show('quiz/edit', ['quiz' => $quiz]);
                 }
             }
             else {

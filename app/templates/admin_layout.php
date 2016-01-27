@@ -21,8 +21,8 @@
 
                     <ul class="navigation__list">
                         <li><a class="navigation__item" href="<?= $this->url("home", []);?>">accueil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("question_builder", []);?>">profil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("apropos", []);?>">quizz</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("question_build", []);?>">profil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("about", []);?>">quizz</a></li>
                     </ul>
 
                 <a class="navigation__connexion" href="<?= $this->url("home", []);?>">se connecter |se deconnecter</a>
