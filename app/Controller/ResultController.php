@@ -4,10 +4,10 @@ namespace Controller;
 
 use \W\Controller\Controller;
 
-class AnswerController extends Controller
+class ResultController extends Controller
 {
 
-	public function home()
+	public function view()
 	{
 		$this->show('default/results');
 	}
@@ -145,6 +145,9 @@ $result = $results['$chp'];
 		calculNote($sessionId);
 	}
 
+	
+
+/*
 	public function allResults() {
 		$sqlAll = "SELECT DISTINCT session_id FROM sessions_users";
 		$statementAll = $pdo->prepare($sqlAll);
@@ -156,6 +159,9 @@ $result = $results['$chp'];
 	}
 }
 
+*/
+
+
 /*
 	$answers = new \AnswerController;
 	$results = $answers->studentSessionResult($sessionId, $userId);
@@ -165,3 +171,37 @@ $result = $results['$chp'];
 	$results = $answer->studentSessionResult($sessionId, $userId);
 */
 
+
+	public function medium_calculate()
+		{
+			$totalScore = 0;
+			$ecart = 0;
+			$ecartMoy = 0;
+			$base = 0;
+			$data = $this->all_result_viewer();
+			$numberScore = count($data);
+
+			if ($numberScore > 0) { 
+
+				// Calcul de la moyenne de tous les scores réalisés
+
+				foreach ($data as $key => $value) {
+					$totalScore += $value;
+					}
+				$scoreMoyen = $totalScore / $numberScore;
+
+				
+				// Calcul de l'écart-type de tous les scores réalisés
+
+				foreach ($data as $key => $value) {
+					$base = $value - $scoreMoyen;
+					$ecart += pow($base, 2);
+					}
+				$ecartMoy = $ecart / $numberScore;
+				$ecartType = sqrt($ecartMoy);
+			
+				return $scoreMoyen, $ecartType;
+			}
+		}
+
+}

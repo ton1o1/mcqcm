@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use \app\Controller\Controller;
+use \W\Controller\Controller;
 
 class DefaultController extends Controller
 {
