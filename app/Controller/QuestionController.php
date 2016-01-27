@@ -14,6 +14,7 @@ class QuestionController extends Controller
 	{ 
 		if($_POST)
 		{
+			//if variables exist, I init them
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
 			if(!empty($_POST['quizId'])){$quizId = $_POST['quizId'];}			
@@ -26,25 +27,28 @@ class QuestionController extends Controller
 			if(!empty($_POST['solution1'])){
 				$solutions[1] = true;
 				$_POST['solution1'] = "checked";
-			} else {$solutions[1] = false;}
+			} else {$solutions[1] = " ";}
 			if(!empty($_POST['solution2'])){
 				$solutions[2] = true;
 				$_POST['solution2'] = "checked";
-			} else {$solutions[2] = false;}
+			} else {$solutions[2] = " ";}
 			if(!empty($_POST['solution3'])){
 				$solutions[3] = true;
 				$_POST['solution3'] = "checked";
-			} else {$solutions[3] = false;}
+			} else {$solutions[3] = " ";}
 
 
 		} else {
+			//if they doesn't exist, they're false
 			$_POST['questionTitle']= false;
 			//***
  			$_POST['choice1'] = false;
 			$_POST['choice2'] = false;
 			$_POST['choice3'] = false;
+				debug($_POST);
 		}
-		    
+
+		//init    
 		$errorMessages = [];
 
 		if(empty($questionTitle)){
@@ -76,7 +80,7 @@ class QuestionController extends Controller
 				if($_POST){
 					$questionManager->insert([
 						//"quiz_id" => $quizId,
-						"user_id" => 1, //a cha,ger
+						"user_id" => 1, //needs to be $_SESSION['id']
 						"title" => $questionTitle,
 					]);
 	
@@ -163,7 +167,7 @@ class QuestionController extends Controller
 		foreach ($choices as $k => $v) {
 			$checked[$k] = ($v['is_true']) ? "checked" : "";
 		}
-
+		debug($checked);
 		$this->show('quiz/question_consult', [
 			"question" => $question,
 			"choices" => $choices,

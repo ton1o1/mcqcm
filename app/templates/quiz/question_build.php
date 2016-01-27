@@ -13,6 +13,7 @@
 			<li>Valider le formulaire ok</li>
 		</ol>
 	</div> 	
+
 	<form action="" method="POST" class="form-group" novalidate>
 		<fieldset>
 			<legend>Créer une question</legend>
@@ -37,19 +38,19 @@
 			
 <!--   -->  <div class="choices">
 				<label class="checkbox-inline">
-
-				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" <?= $dataPosted['solution1'] ?>><input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
+				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" <?php if(!empty($dataPosted['solution1'])){echo "checked";} ?>>
+				  <input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
 				</label><br/>
 				<label class="checkbox-inline">
-
-				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" <?= $checked['solution2'] ?>><input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
+				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" <?php if(!empty($dataPosted['solution2'])){echo "checked";} ?>>
+				  <input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
 				</label><br/>
-
 				<label class="checkbox-inline">
-
-				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" <?= $checked['solution3'] ?>><input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
+				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" <?php if(!empty($dataPosted['solution3'])){echo "checked";} ?>>
+				  <input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
 				</label>
 			</div>
+			
 <!--   -->			
 			<div class="warning">
 				<?= $finalErrorMessage ?>
