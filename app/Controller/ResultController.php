@@ -43,11 +43,12 @@ class ResultController extends Controller
 				$clef = 1;
 				}
 			
-			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm2', 'root');
+/*			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm2', 'root');
 			$sqlTitle = "SELECT title FROM choices WHERE id = '$key'";
 			$statementTitle = $pdo->prepare($sqlTitle);
 			$statementTitle->execute();
-			$resultsTitle = $statementTitle->fetchAll();
+			$resultsTitle = $statementTitle->fetchAll(); */
+
 			
 			foreach ($resultsTitle[0] as $key2 => $value2) {
 				echo ('<span style="font-size: 20px;><strong>' . $value2 . '</strong></span>');
@@ -65,27 +66,32 @@ class ResultController extends Controller
 	}
 
 
-	public function calculNote() {
+	public function calculNote($userId, $quizId) {
 
-		$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
+		/* $sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
 		WHERE (u.id = '1') AND (q.user_id = u.id) AND (q.id = '1')";
 
 		$statementUserQuiz = $pdo->prepare($sqlUserQuiz);
 		$statementUserQuiz->execute();
-		$resultUserQuiz = $statementUserQuiz->fetchAll();
+		$resultUserQuiz = $statementUserQuiz->fetchAll(); */
+
+		$this->list_user_quiz($userId, $quizId)
 
 		foreach ($resultUserQuiz as $key => $value) {
 			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
 			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
 			}
+		
+		$this->list_choices_user_quiz($userId, $quizId);
 
+		/*
 		$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
 		WHERE (q.question_id = a.question_id) AND (a.user_id = '1') AND (q.quiz_id = '1')";
 
 		$statement = $pdo->prepare($sql);
 		$statement->execute();
 		$result = $statement->fetchAll();
-
+		*/
 
 		$choiceId = [];
 		$tabSolution = [];
@@ -106,10 +112,13 @@ class ResultController extends Controller
 			echo ('<span style="font-size: 20px;">' . "Pour la question " . '<strong>' . $value["question_id"] . '</strong>' . ", " . '</span>');
 
 			foreach ($tabChoice as $key => $value) {
+				/*
 				$sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$key'";
 				$statementSolution = $pdo->prepare($sqlSolution);
 				$statementSolution->execute();
-				$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); 
+				$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); */
+
+				$this->list_solution_choice($key);
 				$tabSolution[$key] = intval($resultSolution[0]);
 			}
 
