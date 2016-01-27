@@ -23,19 +23,7 @@
 		// 	return $this->dbh->lastInsertId();
 		// }
 
-		public function findChoiceByQuestionId($id)
-		{
-			if (!is_numeric($id)){
-				return false;
-			}
-	
-			$sql = "SELECT * FROM " . $this->table . " WHERE question_id = :id";
-			//echo $sql;
-			$sth = $this->dbh->prepare($sql);
-			$sth->execute([":id" => $id]);
-			
-			return $sth->fetchAll();
-		}
+
 
 		public function findQuestion($id)
 		{

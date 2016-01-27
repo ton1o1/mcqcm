@@ -19,8 +19,8 @@
 			<h2>Votre question</h2>
 			<div class="form-group">
 				<!-- change for for="question-title" then test -->
-				<label for="question-title">Intitulé</label>
-				<textarea name="questionTitle" id="question-title" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?= $dataPosted['questionTitle'] ?></textarea>
+				<label for="questionTitle">Intitulé</label>
+				<textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?= $dataPosted['questionTitle'] ?></textarea>
 			</div>
 			<div>
 				<label>Choisir le quiz</label><input type="number" name="quizId" min="0" max="100" step="1" value="1">
@@ -37,14 +37,17 @@
 			
 <!--   -->  <div class="choices">
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" ><input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
+
+				  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" <?= $dataPosted['solution1'] ?>><input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
 				</label><br/>
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" ><input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
+
+				  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" <?= $checked['solution2'] ?>><input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
 				</label><br/>
 
 				<label class="checkbox-inline">
-				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" ><input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
+
+				  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" <?= $checked['solution3'] ?>><input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
 				</label>
 			</div>
 <!--   -->			

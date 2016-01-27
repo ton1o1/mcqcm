@@ -17,12 +17,12 @@ class QuestionController extends Controller
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
 			if(!empty($_POST['quizId'])){$quizId = $_POST['quizId'];}			
-			//choices values are stored in an array
+			//***choices values are stored in an array
 			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
 			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
 			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}
 
-			//answers that are true are also stored in an array, 
+			//***answers that are true are also stored in an array, 
 			if(!empty($_POST['solution1'])){
 				$solutions[1] = true;
 				$_POST['solution1'] = "checked";
@@ -39,7 +39,7 @@ class QuestionController extends Controller
 
 		} else {
 			$_POST['questionTitle']= false;
-
+			//***
  			$_POST['choice1'] = false;
 			$_POST['choice2'] = false;
 			$_POST['choice3'] = false;
@@ -50,7 +50,7 @@ class QuestionController extends Controller
 		if(empty($questionTitle)){
 			$errorMessages['title'] = "L'intitulé de la question est vide.";
 		}
-		//test if at least one choice has been checked as a good solution
+		//***test if at least one choice has been checked as a good solution
 		if(empty($solutions[1]) && empty($solutions[2]) && empty($solutions[3])){
 			$errorMessages['solution'] = "Il n'y a pas eu de bonne réponse choisie.";
 		}
@@ -80,16 +80,16 @@ class QuestionController extends Controller
 						"title" => $questionTitle,
 					]);
 	
-			//insert choices in choices table
+			//***insert choices in choices table
 				//step 1 : select the last index of the question table
 				$lastId = $questionManager->findLast();
 				
 				//step 2 : insert choice in choice table
-				$questionManager = new \Manager\QuestionManager();
-				$questionManager->setTable('choices');
+				$choiceManager = new \Manager\ChoiceManager();
+				//$questionManager->setTable('choices');
 				if($_POST){
 					foreach ($choices as $k => $v) {
-						$questionManager->insert([
+						$choiceManager->insert([
 							"question_id" => $lastId['id'],
 							"title" => $v,
 							"is_true" => $solutions[$k],
@@ -108,7 +108,7 @@ class QuestionController extends Controller
 			}
 		}
 		//the show method must always be at the end of the function that display because it contains a die() 
-
+		debug($_POST);
 		$this->show('quiz/question_build', [
 			"finalErrorMessage" => $finalErrorMessage,
 			"dataPosted" => $_POST,
