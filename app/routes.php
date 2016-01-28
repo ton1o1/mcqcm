@@ -6,7 +6,7 @@
         ['GET', '/', 'Default#home', 'home'], // homepage
         ['GET', '/about', 'Default#about', 'about'],
         ['GET', '/legal', 'Default#legal', 'legal'],
-        // ['GET', '/blog', 'Default#blog', 'blog'],
+        ['GET', '/contact', 'Default#contact', 'contact'],
 
         // User
         ['GET|POST', '/login', 'User#login', 'user_login'],                           // login with credentials (email + password)
