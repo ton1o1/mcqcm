@@ -108,10 +108,14 @@ public function list_quizs($userId)
 
 	public function list_solution_choice($choiId)
 		{	
-			$this->table = 'choices';
-			$sqlSolution = $this->findAnswers('$choiId')['is_true'];
+			if (!is_numeric($choiId)) { return false; }
 
-		/*	$sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$choiId'";
+			$sql = "SELECT is_true FROM choices WHERE id = '$choiId'";
+			$sth = $this->dbh->prepare($sql);
+			$sth->execute();
+			return $sth->fetchAll(); 
+
+			/* $sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$choiId'";
 			$statementSolution = $pdo->prepare($sqlSolution);
 			$statementSolution->execute();
 			$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); 

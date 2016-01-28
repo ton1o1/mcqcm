@@ -112,7 +112,6 @@ class ResultController extends Controller {
 			$statementTitle->execute(); 
 			$resultsTitle = $statementTitle->fetchAll(); */
 			$resultsTitle = $this->answer->findTitle($key);
-			var_dump($resultsTitle);
 			foreach ($resultsTitle[0] as $key2 => $value2) {
 				echo ('<span style="font-size: 20px;"><strong>' . $value2 . '</strong></span>');
 				}
@@ -164,10 +163,12 @@ class ResultController extends Controller {
 			echo('<br />' . "\n");
 			echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
 
-			foreach ($tabChoice as $k => $v) {
+			foreach ($tabChoice as $ky => $v) {
 				
-				$resultSolution = $this->answer->list_solution_choice($k);
-				$tabSolution[$k] = intval($resultSolution[0]);
+				$resultSolution = $this->answer->list_solution_choice($ky);
+					foreach ($resultSolution[0] as $kee => $vaa) {
+				$tabSolution[$ky] = intval($vaa);
+				}
 			} 
 
 			$noteTotale += $this->valCompareQuestion($tabChoice, $tabSolution);
