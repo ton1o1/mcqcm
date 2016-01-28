@@ -66,22 +66,24 @@ public function list_quizs($userId)
 			if (!is_numeric($userId) || (!is_numeric($quizId)) { return false; }
 
 			$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
-			WHERE (u.id = '$userId') AND (q.user_id = u.id) AND (q.id = '$quizId')";
+			WHERE (u.id = '$userId') AND (q.id = '$quizId')";
 			$statementUserQuiz = $this->dbh->prepare($sqlUserQuiz);
 			$statementUserQuiz->execute();
 			$resultUserQuiz = $statementUserQuiz->fetchAll();
+			return $resultUserQuiz;
 		}
 
 
 	public function list_choices_user_quiz($userId, $quizId)
 		{
-			if (!is_numeric($userId) || (!is_numeric($quizId)) { return false; }
+			if (!is_numeric($userId) || !is_numeric($quizId)) { return false; }
 
 			$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
 			WHERE (q.question_id = a.question_id) AND (a.user_id = '$userId') AND (q.quiz_id = '$quizId')";
 			$statement = $this->dbh->prepare($sql);
 			$statement->execute();
 			$result = $statement->fetchAll();
+			return $result;
 		}
 
 
@@ -142,7 +144,7 @@ public function list_quizs($userId)
 	*/
 		}
 
-	public function all_result_viewer()
+	public function calculNoteAll()
 		{
 			$this->table = 'sessions';
 			$resultAll = $this->findAll('score', 'DESC');

@@ -111,10 +111,13 @@ class ResultController extends Controller {
 		$lenArray = count($tabDiff);
 
 		if ($lenArray == 0) {
+			
 			$note = 1;
 			echo('<span style="font-size: 20px; color:green;"><strong>' . "réponse exacte" . '</strong>' . ". " . '</span>');
 			echo ('<br />' . "\n");
+		
 		} else { 
+			
 			if ($lenArray == 1) {
 				echo('<span style="font-size: 20px; color:red;"><strong>' . "erreur" . '</strong>' . '</span><span style="font-size: 20px;">' . " pour le choix suivant : " . '</span>');
 			} else {
@@ -127,7 +130,7 @@ class ResultController extends Controller {
 				echo ", ";
 			} else {
 				$clef = 1;
-				}
+			}
 			
 /*			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm2', 'root');
 			$sqlTitle = "SELECT title FROM choices WHERE id = '$key'";
@@ -152,7 +155,7 @@ class ResultController extends Controller {
 	}
 
 
-	public function calculNote($userId, $quizId) {
+	public function calculNoteStudent($userId, $quizId) {
 
 		/* $sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
 		WHERE (u.id = '1') AND (q.user_id = u.id) AND (q.id = '1')";
@@ -161,23 +164,16 @@ class ResultController extends Controller {
 		$statementUserQuiz->execute();
 		$resultUserQuiz = $statementUserQuiz->fetchAll(); */
 
-		$this->answer->list_user_quiz($userId, $quizId);
+		$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
 
 		foreach ($resultUserQuiz as $key => $value) {
 			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
 			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
 			}
 		
-		$this->answer->list_choices_user_quiz($userId, $quizId);
+		$resultat = $this->answer->list_choices_user_quiz($userId, $quizId);
 
-		/*
-		$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
-		WHERE (q.question_id = a.question_id) AND (a.user_id = '1') AND (q.quiz_id = '1')";
-
-		$statement = $pdo->prepare($sql);
-		$statement->execute();
-		$result = $statement->fetchAll();
-		*/
+		
 
 		$choiceId = [];
 		$tabSolution = [];
@@ -190,23 +186,23 @@ class ResultController extends Controller {
 		$m = 0;
 		$noteTotale = 0;
 
-		foreach ($result as $key => $value) {
+		foreach ($resultat as $ke => $valu) {
 			
-			$tabChoice = unserialize($value["choices"]);
+			$tabChoice = unserialize($valu["choices"]);
 			$tabChoiceTot = $tabChoiceTot + $tabChoice;
 			echo('<br />' . "\n");
-			echo ('<span style="font-size: 20px;">' . "Pour la question " . '<strong>' . $value["question_id"] . '</strong>' . ", " . '</span>');
+			echo ('<span style="font-size: 20px";>' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
 
-			foreach ($tabChoice as $key => $value) {
+			foreach ($tabChoice as $k => $v) {
 				/*
 				$sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$key'";
 				$statementSolution = $pdo->prepare($sqlSolution);
 				$statementSolution->execute();
 				$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); */
 
-				$this->list_solution_choice($key);
-				$tabSolution[$key] = intval($resultSolution[0]);
-			}
+				$this->list_solution_choice($k);
+				$tabSolution[$k] = intval($resultSolution[0]);
+			} 
 
 			$noteTotale += valCompareQuestion($tabChoice, $tabSolution);
 		} 
@@ -223,8 +219,9 @@ $results = $answer->find($choiId);
 $result = $results['$chp'];
 */
 
-	public function studentSessionResult($sessionId, $userId) {
-		$this->calculNoteStudent($sessionId, $userId);
+	public function studentSessionResult($userId, $sessionId) {
+		$quizId = $this->answer->setTable('sessions').find('$sessionId')['quiz_id'];
+		$this->calculNoteStudent($userId, $quizId);
 	}
 
 	public function teacherSessionResult($sessionId) {
