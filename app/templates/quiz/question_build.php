@@ -25,9 +25,9 @@ Unit tests :
 	</div> 	
 	
 	<section class="searchQuestion">
-	<form action="#" method="GET" id="search-question">
+	<form action="#" method="GET" id="">
 		<label label="search-form-question">Rechercher une question : </label>
-		<input type="text" id="search-question">
+		<input type="text" id="search-question" data-url="<?php echo $this->url("question_search"); ?>">
 		
 		
 	</form>

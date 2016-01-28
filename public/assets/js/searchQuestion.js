@@ -2,25 +2,31 @@ console.log("searchQuestion.js started");
 
 
 $searchQuestion = $("#search-question");
+$urlVal = $("#search-question").attr("data-url");
 
 $searchQuestion.on("keyup", function(e){
 	e.preventDefault();
+
 	$searchQuestionVal = $searchQuestion.val();
+
 
 	$.ajax({
 
-		//what the fuck is the url here?
-		"url":"/questionediteur?input=" + $searchQuestionVal,
-		"type": "GET"
+		
+		"url": $urlVal,
+		"data" : { //ecrit automatiquement ?foo=bar à la fin de l'url
+			"input" : $searchQuestionVal
+		},
+		"type": "GET" //peut-être POST également
 	})
-	.done(function(){
+	.done(function(response){ //$response ici récupère la réponse de la requête AJAX
 
-		if( $searchQuestionVal.length < 3 ){
-			console.log("<3");
-			$(".warning-msg").html("Recherche active à partir de 3 caractères");
-		} else {
+		console.log($searchQuestionVal)
+		console.log(response);
+
+
 			console.log("ok :D ");
-		}
+
 
 	})
 	.fail(function(){

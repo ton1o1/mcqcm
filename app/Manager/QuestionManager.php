@@ -50,14 +50,28 @@
 						die("invalid orderBy param");
 					}
 					$orderDir = strtoupper($orderDir);
-					if($orderDir != "ASC" && $orderDir != "DESC"){
-						die("invalid orderDir param");
-					}
 		
 					$sql .= " ORDER BY $orderBy $orderDir LIMIT $limit" ;
 				}
+
+
+	$string = "%" . $_GET['input'] . "%" ;
+
+		$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title"
+
+
+
+
+
+
+
+
+
+
+
+
 				$sth = $this->dbh->prepare($sql);
-				$sth->execute();
+				$sth->execute([]);
 		
 				return $sth->fetchAll();
 			}

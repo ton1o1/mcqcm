@@ -24,4 +24,4 @@ class Quizs__questionManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
-}
+}   

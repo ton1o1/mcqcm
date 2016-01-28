@@ -193,28 +193,21 @@ class QuestionController extends Controller
 
 
 	/**
-	 * Slect the first 5 results of a title search among questions
+	 * Select the first 5 results of a title search among questions
 	 */
-	public function questionSearch(){
+
+
+	public function questionSearch($string){
 		$questionManager = new \Manager\QuestionManager();
-		//get question info
+
+		//search a Question by a string
 		$question = $questionManager->searchQuestion($string);
-		
-		//get choices info
-		$questionManager->setTable('choices');
-		$id = $question["id"];	
-		$choices = $questionManager->findChoiceByQuestionId($id);
-		$choicesContent =""; //is it necessary to init this variable
-		$checked = [];
-		foreach ($choices as $k => $v) {
-			$checked[$k] = ($v['is_true']) ? "checked" : "";
-		}
-		debug($checked);
-		$this->show('quiz/question_consult', [
-			"question" => $question,
-			"choices" => $choices,
-			"checked" => $checked,
-		]);		
+		$string = "%" . $_GET['input'] . "%" ;
+
+
+
+
+
 	}
 
 
