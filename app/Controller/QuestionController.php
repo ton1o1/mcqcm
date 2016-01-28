@@ -116,8 +116,9 @@ class QuestionController extends Controller
 
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
+			"errorMessages" => $errorMessages,
 			"finalErrorMessage" => $finalErrorMessage,
-			"dataPosted" => $_POST,
+			"dataPosted" => $dataPosted,
 			"successMessage" => $successMessage
 		]);
 	}
