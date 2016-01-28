@@ -39,10 +39,16 @@
 			return $sth->fetchAll();
 		}
 
-
+		/**
+		 * Recherche une question par son intitulé
+		 * @param $title, une chaîne de caractère de recherche
+		 * @return un fichier JSON 
+		 */
 		public function searchQuestion($title, $orderBy = "title", $orderDir = "ASC", $limit = 5){
-		
-				$sql = "SELECT * FROM questions WHERE " . $title;
+				//title is actually regex
+
+				$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
+
 				if (!empty($orderBy)){
 		
 					//sécurisation des paramètres, pour éviter les injections SQL
@@ -50,20 +56,43 @@
 						die("invalid orderBy param");
 					}
 					$orderDir = strtoupper($orderDir);
-		
-					$sql .= " ORDER BY $orderBy $orderDir LIMIT $limit" ;
 				}
 
 
-	$string = "%" . $_GET['input'] . "%" ;
 
-		$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
 
 				$sth = $this->dbh->prepare($sql);
-				$sth->execute([]);
+				$sth->execute([
+					":keyword" => "%" . $_GET['input'] . "%"
+				]);
 		
-				return $sth->fetchAll();
+				$array = $sth->fetchAll();
+				print_r($array);
+				//$statementJson = json_encode($array);
+				//header("Content-Type: application/json");
+				return "hey" . $_GET['input'];
+
+				//return $statementJson;
 			}
+
+
+	// $searchInput = "%" . $_GET['input'] . "%" ;
+	// // echo $searchInput;
+	// //requete test $sql = 'SELECT serie FROM book WHERE serie LIKE :keyword';
+	// $sql = 'SELECT cover FROM book WHERE serie LIKE :keyword ORDER BY cover ASC LIMIT 10';
+	// $statement = $pdo->prepare($sql);
+	// $statement ->execute([":keyword" => "%" . $searchInput . "%"]);
+	// //$statement ->execute();
+	// $array = $statement->fetchAll();
+
+	// $statementJson = json_encode($array);
+	// header("Content-Type: application/json");
+	// // //ajoute un en-tête au fichier pour faire comprendre au navigateur qu'on parle en JSON 	
+	// // header("Content-Type: application/json");
+	// echo $statementJson;
+	// // 
+
+
 
 
 		}

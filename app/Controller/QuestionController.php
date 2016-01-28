@@ -145,14 +145,14 @@ class QuestionController extends Controller
 							$v['id'] .
 						"</td>
 						<td>
-							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
+							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a>  
 						</td> 
 					</tr>";
 		}
 
 		$this->show('quiz/question_list', ["rows" => $rows]);		
 	}
-
+	//old line : <a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
 	/**
 	 * Display the content of a question with its choices
 	 */
