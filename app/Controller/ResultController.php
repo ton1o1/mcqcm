@@ -4,12 +4,98 @@ namespace Controller;
 
 use \W\Controller\Controller;
 
-class ResultController extends Controller
-{
+class ResultController extends Controller {
 
-	public function view()
-	{
+	public $answer;
+	public $result;
+	public $userId;
+	public $sessionId;
+
+	public function __construct() {
+
+		// $this->result = new \Manager\ResultManager();
+		$this->answer = new \Manager\AnswerManager();
+	}
+
+	
+	public function setUserId($uId) {
+		
+		$this->answer->userId = $uId;
+
+	}
+
+
+	public function setSessionId($sId) {
+
+		$this->answer->sessionId = $sId;
+
+	}
+
+	public function setQuizId($qId) {
+
+		$this->answer->quizId = $qId;
+
+	}
+
+	public function view() {
+
 		$this->show('default/results');
+	}
+
+
+	public function viewSession($sessionId) {
+		
+		$this->answer->setSessionId($sessionId);
+		$this->gestionResults('student');
+		$this->answer->setTable('sessions');
+		$userId = $this->answer->find($sessionId)['user_id'];
+		$this->answer->setUserId($userId);
+	
+	}
+
+
+	public function viewQuiz($quizId) {
+
+		$this->answer->setTable('sessions');
+		if (!empty($quizId)) {
+			$this->answer->setQuizId($quizId);
+			$this->gestionResults('session');
+		} else {
+			$this->gestionResults('all');
+		}
+	} 
+		
+		
+
+
+	public function gestionResults($case) {
+		
+		$this->answer->setTable('sessions');
+		$dateStop = $this->answer->date_stop;
+
+		switch ($case) {
+
+			case 'student':
+				$now = time();
+				if ($now - $dateStop > 1800) {
+				$this->answer->userId = $userId;
+				$this->answer->studentSessionResult($sessionId, $userId);
+				} else {redirect('home');}
+				break;
+			
+			case 'session':
+				$quizId = $this->quizId;
+				$this->answer->teacherSessionResult($sessionId);
+				break;
+			
+			case 'all':
+				$this->answer->allResults();
+				break;
+
+			default:
+				
+				break;
+		}
 	}
 
 
@@ -51,7 +137,7 @@ class ResultController extends Controller
 
 			
 			foreach ($resultsTitle[0] as $key2 => $value2) {
-				echo ('<span style="font-size: 20px;><strong>' . $value2 . '</strong></span>');
+				echo ('<span style="font-size: 20px;"><strong>' . $value2 . '</strong></span>');
 				}
 
 			}
@@ -61,7 +147,7 @@ class ResultController extends Controller
 
 		}
 
-		return ($note);
+		return $note;
 
 	}
 
@@ -75,14 +161,14 @@ class ResultController extends Controller
 		$statementUserQuiz->execute();
 		$resultUserQuiz = $statementUserQuiz->fetchAll(); */
 
-		$this->list_user_quiz($userId, $quizId)
+		$this->answer->list_user_quiz($userId, $quizId);
 
 		foreach ($resultUserQuiz as $key => $value) {
 			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
 			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
 			}
 		
-		$this->list_choices_user_quiz($userId, $quizId);
+		$this->answer->list_choices_user_quiz($userId, $quizId);
 
 		/*
 		$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
@@ -138,20 +224,17 @@ $result = $results['$chp'];
 */
 
 	public function studentSessionResult($sessionId, $userId) {
-		calculNote($sessionId, $userId);
+		$this->calculNoteStudent($sessionId, $userId);
 	}
 
 	public function teacherSessionResult($sessionId) {
-		calculNote($sessionId);
+		$this->calculNoteSession($sessionId);
+		$this->medium_calculate('quiz');
 	}
 
-	public function studentResults($userId) {
-		calculNote($userId);
-	}
-
-
-	public function teacherResults($sessionId) {
-		calculNote($sessionId);
+	public function allResults() {
+		print_r($this->calculNoteAll());
+		$this->medium_calculate('all');
 	}
 
 	
@@ -181,13 +264,13 @@ $result = $results['$chp'];
 */
 
 
-	public function medium_calculate()
-		{
+	public function medium_calculate($x) {
 			$totalScore = 0;
 			$ecart = 0;
 			$ecartMoy = 0;
 			$base = 0;
-			$data = $this->all_result_viewer();
+			if ($x == 'quiz') {$data = $this->answer->teacherSessionResult();}
+			else if ($x == 'all') {$data = $this->answer->allResults();}
 			$numberScore = count($data);
 
 			if ($numberScore > 0) { 
@@ -209,8 +292,11 @@ $result = $results['$chp'];
 				$ecartMoy = $ecart / $numberScore;
 				$ecartType = sqrt($ecartMoy);
 			
-				return $scoreMoyen, $ecartType;
+				return [$scoreMoyen, $ecartType];
 			}
 		}
 
-}
+
+	}
+
+?>

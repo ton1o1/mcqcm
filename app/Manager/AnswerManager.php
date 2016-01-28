@@ -53,7 +53,6 @@ public function list_quizs($userId)
 	public function findAnswers($id)
 		{
 		if (!is_numeric($id)) { return false; }
-
 		$sql = "SELECT * FROM " . $this->table . " WHERE $this->primaryKey = :id LIMIT 1";
 		$sth = $this->dbh->prepare($sql);
 		$sth->bindValue(":id", $id);
@@ -130,10 +129,10 @@ public function list_quizs($userId)
 		}
 
 
-	public function teacher_result_viewer($sessionId)
+	public function calculNoteSession($session)
 		{
 			$this->table = 'sessions';
-			$resultSession = $this->findAnswers('$sessionId')['score'];
+			$resultSession = $this->findAnswers('$session')['score'];
 	/*
 			$sqlUserQuiz = "SELECT s.score FROM sessions s  
 			WHERE (s.id = '$sessionId')";
