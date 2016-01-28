@@ -64,9 +64,10 @@ class ResultController extends Controller {
 
 		$this->answer->setTable('sessions');
 		if (!empty($quizId)) {
-			$this->answer->setQuizId($quizId);
-			$quizId = $this->quizId;
-			$this->answer->teacherSessionResult($sessionId);
+			// $this->answer->setQuizId($quizId);
+		// 	$quizId = $this->quizId;
+			$this->answer->teacherSessionResult($quizId);
+
 		} else {
 			$this->answer->allResults();
 		}
@@ -174,27 +175,31 @@ class ResultController extends Controller {
 			$noteTotale += $this->valCompareQuestion($tabChoice, $tabSolution);
 		} 
 
+		$noteQuiz = $noteTotale * 100 / 20;
+
 		echo ('<br />' . "\n");
-		echo ('<h2 style="color:red;"><strong>' . "Note : " . $noteTotale . "/20" . '</strong></h2>');
-	
+		echo ('<h2 style="color:red;"><strong>' . "Note : " . $noteQuiz . "/100" . '</strong></h2>');
+		return $noteQuiz;
 	}
 
-/*
-$answer = new \AnswerManager;
-$answer->table = $table;
-$results = $answer->find($choiId);
-$result = $results['$chp'];
-*/
+	
+	public function calculNoteQuiz($quizId) {
+		
+	}
+
+
+
 
 	public function studentSessionResult($userId, $sessionId) {
 		$this->answer->setTable('sessions');
 		$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
 		$quizId = intval($quizI);
-		$this->calculNoteStudent($userId, $quizId);
+		$score = $this->calculNoteStudent($userId, $quizId);
+		$this->answer->student_score_record($userId, $sessionId, $score);
 	}
 
-	public function teacherSessionResult($sessionId) {
-		$this->calculNoteSession($sessionId);
+	public function teacherSessionResult($quizId) {
+		$this->calculNoteQuiz($quizId);
 		$this->medium_calculate('quiz');
 	}
 

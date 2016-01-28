@@ -204,20 +204,12 @@ public function list_quizs($userId)
 	*/
 
 
-		public function student_score_record($userId, $score)
+		public function student_score_record($user, $session, $scor)
 		{
-			$this->table = 'sessions';
-			$this->id = '$userId';
-			$resultSession = $this->update(['score' =>'$score'], $id, $stripTags = true);
-
-			
-	/*
-			$sqlUserQuiz = "SELECT s.score FROM sessions s  
-			WHERE (s.id = '$sessionId')";
-			$statementUserQuiz = $this->dbh->prepare($sqlUserQuiz);
-			$statementUserQuiz->execute();
-			$resultUserQuiz = $statementUserQuiz->fetchAll();
-	*/
-	}
+			$sql = "UPDATE sessions SET score = '$scor' WHERE id = '$session' AND user_id = '$user'";
+			$sth = $this->dbh->prepare($sql);
+			$sth->execute();
+		}
 
 }
+
