@@ -11,7 +11,7 @@
             </div>
             <div class="form-group">
                 <label for="userPassword">Mot de passe <span class="required">*</span></label>
-                <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" value="<?= $userPassword =(!empty($_POST['userPassword']))?$_POST['userPassword']:'';?>">
+                <input type="password" class="form-control" name="userPassword" id="userPassword" placeholder="Password" value="">
             </div>
 
             <div class="checkbox">

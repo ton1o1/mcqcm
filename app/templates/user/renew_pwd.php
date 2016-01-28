@@ -8,11 +8,12 @@
            
            <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">
                 <label for="userPassword">Mot de passe <span class="required">*</span></label>
-                <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Password" value="<?= $userPassword =(!empty($_POST['userPassword']))?$_POST['userPassword']:'';?>">
+                <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Password" value="">
+                 <?= $userPassword =(!empty($errormessage['userPassword']))?$errormessage['userPassword']:'';?>
             </div>
             <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">
                 <label for="userPasswordConfirmed">Confirmer votre mot de passe <span class="required">*</span></label>
-                <input type="password" class="form-control" id="userPasswordConfirmed" name="userPasswordConfirmed" placeholder="Password" value="<?= $userPasswordConfirmed =(!empty($_POST['userPasswordConfirmed']))?$_POST['userPasswordConfirmed']:'';?>">
+                <input type="password" class="form-control" id="userPasswordConfirmed" name="userPasswordConfirmed" placeholder="Password" value="">
             </div>
             <button type="submit" class="btn btn-default">Modification</button>
         </form>

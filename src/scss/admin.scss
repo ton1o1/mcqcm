@@ -35,3 +35,20 @@
 .row {
 	padding: 20px;
 }
+
+.message {
+	margin-left: 10px;
+
+	&--info{
+		padding: 10px;
+		border: 1px solid $blue;
+	}
+
+	&--alerte{
+		color: #FF0092;
+	}
+}
+
+.is-hidden{
+	display: none;
+}

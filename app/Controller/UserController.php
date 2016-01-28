@@ -6,9 +6,13 @@ use \W\Controller\Controller;
 
 class UserController extends Controller
 {
-
+	private $userManager;
+	private $authentificationManager;
 
 	public function __construct(){
+		
+		$this->userManager = new \Manager\UserManager();
+		$this->authentificationManager = new \W\Security\AuthentificationManager();
 
 	}
 
@@ -25,19 +29,11 @@ class UserController extends Controller
 
 		if(!empty($_POST)) {
 
-			//$userFirstName = $_POST['userFirstName'];
-			//$userLastName = $_POST['userLastName'];
-			//$userEmail = $_POST['userEmail'];
-			//$userPassword = $_POST['userPassword'];
-			//$userPasswordConfirmed = $_POST['userPasswordConfirmed'];
-
-
 			//validation du formulaire
 			$result = $this->testUserForm();
 			$isValid = $result[0];
 			$errormessage =$result[1];
 
-			$userManager = new \Manager\UserManager();
 
 			//Form is valid
 			if($isValid){
@@ -54,16 +50,15 @@ class UserController extends Controller
 						"role" => "student"
 					]);
 
-				//Authentification
-				$authentificationManager = new \W\Security\AuthentificationManager();
+
 				//test user data exist in database
-				$result = $authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
+				$result = $this->authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
 				if($result)
 				{
-					$user = new \Manager\UserManager(); 
-					$user = $userManager->find($result);
+					//$user = new \Manager\UserManager(); 
+					$user = $this->userManager->find($result);
 					//user connection
-					$authentificationManager->logUserIn($user);
+					$this->authentificationManager->logUserIn($user);
 					//afficher le profil user
 					$this->redirectToRoute('user_profile');
 				}else {
@@ -86,15 +81,13 @@ class UserController extends Controller
 	 */
 	public function login()
 	{
-		$user = $this->getUser();
-
 		//already connected ?
+		$user = $this->getUser();
 		if($user){
-			$this->show('user/profile');
-		} else {
 
-			//identification
-		}
+			$this->redirectToRoute('user_profile');
+
+		} 
 
 		$errormessage= [];
 
@@ -105,26 +98,22 @@ class UserController extends Controller
 			//Test user data in DB
 			
 			$isValid = true;
-
-
-			$authentificationManager = new \W\Security\AuthentificationManager();
-			$result = $authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
-			if($result)
+			$userId = $this->authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
+			if($userId)
 			{
-				//récupérer les données utilisateur
-				$userManager = new \Manager\UserManager(); 
-				$user = $userManager->find($result);
-				//connexion de l'utilisateur
-				$authentificationManager->logUserIn($user);
-				//remember me checked ?
-				
 
+				//récupérer les données utilisateur
+				$user = $this->userManager->find($userId);
+				//user connection 
+				$this->authentificationManager->logUserIn($user);
+				//remember me checked ?
+				//TODO add cookieset and cookie get method
 				//redirect
 				$this->redirectToRoute('user_profile');
 			}
 			else {
 				$isValid = false;
-				$errormessage['alerte'] ="Impossible de vous identifier.";
+				$errormessage['alerte'] = "Impossible de vous identifier.";
 			}
 
 			//Then redirect User to profil
@@ -136,9 +125,9 @@ class UserController extends Controller
 
 	public function profile()
 	{
-
+		//get user role to redirect him 
+		//if role isn't define, user is redirected to user_login
 		$user = $this->getUser();
-
 		switch($user['role']){
 
 			case "student":			
@@ -154,8 +143,7 @@ class UserController extends Controller
 			break;
 
 			default :		
-			echo "Fin de session !";	
-				$this->show('user/login'); //Case where role is not define.
+				$this->redirectToRoute('user_login'); //Case where role is not define.
 			break;
 
 			
@@ -178,8 +166,8 @@ class UserController extends Controller
 			if($isValid){
 				//Submited data are correct.
 				//update data in database
-				$userManager = new \W\Manager\UserManager();
-				$userManager->update([
+				//$userManager = new \Manager\UserManager();
+				$this->userManager->update([
 						"first_name"  => $userFirstName,
 						"last_name"   => $userLastName,
 						"email"       => $userEmail,
@@ -195,7 +183,7 @@ class UserController extends Controller
 		else {
 
 			$user = $this->getUser();
-			print_r($user);
+
 		}
 		$this->show('user/modify', [
 				'errormessage' => $errormessage, 
@@ -206,8 +194,8 @@ class UserController extends Controller
 
 	public function logout()
 	{
-		$authentificationManager = new \W\Security\AuthentificationManager();
-		$authentificationManager->logUserOut();
+		//$authentificationManager = new \W\Security\AuthentificationManager();
+		$this->authentificationManager->logUserOut();
 		$this->redirectToRoute('user_login');
 
 		//todo Delete cookie
@@ -222,12 +210,12 @@ class UserController extends Controller
 			$userEmail = $_POST['userEmail'];
 			
 			//test email exist
-			$userManager = new \Manager\UserManager();
-			$userId = $userManager->getUserByUsernameOrEmail($userEmail);
+			//$userManager = new \Manager\UserManager();
+			$userId = $this->userManager->getUserByUsernameOrEmail($userEmail);
 			
 			if(!$userId){
 
-				$errormessage['userEmail'] = "Cette adresse nous est inconnue !";
+				$errormessage['userEmail'] = '<div class="message message--error">Cette adresse nous est inconnue !</div>';
 				$this->show('user/recovery_pwd', ['errormessage' => $errormessage]);
 			}
 			else {
@@ -236,9 +224,9 @@ class UserController extends Controller
 				//48hours to use the token
 				$date = new \DateTime();
 				$dateLimite = $date->add(new \DateInterval("P2D")); 
-				$userManager = new \Manager\UserManager();
+				//$userManager = new \Manager\UserManager();
 				//add token to user in database
-				$userManager->update([
+				$this->userManager->update([
 							"token"      => password_hash($token, PASSWORD_DEFAULT),
 							"token_time" => $dateLimite->format('Y-m-d H:i:s')
 						],$userId['id']);
@@ -246,7 +234,7 @@ class UserController extends Controller
 				$recoveryUrl = $this->generateUrl(
 						'user_renew_pwd', [
 							"token"      => $token, 
-							"email" => $userEmail
+							"userEmail" => $userEmail
 						], 
 						true);
 
@@ -301,10 +289,11 @@ class UserController extends Controller
 				//Attach an image file
 				//send the message, check for errors
 				if (!$mail->send()) {
-				    $messageInfo = "Mailer Error: " . $mail->ErrorInfo;
+				    $messageInfo = '<div class="message message--info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
+				    //TODO addd error to logs
 				} 
 				else {
-				    $messageInfo = "Nous venons de vous envoyer un mail à l'adresse $userEmail contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.";
+				    $messageInfo = '<div class="message message--info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
 				}
 
 				//inform user for success
@@ -330,12 +319,11 @@ class UserController extends Controller
 
 			if(empty($userPassword)) {
 				$isValid = false;
-				$errormessage['userPassword'] = "Mot de passe obligatoire !";
+				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire</div>';
 			}
 			elseif($userPassword !== $userPasswordConfirmed) {
-				echo "là";
 				$isValid = false;
-				$errormessage['userPassword'] = "Les mots de passe ne correspondent pas !";
+				$errormessage['userPassword'] = '<div class="message message--error">Les mots de passe ne correspondent pas</div>';
 			}
 
 			if($isValid) {
@@ -343,20 +331,20 @@ class UserController extends Controller
 				//get user id with the token && the email passed on url
 				if(!empty($token) && !empty($userEmail)){
 
-					$userManager = new \Manager\UserManager();
+					//$userManager = new \Manager\UserManager();
 					//get user info
-					$user = $userManager->getUserByUsernameOrEmail($userEmail);
+					$user = $this->userManager->getUserByUsernameOrEmail($userEmail);
 					//compare tokens
 					if(password_verify($token, $user['token'])){
 
-						if($user['token_time'] > date('Y-m-d H:i:s')){
+						if($user['token_time'] < date('Y-m-d H:i:s')){
 
-							$errormessage = "Le délai de renouvellement est dépassé. Vous devez effectuer une nouvelle demande.";
-							$this->redirectToRoute('user_recovery', ["errormessage" => $errormessage]);
+							$errormessage = '<div class="message message--error">Le délai de renouvellement est dépassé. Vous devez effectuer une nouvelle demande.</div>';
+							$this->redirectToRoute('user_recovery_pwd', ["errormessage" => $errormessage]);
 						}
 						else {
 							//update user
-							$userManager->update([
+							$this->userManager->update([
 								"password"   => password_hash($userPassword, PASSWORD_DEFAULT),
 								"token"      =>'',
 								"token_time" => ''
@@ -378,7 +366,6 @@ class UserController extends Controller
 				} 
 			} else {
 				// invalid pwd
-				echo "bouh";
 				$this->show('user/renew_pwd', [
 						"errormessage" => $errormessage
 					]);
@@ -394,7 +381,10 @@ class UserController extends Controller
 	
 	}
 
-
+	/**
+	 * [testUserForm : Use this class to test forms]
+	 * @return $result[ $isvalid, $errormessage]
+	 */
 	public function testUserForm()
 	{
 		$userFirstName = $_POST['userFirstName'];
@@ -405,44 +395,44 @@ class UserController extends Controller
 
 		//validation du formulaire
 		$isValid = true;
-		$userManager = new \Manager\UserManager();
+		//$userManager = new \Manager\UserManager();
 
 		if(empty($userLastName)) {
 			$isValid = false;
-			$errormessage['userLastName'] = "Vous devez indiquer votre nom!";
+			$errormessage['userLastName'] = '<div class="message message--error">Vous devez indiquer votre nom!</div';
 		}elseif(strlen($userLastName) <= 1){
 			$isValid = false;
-			$errormessage['userLastName'] = "Votre nom est trop court!";
+			$errormessage['userLastName'] = '<div class="message message--error">Votre nom est trop court!"</div';
 		}
 		if(empty($userFirstName)) {
 			$isValid = false;
-			$errormessage['userFirstName'] = "Vous devez indiquer votre prénom!";
+			$errormessage['userFirstName'] = '<div class="message message--error">Vous devez indiquer votre prénom!</div';
 		}elseif(strlen($userFirstName) <= 1 ) {
 			$isValid = false;
-			$errormessage['userFirstName'] = "Votre prénom est trop court!";
+			$errormessage['userFirstName'] = '<div class="message message--error">Votre prénom est trop court!</div';
 		}
 
 		if(empty($userEmail)) {
 			$isValid = false;
-			$errormessage['userEmail'] = "Adresse Email obligatoire!";
+			$errormessage['userEmail'] = '<div class="message message--error">Adresse Email obligatoire!</div';
 		}
 		else {
 
-			if($userManager->emailExists($userEmail)) {
+			if($this->userManager->emailExists($userEmail)) {
 				$isValid = false;
-				$errormessage['userEmail'] = "Adresse Email déja utilisée par un autre compte !";
+				$errormessage['userEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div';
 			}
 			
 		}
 
 		if(empty($userPassword)) {
 			$isValid = false;
-			$errormessage['userPassword'] = "Mot de passe obligatoire !";
+			$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div';
 		}
 		else {
 			if($userPassword !== $userPasswordConfirmed) {
 				$isValid = false;
-				$errormessage['userPassword'] = "Les mots de passe ne correspondent pas !";
+				$errormessage['userPassword'] = '<div class="message message--error">Les mots de passe ne correspondent pas !</div';
 			}
 		}
 		$formResult = [ $isValid, $errormessage];
