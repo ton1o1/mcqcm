@@ -111,7 +111,7 @@
     </nav>
 
     <!-- Begin page content -->
-    <section class="container">
+    <section class="container global-content">
       <?= $this->section('main_content') ?>
     </section>
 

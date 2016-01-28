@@ -45,3 +45,15 @@ body > .container {
     line-height: 39px;
     margin-top: -38px;
 }
+
+#search{
+    width: 100%;
+}
+
+.clearfix{
+    clear: both;
+}
+
+.global-content{
+    margin-top: 50px;
+}
