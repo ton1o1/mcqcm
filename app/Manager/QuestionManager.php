@@ -57,18 +57,7 @@
 
 	$string = "%" . $_GET['input'] . "%" ;
 
-		$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title"
-
-
-
-
-
-
-
-
-
-
-
+		$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
 
 				$sth = $this->dbh->prepare($sql);
 				$sth->execute([]);

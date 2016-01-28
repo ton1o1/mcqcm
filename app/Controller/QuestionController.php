@@ -39,7 +39,8 @@ class QuestionController extends Controller
 			} else {$solutions[3] = "";}
 
 
-		} else {
+		} else 
+		{
 			//if they doesn't exist, they're false
 			$_POST['questionTitle']= false;
 			//***
@@ -159,35 +160,44 @@ class QuestionController extends Controller
 		$questionManager = new \Manager\QuestionManager();
 		//get question info
 		$question = $questionManager->find($questionId);
-		//debug($question);
+		debug($question);
 
 		//get choices info
-		$choiceManager = new \Manager\ChoiceManager();
-		$questionId = $question["id"];	
-		$choices = $choiceManager->findChoiceByQuestionId($questionId);
-		$choicesContent =""; //is it necessary to init this variable
-		$checked = [];
-		foreach ($choices as $k => $v) {
-			$checked[$k] = ($v['is_true']) ? "checked" : "";
-		}
-		//debug($checked);
-
-
-		//get quiz info
-		$Quizs__questionManager = new \Manager\Quizs__questionManager();
-		$Quizs__questionManager->setTable("quizs__questions");
-
-		$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
-		//debug($quizInfo);
-
-
-		$this->show('quiz/question_consult', [
-			"question" => $question,
-			"choices" => $choices,
-			"checked" => $checked,
-			"quizInfo" => $quizInfo,
+		if($question){
+			$choiceManager = new \Manager\ChoiceManager();
+			$questionId = $question["id"];	
+	
+			$choices = $choiceManager->findChoiceByQuestionId($questionId);
+			$choicesContent =""; //is it necessary to init this variable
+			$checked = [];
+			foreach ($choices as $k => $v) {
+				$checked[$k] = ($v['is_true']) ? "checked" : "";
+			}
+			//debug($checked);
+	
+			//get quiz info
+			$Quizs__questionManager = new \Manager\Quizs__questionManager();
+			$Quizs__questionManager->setTable("quizs__questions");
+	
+			$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
+			//debug($quizInfo);
+	
+	
+			$this->show('quiz/question_consult', [
+				"question" => $question,
+				"choices" => $choices,
+				"checked" => $checked,
+				"quizInfo" => $quizInfo,
 		]);
+		} else
+		{
+			$this->show('quiz/question_fail', [
+				"questionId" => $questionId,
+			]);
+		}
 	}
+
+
 
 
 
@@ -196,16 +206,12 @@ class QuestionController extends Controller
 	 * Select the first 5 results of a title search among questions
 	 */
 
-
 	public function questionSearch($string){
 		$questionManager = new \Manager\QuestionManager();
 
 		//search a Question by a string
 		$question = $questionManager->searchQuestion($string);
 		$string = "%" . $_GET['input'] . "%" ;
-
-
-
 
 
 	}
