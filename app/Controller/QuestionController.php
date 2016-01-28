@@ -56,7 +56,7 @@ class QuestionController extends Controller
 		}
 		//***test if at least one choice has been checked as a good solution
 		if(empty($solutions[1]) && empty($solutions[2]) && empty($solutions[3])){
-			$errorMessages['solution'] = "Il n'y a pas eu de bonne réponse choisie.";
+			$errorMessages['solution'] = "Choisissez au moins une bonne réponse.";
 		}
 		//test if all choices have been written
 		if (empty($choices[1])){
@@ -68,7 +68,7 @@ class QuestionController extends Controller
 		if (empty($choices[3])){
 			$errorMessages['choice3'] = "Le choix 3 n'a pas été rédigé.";
 		}		
-
+		debug($errorMessages);
 		//init finalErrorMessage
 		$finalErrorMessage = ""; 
 		$successMessage = "";
@@ -113,13 +113,13 @@ class QuestionController extends Controller
 				}
 			}
 		}
-
+		//$dataPosted = $_POST;
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
 			"errorMessages" => $errorMessages,
 			"finalErrorMessage" => $finalErrorMessage,
-			"dataPosted" => $dataPosted,
-			"successMessage" => $successMessage
+			"dataPosted" => $_POST,
+			"successMessage" => $successMessage,
 		]);
 	}
 

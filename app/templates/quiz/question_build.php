@@ -44,7 +44,7 @@ Unit tests :
 				<div class="form-group">
 					<!-- change for for="question-title" then test -->
 					<label for="questionTitle">Intitulé</label>
-					<textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?= $dataPosted['questionTitle'] ?></textarea>
+					<textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?php echo $dataPosted['questionTitle']; ?></textarea>
 				</div>
 				<div>
 					<label>Choisir le quiz</label><input type="number" name="quizId" min="0" max="100" step="1" value="1">
@@ -62,23 +62,23 @@ Unit tests :
 	<!--   -->  <div class="choices">
 					<label class="checkbox-inline">
 					  <input type="checkbox" name="solution1" value="true" id="inlineCheckbox1" <?php if(!empty($dataPosted['solution1'])){echo "checked";} ?>>
-					  <input type="text" name="choice1" value="<?= $dataPosted['choice1'] ?>">
+					  <input type="text" name="choice1" value="<?php echo $dataPosted['choice1']; ?>">
 					</label><br/>
 					<label class="checkbox-inline">
 					  <input type="checkbox" name="solution2" value="true" id="inlineCheckbox2" <?php if(!empty($dataPosted['solution2'])){echo "checked";} ?>>
-					  <input type="text" name="choice2" value="<?= $dataPosted['choice2'] ?>">
+					  <input type="text" name="choice2" value="<?php echo $dataPosted['choice2']; ?>">
 					</label><br/>
 					<label class="checkbox-inline">
 					  <input type="checkbox" name="solution3" value="true" id="inlineCheckbox3" <?php if(!empty($dataPosted['solution3'])){echo "checked";} ?>>
-					  <input type="text" name="choice3" value="<?= $dataPosted['choice3'] ?>"><br/>
+					  <input type="text" name="choice3" value="<?php echo $dataPosted['choice3']; ?>"><br/>
 					</label>
 				</div>
 				
 	<!--   -->			
 				<div class="warning">
-					<?php if (empty($dataPosted)) {echo $finalErrorMessage;} ?>
-					<?= $successMessage ?>
-				</div>
+					<?php echo $finalErrorMessage; ?>
+					<?php echo $successMessage ?>
+				</div;>
 				<div class="form-group">
 					<input type="submit" value="Ajouter la question au portefeuille">
 				</div>
