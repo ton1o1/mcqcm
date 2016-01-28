@@ -14,6 +14,7 @@ class QuestionController extends Controller
 	{ 
 		if($_POST)
 		{
+			//debug($_POST);
 			//if variables exist, I init them
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
@@ -70,7 +71,7 @@ class QuestionController extends Controller
 
 		//init finalErrorMessage
 		$finalErrorMessage = ""; 
-
+		$successMessage = "";
 		//no error messages means it's okay to insert data
 		if(empty($errorMessages))
 		{
@@ -101,6 +102,8 @@ class QuestionController extends Controller
 					}
 				}
 			}
+
+			$successMessage = "Votre question a été ajoutée à la base de données.";
 		} else 
 		{
 			if ($_POST){
@@ -110,10 +113,12 @@ class QuestionController extends Controller
 				}
 			}
 		}
+
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
 			"finalErrorMessage" => $finalErrorMessage,
 			"dataPosted" => $_POST,
+			"successMessage" => $successMessage
 		]);
 	}
 
@@ -126,21 +131,19 @@ class QuestionController extends Controller
 	{
 
 		$questionManager = new \Manager\QuestionManager();
-		$questionManager->setTable('question');
-		$list = $questionManager->findAll($orderBy, $orderDir);
+		$questionManager->setTable('questions');
+		//
+		$listQuestions = $questionManager->findAll($orderBy, $orderDir);
+		//When AJAX ready, add a third column with a link to quiz if it exists
 		$rows = "";
 
-		foreach ($list as $k => $v) { //add in href link to route question-id or quiz-id
-			//Line 140 : route name needs to be tested with anthony
+		foreach ($listQuestions as $k => $v) {
 			$rows .= "<tr>
 						<td>" .
 							$v['id'] .
 						"</td>
 						<td>
 							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
-						</td> 
-						<td> 
-							<a href='/quiz/'>" . $v['quiz_id'] . "?</a>
 						</td> 
 					</tr>";
 		}
@@ -151,10 +154,50 @@ class QuestionController extends Controller
 	/**
 	 * Display the content of a question with its choices
 	 */
-	public function questionConsult($id){
+	public function questionConsult($questionId){
 		$questionManager = new \Manager\QuestionManager();
 		//get question info
-		$question = $questionManager->find($id);
+		$question = $questionManager->find($questionId);
+		//debug($question);
+
+		//get choices info
+		$choiceManager = new \Manager\ChoiceManager();
+		$questionId = $question["id"];	
+		$choices = $choiceManager->findChoiceByQuestionId($questionId);
+		$choicesContent =""; //is it necessary to init this variable
+		$checked = [];
+		foreach ($choices as $k => $v) {
+			$checked[$k] = ($v['is_true']) ? "checked" : "";
+		}
+		//debug($checked);
+
+
+		//get quiz info
+		$Quizs__questionManager = new \Manager\Quizs__questionManager();
+		$Quizs__questionManager->setTable("quizs__questions");
+
+		$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
+		//debug($quizInfo);
+
+
+		$this->show('quiz/question_consult', [
+			"question" => $question,
+			"choices" => $choices,
+			"checked" => $checked,
+			"quizInfo" => $quizInfo,
+		]);
+	}
+
+
+
+
+	/**
+	 * Slect the first 5 results of a title search among questions
+	 */
+	public function questionSearch(){
+		$questionManager = new \Manager\QuestionManager();
+		//get question info
+		$question = $questionManager->searchQuestion($string);
 		
 		//get choices info
 		$questionManager->setTable('choices');
@@ -170,7 +213,7 @@ class QuestionController extends Controller
 			"question" => $question,
 			"choices" => $choices,
 			"checked" => $checked,
-		]);
+		]);		
 	}
 
 

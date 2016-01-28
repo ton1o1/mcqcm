@@ -31,22 +31,38 @@
 				return false;
 			}
 	
-			$sql = "SELECT * FROM questions, quizs, quizs__questions WHERE questions.id = :id AND questions.id = quizs__questions.question_id AND quizs.id = quizs__questions.quiz_id";
-			//echo $sql;
+			$sql = "SELECT * FROM questions WHERE id = " . $id;
+			echo $sql;
 			$sth = $this->dbh->prepare($sql);
-			$sth->execute([":id" => $id]);
+			$sth->execute([]);
 			
 			return $sth->fetchAll();
 		}
 
 
+		public function searchQuestion($title, $orderBy = "title", $orderDir = "ASC", $limit = 5){
+		
+				$sql = "SELECT * FROM questions WHERE " . $title;
+				if (!empty($orderBy)){
+		
+					//sécurisation des paramètres, pour éviter les injections SQL
+					if(!preg_match("#^[a-zA-Z0-9_$]+$#", $orderBy)){
+						die("invalid orderBy param");
+					}
+					$orderDir = strtoupper($orderDir);
+					if($orderDir != "ASC" && $orderDir != "DESC"){
+						die("invalid orderDir param");
+					}
+		
+					$sql .= " ORDER BY $orderBy $orderDir LIMIT $limit" ;
+				}
+				$sth = $this->dbh->prepare($sql);
+				$sth->execute();
+		
+				return $sth->fetchAll();
+			}
 
 
+		}
 
 
-
-
-
-
-
-	}

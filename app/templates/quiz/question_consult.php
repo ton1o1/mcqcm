@@ -5,7 +5,7 @@
 	<form action="" method="POST" class="form-group" novalidate>
 		<fieldset>
 			<legend>Fiche question</legend>
-			<h2>Question n°<?= $question['id']?> du quiz <?= $question['quiz_id']?></h2>
+			<h2>Question n°<?= $question['id']?> du quiz n° <?php echo $quizInfo[0]['quiz_id']; ?></h2>
 			<p>Attention, vous ne pouvez changer que le texte de la question et le texte des choix</p>
 			<div class="form-group">
 

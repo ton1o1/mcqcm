@@ -1,7 +1,7 @@
 <?php
 namespace Manager;
 
-class ChoiceManager extends \W\Manager\Manager 
+class Quizs__questionManager extends \W\Manager\Manager 
 {
 
     /**
@@ -10,17 +10,18 @@ class ChoiceManager extends \W\Manager\Manager
      * @return mixed (array or boolean : false)
      */
 
-    public function findChoiceByQuestionId($question_id)
+    public function findQuizIdBy($question_id)
     {
         if (!is_numeric($question_id)){
             return false;
         }
     
-        $sql = "SELECT * FROM " . $this->table . " WHERE question_id = :id";
+        $sql = "SELECT * FROM quizs__questions" . " WHERE question_id = $question_id";
         //echo $sql;
         $sth = $this->dbh->prepare($sql);
-        $sth->execute([":id" => $question_id]);
+        $sth->execute([]);
         
         return $sth->fetchAll();
     }
+
 }
