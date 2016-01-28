@@ -101,16 +101,27 @@ class UserController extends Controller
 			$userId = $this->authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
 			if($userId)
 			{
-
+				
 				//récupérer les données utilisateur
 				$user = $this->userManager->find($userId);
-				//user connection 
-				$this->authentificationManager->logUserIn($user);
-				//remember me checked ?
-				//TODO add cookieset and cookie get method
-				//redirect
-				$this->redirectToRoute('user_profile');
-			}
+				//Manage suspended users
+				if(!$user['is_active']){
+					$isValid = false;
+					$errormessage['alerte'] = "Votre compte est temporairement suspendu. Vous pouvez contacter un administrateur pour en connaitre la raison ou demander la levée de la suspension.";
+				}
+				else {
+					//user connection 
+					$this->authentificationManager->logUserIn($user);
+					//TODO add cookieset and cookie get method
+					//remember me checked ?
+					/*if($rememberme){
+						setcookie("rememberme", "1", time()+3600);
+					}*/
+					//redirect
+					$this->redirectToRoute('user_profile');
+
+				}
+							}
 			else {
 				$isValid = false;
 				$errormessage['alerte'] = "Impossible de vous identifier.";
@@ -139,7 +150,7 @@ class UserController extends Controller
 			break;
 
 			case "administrator":			
-				$this->show('user/profile_admin');
+				$this->redirectToRoute('administrator_profile');
 			break;
 
 			default :		
