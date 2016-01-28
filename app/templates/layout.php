@@ -5,10 +5,11 @@
     <title><?= $this->e($title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <!-- <link rel="stylesheet" type="text/css" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>"> -->
+    <link rel="stylesheet" type="text/css" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/animate.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('fonts/mcqcm-font/fonts.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/style.min.css') ?>">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 </head>
 <body>
 <!-- HEADER - Beginning -->
@@ -22,12 +23,9 @@
                 <a class="navigation__button" href="#">menu</a>
 
                 <ul class="navigation__list">
-                    <li><a class="navigation__item" href="<?= $this->url("home", []);?>">accueil</a></li>
-                    <li><a class="navigation__item" href="<?= $this->url("question_build", []);?>">questions</a></li>
-                    <li><a class="navigation__item" href="<?= $this->url("about", []);?>">à propos</a></li>
+                    
                 </ul>
 
-                <a class="navigation__connexion" href="<?= $this->url("home", []);?>">se connecter</a>
 
               </nav>
            
@@ -47,10 +45,7 @@
         <div class="container">
         <nav class="navigation navigation--footer" role="navigation">
             <ul>
-                <li><a href="<?= $this->url("home", []);?>">accueil</a></li>
-                <li><a href="<?= $this->url("question_build", []);?>">questions</a></li>
-                <li><a href="<?= $this->url("about", []);?>">à propos</a></li>
-                <li><a href="<?= $this->url("user_connection", []);?>">se connecter</a></li>
+                
             </ul>           
         </nav>
         </div>
@@ -59,6 +54,8 @@
 
 <!-- JS SCRIPTS -->
     <script type="text/javascript" src="<?= $this->assetUrl('js/jquery.min.js') ?>"></script>
+    <script type="text/javascript" src="<?= $this->assetUrl('js/bootstrap.min.js') ?>"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js"></script>
     <script type="text/javascript" src="<?= $this->assetUrl('js/all.js') ?>"></script>
 
 </body>
