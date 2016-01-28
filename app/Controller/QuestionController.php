@@ -27,15 +27,15 @@ class QuestionController extends Controller
 			if(!empty($_POST['solution1'])){
 				$solutions[1] = true;
 				$_POST['solution1'] = "checked";
-			} else {$solutions[1] = " ";}
+			} else {$solutions[1] = "";}
 			if(!empty($_POST['solution2'])){
 				$solutions[2] = true;
 				$_POST['solution2'] = "checked";
-			} else {$solutions[2] = " ";}
+			} else {$solutions[2] = "";}
 			if(!empty($_POST['solution3'])){
 				$solutions[3] = true;
 				$_POST['solution3'] = "checked";
-			} else {$solutions[3] = " ";}
+			} else {$solutions[3] = "";}
 
 
 		} else {
@@ -45,7 +45,6 @@ class QuestionController extends Controller
  			$_POST['choice1'] = false;
 			$_POST['choice2'] = false;
 			$_POST['choice3'] = false;
-				debug($_POST);
 		}
 
 		//init    
@@ -112,7 +111,6 @@ class QuestionController extends Controller
 			}
 		}
 		//the show method must always be at the end of the function that display because it contains a die() 
-		debug($_POST);
 		$this->show('quiz/question_build', [
 			"finalErrorMessage" => $finalErrorMessage,
 			"dataPosted" => $_POST,
