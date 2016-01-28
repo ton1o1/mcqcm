@@ -20,20 +20,20 @@ class ResultController extends Controller {
 	
 	public function setUserId($uId) {
 		
-		$this->answer->userId = $uId;
+		$this->userId = $uId;
 
 	}
 
 
 	public function setSessionId($sId) {
 
-		$this->answer->sessionId = $sId;
+		$this->sessionId = $sId;
 
 	}
 
 	public function setQuizId($qId) {
 
-		$this->answer->quizId = $qId;
+		$this->quizId = $qId;
 
 	}
 
@@ -45,11 +45,17 @@ class ResultController extends Controller {
 
 	public function viewSession($sessionId) {
 		
-		$this->answer->setSessionId($sessionId);
-		$this->gestionResults('student');
-		$this->answer->setTable('sessions');
+		$this->setSessionId($sessionId);
 		$userId = $this->answer->find($sessionId)['user_id'];
-		$this->answer->setUserId($userId);
+		$now = time();
+		$dateStop = 0;
+				if ($now - $dateStop > 1800) {
+				$this->studentSessionResult($sessionId, $userId);
+				} else {redirect('home');}
+
+		$this->answer->setTable('sessions');
+		
+		$this->setUserId($userId);
 	
 	}
 
@@ -59,45 +65,13 @@ class ResultController extends Controller {
 		$this->answer->setTable('sessions');
 		if (!empty($quizId)) {
 			$this->answer->setQuizId($quizId);
-			$this->gestionResults('session');
+			$quizId = $this->quizId;
+			$this->answer->teacherSessionResult($sessionId);
 		} else {
-			$this->gestionResults('all');
+			$this->answer->allResults();
 		}
 	} 
 		
-		
-
-
-	public function gestionResults($case) {
-		
-		$this->answer->setTable('sessions');
-		$dateStop = $this->answer->date_stop;
-
-		switch ($case) {
-
-			case 'student':
-				$now = time();
-				if ($now - $dateStop > 1800) {
-				$this->answer->userId = $userId;
-				$this->answer->studentSessionResult($sessionId, $userId);
-				} else {redirect('home');}
-				break;
-			
-			case 'session':
-				$quizId = $this->quizId;
-				$this->answer->teacherSessionResult($sessionId);
-				break;
-			
-			case 'all':
-				$this->answer->allResults();
-				break;
-
-			default:
-				
-				break;
-		}
-	}
-
 
 	public function valCompareQuestion($array1, $array2) {
 
@@ -132,13 +106,13 @@ class ResultController extends Controller {
 				$clef = 1;
 			}
 			
-/*			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm2', 'root');
+/*			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root');
 			$sqlTitle = "SELECT title FROM choices WHERE id = '$key'";
 			$statementTitle = $pdo->prepare($sqlTitle);
-			$statementTitle->execute();
+			$statementTitle->execute(); 
 			$resultsTitle = $statementTitle->fetchAll(); */
-
-			
+			$resultsTitle = $this->answer->findTitle($key);
+			var_dump($resultsTitle);
 			foreach ($resultsTitle[0] as $key2 => $value2) {
 				echo ('<span style="font-size: 20px;"><strong>' . $value2 . '</strong></span>');
 				}
@@ -165,15 +139,12 @@ class ResultController extends Controller {
 		$resultUserQuiz = $statementUserQuiz->fetchAll(); */
 
 		$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
-
 		foreach ($resultUserQuiz as $key => $value) {
 			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
 			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
-			}
+			} 
 		
 		$resultat = $this->answer->list_choices_user_quiz($userId, $quizId);
-
-		
 
 		$choiceId = [];
 		$tabSolution = [];
@@ -187,24 +158,19 @@ class ResultController extends Controller {
 		$noteTotale = 0;
 
 		foreach ($resultat as $ke => $valu) {
-			
+	
 			$tabChoice = unserialize($valu["choices"]);
 			$tabChoiceTot = $tabChoiceTot + $tabChoice;
 			echo('<br />' . "\n");
-			echo ('<span style="font-size: 20px";>' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
+			echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
 
 			foreach ($tabChoice as $k => $v) {
-				/*
-				$sqlSolution = "SELECT c.is_true FROM choices c WHERE c.id = '$key'";
-				$statementSolution = $pdo->prepare($sqlSolution);
-				$statementSolution->execute();
-				$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); */
-
-				$this->list_solution_choice($k);
+				
+				$resultSolution = $this->answer->list_solution_choice($k);
 				$tabSolution[$k] = intval($resultSolution[0]);
 			} 
 
-			$noteTotale += valCompareQuestion($tabChoice, $tabSolution);
+			$noteTotale += $this->valCompareQuestion($tabChoice, $tabSolution);
 		} 
 
 		echo ('<br />' . "\n");
@@ -220,7 +186,9 @@ $result = $results['$chp'];
 */
 
 	public function studentSessionResult($userId, $sessionId) {
-		$quizId = $this->answer->setTable('sessions').find('$sessionId')['quiz_id'];
+		$this->answer->setTable('sessions');
+		$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
+		$quizId = intval($quizI);
 		$this->calculNoteStudent($userId, $quizId);
 	}
 

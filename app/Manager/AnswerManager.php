@@ -50,6 +50,25 @@ public function list_quizs($userId)
 */
 
 
+	public function findQuizBySession($id)
+		{
+		if (!is_numeric($id)) { return false; }
+		$sql = "SELECT quiz_id FROM sessions WHERE id = '$id'";
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
+
+	public function findTitle($id)
+		{
+		if (!is_numeric($id)) { return false; }
+		$sqlTitle = "SELECT title FROM choices WHERE id = '$id'";
+		$sth = $this->dbh->prepare($sqlTitle);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
 	public function findAnswers($id)
 		{
 		if (!is_numeric($id)) { return false; }
@@ -63,7 +82,7 @@ public function list_quizs($userId)
 
 	public function list_user_quiz($userId, $quizId)
 		{
-			if (!is_numeric($userId) || (!is_numeric($quizId)) { return false; }
+			if ((!is_numeric($userId)) || (!is_numeric($quizId))) { return false; }
 
 			$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
 			WHERE (u.id = '$userId') AND (q.id = '$quizId')";
@@ -76,7 +95,7 @@ public function list_quizs($userId)
 
 	public function list_choices_user_quiz($userId, $quizId)
 		{
-			if (!is_numeric($userId) || !is_numeric($quizId)) { return false; }
+			if ((!is_numeric($userId)) || (!is_numeric($quizId))) { return false; }
 
 			$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
 			WHERE (q.question_id = a.question_id) AND (a.user_id = '$userId') AND (q.quiz_id = '$quizId')";
@@ -121,7 +140,7 @@ public function list_quizs($userId)
 
 	public function student_result_viewer($studentId, $sessionId)
 		{
-			if (!is_numeric($studentId) || (!is_numeric($sessionId)) { return false; }
+			if ((!is_numeric($studentId)) || (!is_numeric($sessionId))) { return false; }
 
 			$sqlUserQuiz = "SELECT s.score FROM sessions s  
 			WHERE (s.id = '$sessionId') and (s.user_id = '$studentId')";
