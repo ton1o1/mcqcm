@@ -15,7 +15,7 @@
         ['GET', '/user/dashboard', 'User#dashboard', 'user_dashboard'],               // display user dashboard
         ['GET|POST', '/user/profile', 'User#profile', 'user_profile'],                // display profile, modify / delete account
         
-        // Quizzes
+        // Quiz
         ['POST', '/quiz/search', 'Quiz#search', 'quiz_search'],                // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
         ['GET', '/quiz/[i:quizId]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id
         ['GET|POST', '/quiz/create', 'Quiz#create', 'quiz_create'],            // manual creator
@@ -23,15 +23,18 @@
         ['GET|POST', '/quiz/[i:quizId]/edit', 'Quiz#edit', 'quiz_edit'],       // edit quiz by id
         ['GET|POST', '/quiz/[i:quizId]/delete', 'Quiz#delete', 'quiz_delete'], // delete quiz by id
 
-        // Questions
+        // Skill
+        ['POST', '/skill/search', 'Skill#search', 'skill_search'],                // search skills by tag (POST data received with ajax requests, submitted by homepage form)
+
+        // Question
         ['GET|POST', '/question/create/quiz/[i:quizId]', 'Question#create', 'question_create'],
         ['GET|POST', '/question/[i:questionId]/edit', 'Question#edit', 'question_edit'],
         ['GET|POST', '/question/[i:questionId]/delete', 'Question#delete', 'question_delete'],
 
-        // Sessions
+        // Session
         ['GET', '/session/quiz/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
 
-        // Answers
+        // Answer
         ['POST', '/answers/session/[i:sessionId]/save', 'Session#save', 'session_save'], // save answers during session (POST data received with ajax requests, submitted by session_play page)
         ['POST', '/answers/session/[i:sessionId]/close', 'Session#close', 'session_close'], // save answers and close session (set date_stop in sessions table and redirect to result_view route)
 

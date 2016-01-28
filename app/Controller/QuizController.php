@@ -8,14 +8,12 @@ class QuizController extends Controller
 {
     private $alerts;
     private $manager;
-    private $skillManager;
     private $validator;
 
     public function __construct()
     {
         $this->alerts = new \Service\Alerts();
         $this->manager = new \Manager\QuizManager();
-        $this->skillManager = new \Manager\SkillManager();
         $this->validator = new \Service\Validator\Quiz();
     }
 
@@ -24,20 +22,7 @@ class QuizController extends Controller
      */
     public function search()
     {
-        // Retourner fichier JSON avec un tableau nommé items et contenant des objets
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['q'])){
-            
-            $skills = $this->skillManager->findByTag($_POST['q']);
-            
-            if(!$skills){
-                $skills = [['id' => 0, 'tag' => 'Aucun résultat.', 'disabled' => true]];
-            }
-
-            echo json_encode($skills);
-        }
-        else{
-            return;
-        }
+        
     }
 
     /**

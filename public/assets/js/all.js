@@ -11,7 +11,7 @@ $("#search")
     // tags: true,
     ajax: {
         method: "POST",
-      url: "http://mcqcm.dev/quiz/search",
+      url: "http://mcqcm.dev/skill/search",
       dataType: "json",
       delay: 250,
       data: function (params) {
