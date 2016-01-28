@@ -76,7 +76,7 @@ Unit tests :
 				
 	<!--   -->			
 				<div class="warning">
-					<?php echo $finalErrorMessage; ?>
+					<?php if (!$_POST){echo $finalErrorMessage;} ?>
 					<?php echo $successMessage ?>
 				</div;>
 				<div class="form-group">
