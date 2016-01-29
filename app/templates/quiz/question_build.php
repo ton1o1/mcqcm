@@ -87,9 +87,9 @@ Unit tests :
         </div>
   <!-- END CHOICES -->    
         <div class="warning">
-          <?php if (!$_POST){echo $finalErrorMessage;} ?>
-          <?php echo $successMessage ?>
-        </div;>
+          <?php if ($_POST){echo $finalErrorMessage;} ?>
+          <?php echo $successMessage; ?>
+        </div>
         <div class="form-group">
           <input type="submit" value="Ajouter la question au portefeuille">
         </div>

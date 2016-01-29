@@ -34,14 +34,14 @@ $searchQuestion.on("keyup", function(e){
 			$title = response[i].title;
 			$tdTitle = $("<td>").html($title);
 
-			$status = response[i].title;
-			$tdStatus = $("<td>").html($title);
+			//$status = response[i].title;
+			//$tdStatus = $("<td>").html($title);
 
 			//append everything in the following order
 			$tr = $("<tr>")
 				.append($tdId)
 				.append($tdTitle)
-				.append($tdStatus);
+				//.append($tdStatus);
 			$resultsList
 				.append($tr);
 

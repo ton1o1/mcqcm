@@ -47,7 +47,10 @@
 		public function searchQuestion($title){
 			//title is actually regex
 
-			$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title ASC LIMIT 5";
+			$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 2 AND questions.title LIKE :keyword GROUP BY title ORDER BY title ASC LIMIT 5";
+			//WARNING !!!
+			//the line above above is to be replace by 
+			//$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 2 AND questions.title LIKE '%" . $title . "%'";
 
 			if (!empty($orderBy)){
 		
@@ -61,33 +64,13 @@
 
 			$sth = $this->dbh->prepare($sql);
 			$sth->execute([
-				":keyword" => "%" . $title . "%"
+				":keyword" => "%" . $title . "%",
 			]);
 		
 			return $sth->fetchAll();
 	
 		}
 
-
-	// $searchInput = "%" . $_GET['input'] . "%" ;
-	// // echo $searchInput;
-	// //requete test $sql = 'SELECT serie FROM book WHERE serie LIKE :keyword';
-	// $sql = 'SELECT cover FROM book WHERE serie LIKE :keyword ORDER BY cover ASC LIMIT 10';
-	// $statement = $pdo->prepare($sql);
-	// $statement ->execute([":keyword" => "%" . $searchInput . "%"]);
-	// //$statement ->execute();
-	// $array = $statement->fetchAll();
-
-	// $statementJson = json_encode($array);
-	// header("Content-Type: application/json");
-	// // //ajoute un en-tête au fichier pour faire comprendre au navigateur qu'on parle en JSON 	
-	// // header("Content-Type: application/json");
-	// echo $statementJson;
-	// // 
-
-
-
-
-		}
+	}
 
 

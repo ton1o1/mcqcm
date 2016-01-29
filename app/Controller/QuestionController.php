@@ -6,6 +6,7 @@ use \W\Controller\Controller;
 
 class QuestionController extends Controller
 {
+		// QUESTION BUILD
 	/**
 	 * Question builder page
 	 * 3 main parts in this function : test $_POST, insert question and choices, refill the inputs if the submit wasn't ok.
@@ -14,7 +15,7 @@ class QuestionController extends Controller
 	{ 
 		if($_POST)
 		{
-			//debug($_POST);
+			debug($_POST);
 			//if variables exist, I init them
 			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
 			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
@@ -81,7 +82,7 @@ class QuestionController extends Controller
 				if($_POST){
 					$questionManager->insert([
 						//"quiz_id" => $quizId,
-						"user_id" => 1, //needs to be $_SESSION['id']
+						"creator_id" => 1, //needs to be $_SESSION['id']
 						"title" => $questionTitle,
 					]);
 	
@@ -114,7 +115,8 @@ class QuestionController extends Controller
 				}
 			}
 		}
-		//$dataPosted = $_POST;
+		//debug($_POST);
+		//debug($successMessage);
 		//the show method must always be at the end of the function that display because it contains a die() 
 		$this->show('quiz/question_build', [
 			"errorMessages" => $errorMessages,
@@ -124,7 +126,8 @@ class QuestionController extends Controller
 		]);
 	}
 
-
+	//END QUESTION BUILD
+	
 	/**
 	 * List of all the questions in order to have a global view
 	 * 
@@ -212,15 +215,8 @@ class QuestionController extends Controller
 		
 		$this->showJson($array);
 
-		// $statementJson = json_encode($array);
-		// header("Content-Type: application/json");
-		// echo $statementJson;
-		// echo $statementJson;
-		// echo $array;
 
 	}
-//
-
 
 }
 
