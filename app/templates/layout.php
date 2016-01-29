@@ -11,6 +11,7 @@
     <meta name="description" content="Learning platform, quizzes and skill tests" />
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/select2.min.css') ?>">
+    <link rel="stylesheet" href="<?= $this->assetUrl('css/select2-bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('fonts/mcqcm-font/fonts.css') ?>">
 

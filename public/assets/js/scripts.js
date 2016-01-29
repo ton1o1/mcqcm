@@ -1,6 +1,7 @@
 $(function() {
 
     $("#skillSearch").select2({
+        theme: "bootstrap",
         language: "fr",
         placeholder: "Saisir une compétence...",
         multiple: true,
@@ -45,6 +46,7 @@ $(function() {
     });
 
     $("#skillSearchAdd").select2({
+        theme: "bootstrap",
         language: "fr",
         placeholder: "Saisir un ou plusieurs mots clés de compétences.",
         multiple: true,
@@ -81,7 +83,12 @@ $(function() {
         },
         minimumInputLength: 2,
         templateResult: function(skill) {
-          return skill.tag;
+          if(skill.new){
+            return "Aucun résultat pour le tag exact \"" + skill.tag + "\", cliquez pour le créer";
+            }
+            else{
+            return skill.tag;
+            }
         },
         templateSelection: function(skill) {
           return skill.tag;

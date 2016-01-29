@@ -3,11 +3,28 @@
 <?php $this->start('main_content') ?>
 
 <div class="jumbotron">
-  <h1>On se fait un quiz ?</h1>
-  <p>Dis-moi quelles sont tes compétences, et voyons ce que tu vaut vraiment !</p>
-  <p><select id="skillSearch" multiple></select></p>
-  <p class="right"><a class="btn btn-primary btn-lg" href="#" role="button">C'est parti !</a></p>
-  <div class="clearfix"></div>
+ 	<h1>On se fait un quiz ?</h1>
+	<p>Dis-moi quelles sont tes compétences, et voyons ce que tu vaut vraiment !</p>
+	
+		<!-- <div class="input-group select2-bootstrap-append">
+  			<select id="skillSearch" class="form-control select2 select2-hidden-accessible" multiple="" tabindex="-1" aria-hidden="true"></select>
+  			<span class="input-group-btn">
+				<button class="btn btn-default" data-select2-open="multi-append" type="button">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</span>
+  		</div> -->
+  		<div class="form-group select2fix">
+				<div class="input-group select2-bootstrap-append">
+					<select id="skillSearch" class="form-control select2" multiple></select>
+					<span class="input-group-btn">
+						<button class="btn btn-default select2margin" type="button" data-select2-open="multi-append">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</span>
+				</div>
+			</div>
+  	
 </div>
 
 <?php $this->stop('main_content') ?>
