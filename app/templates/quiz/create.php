@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="form-group<?= !empty($errors['skills']) ? ' has-error' : '' ?>">
-    <label for="skillSearchAdd" class="col-sm-2 control-label">Compétences</label>
+    <label for="skillSearchAdd" class="col-sm-2 control-label">Compétences visées</label>
     <div class="col-sm-10">
     <select name="quiz[skills]" id="skillSearchAdd" class="form-control" multiple></select>
       <?= !empty($errors['skills']) ? '<p class="text-danger">' . $errors['skills'] . '</p>' : '' ?>

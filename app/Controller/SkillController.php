@@ -30,7 +30,7 @@ class SkillController extends Controller
             
             if(!$skills){
                 if($_POST['source'] == 'creator'){
-                    $skills = [['id' => $query, 'tag' => $query], ['id' => 0, 'tag' => 'Aucun résultat. Appuyez sur "Entrer" pour ajouter cette compétence.', 'disabled' => true]];
+                    $skills = [['id' => $query, 'tag' => $query], ['id' => 0, 'tag' => 'Aucun résultat. Appuyez sur "Entrer" pour ajouter ce tag.', 'disabled' => true]];
                 }
                 else{
                     $skills = [['id' => 0, 'tag' => 'Aucun résultat. Réésayez avec un autre mot clé.', 'disabled' => true]];

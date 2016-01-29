@@ -10,7 +10,7 @@
 
     <meta name="description" content="Learning platform, quizzes and skill tests" />
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= $this->assetUrl('css/select2.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('fonts/mcqcm-font/fonts.css') ?>">
 
@@ -127,7 +127,7 @@
 
 <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.full.min.js"></script>
+<script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
 <script type='text/javascript' src="<?= $this->assetUrl('js/scripts.js') ?>"></script>
 <?= $this->section('scripts') ?>
 </body>
