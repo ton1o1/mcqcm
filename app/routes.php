@@ -18,6 +18,13 @@
 		['GET|POST', '/renouvellement-mdp/[a:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
 
 		//Administrator only
-		['GET|POST', '/administrator/[i:start]/[i:currentPage]/', 'Administrator#profil', 'administrator_profile']
+		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
+		//Change user status
+		['GET|POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
+		//List User 
+		['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'Administrator_findUsers'],
+		//List User 
+		['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'Administrator_getUserInfo']
+
 
 	);

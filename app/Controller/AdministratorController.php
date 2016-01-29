@@ -22,23 +22,31 @@ class AdministratorController extends Controller
 
 	public function profil(){
 
+		$this->allowTo('administrator');
+
+		$listProfil = $this->userList();
+        //$listModals = $this->userModals();
+
+		$this->show('user/profile_admin', [
+                "listProfil" => $listProfil,
+                //"listModals" => $listModals
+            ]);
+	}
+
+    public function setUserStatus(){
+
         if(!empty($_POST)){
 
-            $userStatus = $_POST['userStatus'];
-            $userId = $_POST['userId'];
             //change user status
+            $userStatus = $_POST['userStatus'];
+            $userStatus = ($userStatus == '1' ) ? '0' : '1';
+            $userId = $_POST['userId'];
             $this->manager->setUserStatus($userStatus, $userId);
 
         }
 
-		$this->allowTo('administrator');
-		$listProfil = $this->userList();
-        $listModals = $this->userModals();
-		$this->show('user/profile_admin', [
-                "listProfil" => $listProfil,
-                "listModals" => $listModals
-            ]);
-	}
+        $this->redirectToRoute('administrator_profile');
+    }
 
 
 	public function userList(){
@@ -84,7 +92,7 @@ class AdministratorController extends Controller
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <form action="" method="POST">
+                                    <form action="/administrator/set-user-status/" method="POST">
                                         <input type="hidden" name="userStatus" value ="%6$s">
                                         <input type="hidden" name="userId" value ="%1$s">
                                         <button type="submit" class="btn btn-primary" name="%5$s">%5$s</button>
@@ -105,5 +113,26 @@ class AdministratorController extends Controller
         }
 
         return $listModals;
+    }
+
+    function findUsers(){
+
+        if(!empty($_POST)){
+
+            $search = $_POST['searchUser'];
+            $result =  $this->manager->searchUser($search);
+            $this->showJson($result);
+
+        }
+    }
+
+
+    function getUserInfo(){
+
+        $userId = $_GET['id'];
+        $this->manager->setTable("users");
+        $result = $this->manager->find($userId);
+
+        $this->showJson($result);
     }
 }

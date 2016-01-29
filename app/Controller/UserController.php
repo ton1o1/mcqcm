@@ -29,6 +29,12 @@ class UserController extends Controller
 
 		if(!empty($_POST)) {
 
+		$userFirstName = $_POST['userFirstName'];
+		$userLastName = $_POST['userLastName'];
+		$userEmail = $_POST['userEmail'];
+		$userPassword = $_POST['userPassword'];
+		$userPasswordConfirmed = $_POST['userPasswordConfirmed'];
+
 			//validation du formulaire
 			$result = $this->testUserForm();
 			$isValid = $result[0];
@@ -40,7 +46,7 @@ class UserController extends Controller
 
 				//insert user data in DB
 
-				$userManager->insert([
+				$this->userManager->insert([
 						"first_name"  => $userFirstName,
 						"last_name"   => $userLastName,
 						"email"       => $userEmail,
@@ -406,6 +412,7 @@ class UserController extends Controller
 
 		//validation du formulaire
 		$isValid = true;
+		$errormessage = [];
 		//$userManager = new \Manager\UserManager();
 
 		if(empty($userLastName)) {
