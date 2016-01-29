@@ -19,12 +19,35 @@ $searchQuestion.on("keyup", function(e){
 	})
 	.done(function(response){ 
 	//$response ici récupère la réponse de la requête AJAX
-
+		$resultsList.empty();
 		console.log(response)
-		console.log("debut " + response + " fin");
-		// var array = JSON.parse(response);
-		// 
-		console.log(response[0].title);
+		
+		for (var i = 0, c = response.length; i < c; i++){
+			console.log(response[i].title + response[i].id)
+		}
+
+		for (var i = 0; i < 5; i++){
+
+			$id = response[i].id;
+			$tdId = $("<td>").html($id);
+
+			$title = response[i].title;
+			$tdTitle = $("<td>").html($title);
+
+			$status = response[i].title;
+			$tdStatus = $("<td>").html($title);
+
+			//append everything in the following order
+			$tr = $("<tr>")
+				.append($tdId)
+				.append($tdTitle)
+				.append($tdStatus);
+			$resultsList
+				.append($tr);
+
+
+
+		}
 
 
 	})
@@ -38,6 +61,7 @@ $searchQuestion.on("keyup", function(e){
 })
 
 
+//SELECT questions.* , quizs__questions.* FROM `questions`, `quizs__questions` WHERE questions.title LIKE '%pourquoi%' AND (questions.id != quizs__questions.quiz_id) ORDER BY questions.title ASC LIMIT 5
 
 
 

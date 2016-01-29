@@ -1,7 +1,21 @@
 /*
 Style perso philip
- */;
+ */
 #search-question {
 	display: block-inline;
 	width: 400px;
 }
+
+.process li{
+	font-size: 10px;
+}
+
+.results-list{
+	height: 500px;
+}
+
+.searchQuestion{
+	padding: 20px;
+}
+
+

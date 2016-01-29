@@ -47,7 +47,7 @@
 		public function searchQuestion($title){
 			//title is actually regex
 
-			$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
+			$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title ASC LIMIT 5";
 
 			if (!empty($orderBy)){
 		

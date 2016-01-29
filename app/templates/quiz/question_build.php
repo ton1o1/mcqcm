@@ -32,13 +32,17 @@ Unit tests :
 <!-- END SEARCH BAR -->    
     
   </form>
+<!-- RESULTS -->
     <div class="results-list">
-      
+      <table>
+      	
+      </table>
     </div>
+<!-- END RESULTS -->
   </section>
 
 
-<!-- SEARCH BAR -->
+<!-- QUESTION -->
   <section class="addQuestion">
     <form action="" method="POST" class="form-group" novalidate>
       <fieldset>
@@ -49,7 +53,12 @@ Unit tests :
           <textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?php echo $dataPosted['questionTitle']; ?></textarea>
         </div>
         <div>
-          <label>Choisir le quiz</label><input type="number" name="quizId" min="0" max="100" step="1" value="1">
+          <label>Choisir le quiz</label>
+          <input type="number" name="quizId" min="0" max="100" step="1" value="1">
+          <!-- 
+		ALERT the line above is to be replaced by the one underneath during integration phase !!!
+          <input type="number" name="quizId" min="0" max="100" step="1" value="<?= $quizId ?>"> -->
+
         </div>
         <div class="form-group">
           <label for="questionType">Type de question</label>
@@ -60,7 +69,7 @@ Unit tests :
           </select>
         </div>
         <h2>Choix : <button id="add-choice">Ajouter un choix</button></h2>
-  <!-- END SEARCH BAR -->       
+  <!-- END QUESTION -->       
   <!-- CHOICES -->
         <div class="choices">
           <label class="checkbox-inline">
