@@ -215,6 +215,13 @@ class ResultController extends Controller {
 		// print_r($this->calculNoteAll());
 		$resultsAll = $this->medium_calculate('all', 0);
 		print_r($resultsAll);
+		$quizListId = $this->answer->quizList(); 
+		// var_dump($quizListId);
+		foreach ($quizListId as $key => $value) {
+			foreach ($value as $kl => $vl) {
+				$this->quizResult($vl);
+			}
+		}
 	}
 
 	

@@ -121,7 +121,14 @@ public function list_quizs($userId)
 			$resultSolution = $statementSolution->fetchAll(PDO::FETCH_COLUMN, 0); 
 			$tabSolution[$key] = intval($resultSolution[0]); */
 		}
-
+	
+	public function quizList()
+		{
+		$sqlQuizList = "SELECT DISTINCT quiz_id FROM sessions";
+		$sth = $this->dbh->prepare($sqlQuizList);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
 
 	public function user_quizs_derouler($userId) {
 
