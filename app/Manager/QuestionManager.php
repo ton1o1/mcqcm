@@ -44,7 +44,7 @@
 		 * @param $title, une chaîne de caractère de recherche
 		 * @return un fichier JSON 
 		 */
-		public function searchQuestion($title, $orderBy = "title", $orderDir = "ASC", $limit = 5){
+		public function searchQuestion($title){
 				//title is actually regex
 
 				$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
@@ -59,20 +59,17 @@
 				}
 
 
-
-
 				$sth = $this->dbh->prepare($sql);
 				$sth->execute([
-					":keyword" => "%" . $_GET['input'] . "%"
+					":keyword" => "%" . $title . "%"
 				]);
 		
 				$array = $sth->fetchAll();
-				print_r($array);
-				//$statementJson = json_encode($array);
+				
+				$statementJson = json_encode($array);
 				//header("Content-Type: application/json");
-				return "hey" . $_GET['input'];
-
-				//return $statementJson;
+				echo $statementJson;
+				// return $array;
 			}
 
 

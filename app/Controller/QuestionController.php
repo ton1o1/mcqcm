@@ -206,16 +206,13 @@ class QuestionController extends Controller
 	 * Select the first 5 results of a title search among questions
 	 */
 
-	public function questionSearch($string){
+	public function questionSearch(){
 		$questionManager = new \Manager\QuestionManager();
 
 		//search a Question by a string
-		$question = $questionManager->searchQuestion($string);
-		$string = "%" . $_GET['input'] . "%" ;
-
-
+		$questionManager->searchQuestion($_GET["input"]);
 	}
-
+//
 
 
 }
