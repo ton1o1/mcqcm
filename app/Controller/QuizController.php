@@ -14,6 +14,7 @@ class QuizController extends Controller
     {
         $this->alerts = new \Service\Alerts();
         $this->manager = new \Manager\QuizManager();
+        $this->skillManager = new \Manager\SkillManager();
         $this->validator = new \Service\Validator\Quiz();
     }
 
@@ -91,14 +92,34 @@ class QuizController extends Controller
 
                 // Save new quiz in database
 
+                // Get date now
                 $dateCreated = new \DateTime();
-                $skills = []; // à faire
+                
+                $skills = [];
+                foreach($_POST['quiz']['skills'] as $skill){
+                    $skillInt = (int) $skill;
+
+                    if($skillInt > 0){
+                        // Tag skill existing
+                        $skills[] = $skillInt;
+                    }
+                    else{
+                        // New tag skill
+                        // Save in database
+                        $this->skillManager->insert([
+                            'tag' => $skill,
+                        ]);
+                        // Get last id
+                        $lastId = $this->skillManager->lastId();
+                        $skills[] = (int) $lastId;
+                    }
+                }
 
                 $this->manager->insert([
-                    'user_id' => $loggedUser['id'],
+                    'creator_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
-                    'title' => $_POST['title'],
-                    'description' => $_POST['description'],
+                    'title' => $_POST['quiz']['title'],
+                    'description' => $_POST['quiz']['description'],
                     'skills_id' => serialize($skills),
                     'is_active' => true
                 ]);
@@ -106,8 +127,11 @@ class QuizController extends Controller
                 // Flash message
                 $this->alerts->add(['type' => 'success', 'content' => 'Quiz créé avec succès.']);
 
-                // Redirect to question creator page
-                $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
+                // // Redirect to question creator page
+                // $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
+
+                var_dump($_POST['quiz']['skills']);
+                var_dump($skills);
             }
             else{
                 // Flash message
