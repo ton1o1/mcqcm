@@ -36,7 +36,7 @@
         ['POST', '/answers/session/[i:sessionId]/close', 'Session#close', 'session_close'], // save answers and close session (set date_stop in sessions table and redirect to result_view route)
 
         // Result
-        ['GET', '/result/user/[i:userId]/[i:sessionId]?', 'Result#viewStudent', 'result_view_student'],
+        ['GET', '/result/user/[i:userId]/[i:sessionId]/', 'Result#viewStudent', 'result_view_student'],
         ['GET', '/result/quiz/[i:quizId]?', 'Result#viewQuiz', 'result_view_quiz'],
 
     );

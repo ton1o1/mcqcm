@@ -43,28 +43,17 @@ class ResultController extends Controller {
 	}
 
 
-	public function viewStudent($userId, $sessionId = null) {
+	public function viewUser($userId, $sessionId = null) {
 		
 		$this->answer->setTable('sessions');
 		if (!empty($sessionId)) {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
 			if ($dateStop) {
-				$this->studentSessionResult($sessionId, $userId);
+				$this->studentSessionResult($userId, $sessionId);
 				} else {redirect('home');}
 		} else {$this->studentResult($userId);}
 	}
 
-	public function viewSession($sessionId) {
-		
-/*		$this->answer->setTable('sessions');
-		$userId = $this->answer->find($sessionId)['user_id'];
-		foreach ($userId as $kus => $vus) {
-			$dateStop = $this->answer->find($sessionId)['date_stop'];
-			if ($dateStop) {
-				$this->studentSessionResult($sessionId, $vus);
-				} else {redirect('home');}
-		} */
-	}
 
 	public function viewQuiz($quizId = null) {
 
@@ -186,9 +175,10 @@ class ResultController extends Controller {
 
 
 	public function studentSessionResult($userId, $sessionId) {
-		$this->answer->setTable('sessions');
+		// $this->answer->setTable('sessions');
 		$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
 		$quizId = intval($quizI);
+		echo($quizId);
 		$score = $this->calculNoteStudent($userId, $quizId);
 		$this->answer->student_score_record($userId, $sessionId, $score);
 	}
@@ -197,6 +187,16 @@ class ResultController extends Controller {
 	public function studentResult($userId) {
 		$resultsStu = $this->medium_calculate('student', $userId);
 		print_r($resultsStu);
+		// $userQuizListId = $this->answer->userQuizList($userId); 
+		// var_dump($quizListId);
+		$resultsUser = $this->answer->userQuizScore($userId);
+		foreach ($resultsUser as $kt => $vt) {
+			foreach ($vt as $ks => $vs) {
+				echo " X ";
+				echo ($vs);
+				echo " * ";
+			}
+		}
 	}
 
 
@@ -207,7 +207,11 @@ class ResultController extends Controller {
 
 	public function quizResult($quizId) {
 		$resultsQui = $this->medium_calculate('quiz', $quizId);
-		print_r($resultsQui);
+		foreach ($resultsQui as $kr => $vr) {
+			echo " * ";
+			print_r($vr);
+			echo " XX ";
+		}
 	}
 
 

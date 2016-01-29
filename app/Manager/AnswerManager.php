@@ -50,10 +50,19 @@ public function list_quizs($userId)
 */
 
 
-	public function findQuizBySession($id)
+	public function findQuizByUser($useid)
 		{
 		if (!is_numeric($id)) { return false; }
-		$sql = "SELECT quiz_id FROM sessions WHERE id = '$id'";
+		$sql = "SELECT quiz_id FROM sessions WHERE user_id = '$useid'";
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
+		public function findQuizBySession($sessid)
+		{
+		if (!is_numeric($sessid)) { return false; }
+		$sql = "SELECT quiz_id FROM sessions WHERE id = '$sessid'";
 		$sth = $this->dbh->prepare($sql);
 		$sth->execute();
 		return $sth->fetchAll();
@@ -84,7 +93,7 @@ public function list_quizs($userId)
 		{
 			if ((!is_numeric($userId)) || (!is_numeric($quizId))) { return false; }
 
-			$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
+			$sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u   
 			WHERE (u.id = '$userId') AND (q.id = '$quizId')";
 			$statementUserQuiz = $this->dbh->prepare($sqlUserQuiz);
 			$statementUserQuiz->execute();
@@ -126,6 +135,22 @@ public function list_quizs($userId)
 		{
 		$sqlQuizList = "SELECT DISTINCT quiz_id FROM sessions";
 		$sth = $this->dbh->prepare($sqlQuizList);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
+	public function userQuizList($usId)
+		{
+		$sqlQuizList = "SELECT quiz_id FROM sessions WHERE user_id='$usId'";
+		$sth = $this->dbh->prepare($sqlQuizList);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
+	public function userQuizScore($uId)
+		{
+		$sqlQuizScore = "SELECT score FROM sessions WHERE user_id='$uId'";
+		$sth = $this->dbh->prepare($sqlQuizScore);
 		$sth->execute();
 		return $sth->fetchAll();
 		}
