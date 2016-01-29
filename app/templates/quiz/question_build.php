@@ -32,7 +32,9 @@ Unit tests :
 <!-- END SEARCH BAR -->    
     
   </form>
-    <div class="results-list"></div>
+    <div class="results-list">
+      
+    </div>
   </section>
 
 

@@ -1,7 +1,8 @@
 console.log("JS start !");
 
-$searchQuestion = $("#search-question");
-$urlVal = $("#search-question").attr("data-url");
+var $searchQuestion = $("#search-question");
+var $urlVal = $("#search-question").attr("data-url");
+var $resultsList = $(".results-list");
 
 $searchQuestion.on("keyup", function(e){
 	e.preventDefault();
@@ -20,7 +21,8 @@ $searchQuestion.on("keyup", function(e){
 	//$response ici récupère la réponse de la requête AJAX
 		console.log(response)
 		console.log("debut " + response + " fin");
-
+		var array = JSON.parse(response);
+		console.log(array[0].title);
 	})
 	.fail(function(){
 		console.log("FAIL");
