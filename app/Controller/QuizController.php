@@ -24,14 +24,11 @@ class QuizController extends Controller
      */
     public function search()
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['q'])){
+        $html = '';
+        if(!empty($_POST['tags'])){
 
-            $tags = $_POST['q'];
-
-            $quizzes = $this->manager->findAllByTags($tags);
+            $quizzes = $this->manager->findAllByTags($_POST['tags']);
         
-            $html = '';
-
             if($quizzes){
                 $html .= '<ul class="list-group">';
                 
@@ -41,12 +38,8 @@ class QuizController extends Controller
 
                 $html .= '</ul>';
             }
-            
-            echo $html;
         }
-        else{
-            return;
-        }
+        $this->redirectToRoute('home', ['html' => $html]);
     }
 
     /**

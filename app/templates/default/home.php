@@ -16,17 +16,21 @@
 				</button>
 			</span>
   		</div> -->
+  		<form method="post" action="<?= $this->url("quiz_search") ?>">
   		<div class="form-group select2fix">
 				<div class="input-group select2-bootstrap-append">
 					<select id="skillSearch" class="form-control select2" multiple></select>
 					<span class="input-group-btn">
-						<button class="btn btn-default select2margin" type="button" data-select2-open="multi-append">
+						<button class="btn btn-default select2margin" type="submit" data-select2-open="multi-append">
 							<span class="glyphicon glyphicon-search"></span>
 						</button>
 					</span>
 				</div>
 			</div>
+		</form>
   	
 </div>
+
+<?= !empty($html) ? $html : '' ?>
 
 <?php $this->stop('main_content') ?>
