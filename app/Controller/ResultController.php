@@ -47,9 +47,10 @@ class ResultController extends Controller {
 		
 		$this->setSessionId($sessionId);
 		$userId = $this->answer->find($sessionId)['user_id'];
+		$dateStop = $this->answer->find($sessionId)['date_stop'];
+		$dS = $dateStop->getTimestamp(); 
 		$now = time();
-		$dateStop = 0;
-				if ($now - $dateStop > 1800) {
+				if ($now - $dS > 1800) {
 				$this->studentSessionResult($sessionId, $userId);
 				} else {redirect('home');}
 
@@ -198,14 +199,28 @@ class ResultController extends Controller {
 		$this->answer->student_score_record($userId, $sessionId, $score);
 	}
 
-	public function teacherSessionResult($quizId) {
-		$this->calculNoteQuiz($quizId);
-		$this->medium_calculate('quiz');
+	
+	public function studentResult($userId) {
+		$resultsStu = $this->medium_calculate('student', $userId);
+		print_r($resultsStu);
 	}
 
+
+	public function teacherSessionResult($sessionId) {
+		$resultsSes = $this->medium_calculate('session', $sessionId);
+		print_r($resultsSes);
+	}
+
+	public function quizResult($quizId) {
+		$resultsQui = $this->medium_calculate('quiz', $quizId);
+		print_r($resultsQui);
+	}
+
+
 	public function allResults() {
-		print_r($this->calculNoteAll());
-		$this->medium_calculate('all');
+		// print_r($this->calculNoteAll());
+		$resultsAll = $this->medium_calculate('all', 0);
+		print_r($resultsAll);
 	}
 
 	
@@ -235,13 +250,29 @@ class ResultController extends Controller {
 */
 
 
-	public function medium_calculate($x) {
+	public function medium_calculate($x, $id) {
 			$totalScore = 0;
 			$ecart = 0;
 			$ecartMoy = 0;
 			$base = 0;
-			if ($x == 'quiz') {$data = $this->answer->teacherSessionResult();}
-			else if ($x == 'all') {$data = $this->answer->allResults();}
+
+			switch ($x) {
+				case 'student':
+					$data = $this->answer->student_results($id);
+					break;
+				case 'session':
+					$data = $this->answer->session_results($id);
+					break;
+				case 'quiz':
+					$data = $this->answer->quiz_results($id);
+					break;
+				case 'all':
+					$data = $this->answer->all_results();
+					break;
+				default:
+					break;
+			}
+
 			$numberScore = count($data);
 
 			if ($numberScore > 0) { 

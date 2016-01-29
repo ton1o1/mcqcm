@@ -180,18 +180,48 @@ public function list_quizs($userId)
 		*/
 		}
 
+	public function session_results($sess) {
+
+			// $this->setTable('sessions');
+			$sqlSession = "SELECT score FROM sessions where id='$sess'";
+			$statementSession = $this->dbh->prepare($sqlSession);
+			$statementSession->execute();
+			$resultSession = $statementSession->fetchAll();
+			return $resultSession;
+			}
+		}
+
+	public function quiz_results($qui) {
+
+			// $this->setTable('sessions');
+			$sqlQuiz = "SELECT score FROM sessions where quiz_id='$qui'";
+			$statementQuiz = $this->dbh->prepare($sqlQuiz);
+			$statementQuiz->execute();
+			$resultQuiz = $statementQuiz->fetchAll();
+			return $resultQuiz;
+			}
+		}
+
+public function student_results($usid) {
+
+			// $this->setTable('sessions');
+			$sqlStudent = "SELECT score FROM sessions where user_id='$usid'";
+			$statementStudent = $this->dbh->prepare($sqlStudent);
+			$statementStudent->execute();
+			$resultStudent = $statementStudent->fetchAll();
+			return $resultStudent;
+			}
+		}
+
 
 	public function all_results() {
 
-			$answer = new \AnswerManager;
-			$answer->table = 'sessions';
-			$sqlAll = "SELECT count(*) FROM sessions_users";
-			$statementAll = $answer->dbh->prepare($sqlAll);
+			// $this->setTable('sessions');
+			$sqlAll = "SELECT score FROM sessions";
+			$statementAll = $this->dbh->prepare($sqlAll);
 			$statementAll->execute();
-			$resultAll = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
-			
-			foreach($resultAll as $key => $value) {
-				teacherResult($value);
+			$resultAll = $statement->fetchAll();
+			return $resultAll;
 			}
 		}
 
