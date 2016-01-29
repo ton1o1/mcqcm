@@ -45,12 +45,10 @@ class ResultController extends Controller {
 
 	public function viewSession($sessionId) {
 		
-		$this->setSessionId($sessionId);
+		$this->answer->setTable('sessions');
 		$userId = $this->answer->find($sessionId)['user_id'];
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
-		$dS = $dateStop->getTimestamp(); 
-		$now = time();
-				if ($now - $dS > 1800) {
+				if ($dateStop) {
 				$this->studentSessionResult($sessionId, $userId);
 				} else {redirect('home');}
 

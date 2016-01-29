@@ -189,7 +189,6 @@ public function list_quizs($userId)
 			$resultSession = $statementSession->fetchAll();
 			return $resultSession;
 			}
-		}
 
 	public function quiz_results($qui) {
 
@@ -200,9 +199,9 @@ public function list_quizs($userId)
 			$resultQuiz = $statementQuiz->fetchAll();
 			return $resultQuiz;
 			}
-		}
+		
 
-public function student_results($usid) {
+	public function student_results($usid) {
 
 			// $this->setTable('sessions');
 			$sqlStudent = "SELECT score FROM sessions where user_id='$usid'";
@@ -211,7 +210,7 @@ public function student_results($usid) {
 			$resultStudent = $statementStudent->fetchAll();
 			return $resultStudent;
 			}
-		}
+		
 
 
 	public function all_results() {
@@ -223,7 +222,7 @@ public function student_results($usid) {
 			$resultAll = $statement->fetchAll();
 			return $resultAll;
 			}
-		}
+		
 
 
 
