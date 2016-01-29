@@ -18,6 +18,6 @@
 		['GET|POST', '/renouvellement-mdp/[a:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
 
 		//Administrator only
-		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile']
+		['GET|POST', '/administrator/[i:start]/[i:currentPage]/', 'Administrator#profil', 'administrator_profile']
 
 	);
