@@ -43,32 +43,40 @@ class ResultController extends Controller {
 	}
 
 
-	public function viewSession($sessionId) {
+	public function viewStudent($userId, $sessionId = null) {
 		
 		$this->answer->setTable('sessions');
-		$userId = $this->answer->find($sessionId)['user_id'];
+		if (!empty($sessionId)) {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
-				if ($dateStop) {
+			if ($dateStop) {
 				$this->studentSessionResult($sessionId, $userId);
 				} else {redirect('home');}
-
-		$this->answer->setTable('sessions');
-		
-		$this->setUserId($userId);
-	
+		} else {$this->studentResult($userId);}
 	}
 
+	public function viewSession($sessionId) {
+		
+/*		$this->answer->setTable('sessions');
+		$userId = $this->answer->find($sessionId)['user_id'];
+		foreach ($userId as $kus => $vus) {
+			$dateStop = $this->answer->find($sessionId)['date_stop'];
+			if ($dateStop) {
+				$this->studentSessionResult($sessionId, $vus);
+				} else {redirect('home');}
+		} */
+	}
 
-	public function viewQuiz($quizId) {
+	public function viewQuiz($quizId = null) {
 
 		$this->answer->setTable('sessions');
 		if (!empty($quizId)) {
 			// $this->answer->setQuizId($quizId);
 		// 	$quizId = $this->quizId;
-			$this->answer->teacherSessionResult($quizId);
+			$this->quizResult($quizId);
+			// $this->teacherSessionResult($quizId);
 
 		} else {
-			$this->answer->allResults();
+			$this->allResults();
 		}
 	} 
 		
@@ -106,11 +114,6 @@ class ResultController extends Controller {
 				$clef = 1;
 			}
 			
-/*			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root');
-			$sqlTitle = "SELECT title FROM choices WHERE id = '$key'";
-			$statementTitle = $pdo->prepare($sqlTitle);
-			$statementTitle->execute(); 
-			$resultsTitle = $statementTitle->fetchAll(); */
 			$resultsTitle = $this->answer->findTitle($key);
 			foreach ($resultsTitle[0] as $key2 => $value2) {
 				echo ('<span style="font-size: 20px;"><strong>' . $value2 . '</strong></span>');
@@ -129,13 +132,6 @@ class ResultController extends Controller {
 
 
 	public function calculNoteStudent($userId, $quizId) {
-
-		/* $sqlUserQuiz = "SELECT u.last_name, u.first_name, q.title FROM quizs q, users u  
-		WHERE (u.id = '1') AND (q.user_id = u.id) AND (q.id = '1')";
-
-		$statementUserQuiz = $pdo->prepare($sqlUserQuiz);
-		$statementUserQuiz->execute();
-		$resultUserQuiz = $statementUserQuiz->fetchAll(); */
 
 		$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
 		foreach ($resultUserQuiz as $key => $value) {
@@ -278,20 +274,25 @@ class ResultController extends Controller {
 				// Calcul de la moyenne de tous les scores réalisés
 
 				foreach ($data as $key => $value) {
-					$totalScore += $value;
+					foreach ($value as $keyy => $valuee) {
+						$totalScore += $valuee;
 					}
+				}
 				$scoreMoyen = $totalScore / $numberScore;
 
 				
 				// Calcul de l'écart-type de tous les scores réalisés
 
 				foreach ($data as $key => $value) {
-					$base = $value - $scoreMoyen;
+					foreach ($value as $keyz => $valuez) {
+					$base = $valuez - $scoreMoyen;
 					$ecart += pow($base, 2);
 					}
+				}
 				$ecartMoy = $ecart / $numberScore;
 				$ecartType = sqrt($ecartMoy);
-			
+				print_r($scoreMoyen);
+				print_r($ecartType);
 				return [$scoreMoyen, $ecartType];
 			}
 		}

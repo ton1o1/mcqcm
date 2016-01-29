@@ -219,7 +219,7 @@ public function list_quizs($userId)
 			$sqlAll = "SELECT score FROM sessions";
 			$statementAll = $this->dbh->prepare($sqlAll);
 			$statementAll->execute();
-			$resultAll = $statement->fetchAll();
+			$resultAll = $statementAll->fetchAll();
 			return $resultAll;
 			}
 		
