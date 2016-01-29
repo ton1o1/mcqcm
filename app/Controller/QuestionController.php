@@ -200,8 +200,6 @@ class QuestionController extends Controller
 
 
 
-
-
 	/**
 	 * Select the first 5 results of a title search among questions
 	 */
@@ -210,7 +208,16 @@ class QuestionController extends Controller
 		$questionManager = new \Manager\QuestionManager();
 
 		//search a Question by a string
-		$questionManager->searchQuestion($_GET["input"]);
+		$array = $questionManager->searchQuestion($_GET["input"]);
+		
+		$this->showJson($array);
+
+		// $statementJson = json_encode($array);
+		// header("Content-Type: application/json");
+		// echo $statementJson;
+		// echo $statementJson;
+		// echo $array;
+
 	}
 //
 

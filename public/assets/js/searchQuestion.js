@@ -14,15 +14,19 @@ $searchQuestion.on("keyup", function(e){
 		"data" : { //ecrit automatiquement ?foo=bar à la fin de l'url
 			"input" : $searchQuestionVal
 		},
-		"datatype": 'json', 
+		"dataType": 'json', 
 		"type": "GET" //peut-être POST également
 	})
 	.done(function(response){ 
 	//$response ici récupère la réponse de la requête AJAX
+
 		console.log(response)
 		console.log("debut " + response + " fin");
-		var array = JSON.parse(response);
-		console.log(array[0].title);
+		// var array = JSON.parse(response);
+		// 
+		console.log(response[0].title);
+
+
 	})
 	.fail(function(){
 		console.log("FAIL");

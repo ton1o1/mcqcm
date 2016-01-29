@@ -45,32 +45,28 @@
 		 * @return un fichier JSON 
 		 */
 		public function searchQuestion($title){
-				//title is actually regex
+			//title is actually regex
 
-				$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
+			$sql = "SELECT * FROM questions WHERE title LIKE :keyword ORDER BY title";
 
-				if (!empty($orderBy)){
+			if (!empty($orderBy)){
 		
-					//sécurisation des paramètres, pour éviter les injections SQL
-					if(!preg_match("#^[a-zA-Z0-9_$]+$#", $orderBy)){
-						die("invalid orderBy param");
-					}
-					$orderDir = strtoupper($orderDir);
+				//sécurisation des paramètres, pour éviter les injections SQL
+				if(!preg_match("#^[a-zA-Z0-9_$]+$#", $orderBy)){
+					die("invalid orderBy param");
 				}
-
-
-				$sth = $this->dbh->prepare($sql);
-				$sth->execute([
-					":keyword" => "%" . $title . "%"
-				]);
-		
-				$array = $sth->fetchAll();
-				
-				$statementJson = json_encode($array);
-				//header("Content-Type: application/json");
-				echo $statementJson;
-				// return $array;
+				$orderDir = strtoupper($orderDir);
 			}
+
+
+			$sth = $this->dbh->prepare($sql);
+			$sth->execute([
+				":keyword" => "%" . $title . "%"
+			]);
+		
+			return $sth->fetchAll();
+	
+		}
 
 
 	// $searchInput = "%" . $_GET['input'] . "%" ;
