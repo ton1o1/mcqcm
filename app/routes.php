@@ -24,7 +24,7 @@
         ['GET|POST', '/quiz/[i:quizId]/delete', 'Quiz#delete', 'quiz_delete'], // delete quiz by id
 
         // Skill
-        ['POST', '/skill/search', 'Skill#search', 'skill_search'],                // search skills by tag (POST data received with ajax requests, submitted by homepage form)
+        ['POST', '/skill/search/[source]?', 'Skill#search', 'skill_search'],                // search skills by tag (POST data received with ajax requests, submitted by homepage form)
 
         // Question
         ['GET|POST', '/question/create/quiz/[i:quizId]', 'Question#create', 'question_create'],

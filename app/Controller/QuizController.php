@@ -77,7 +77,7 @@ class QuizController extends Controller
         // Dev mode END
 
         // If form submitted
-        if(!empty($_POST['quiz'])){
+        if(!empty($_POST['quiz']['submit'])){
 
             $validation = $this->validator->check($_POST['quiz']);
 
