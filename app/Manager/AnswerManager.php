@@ -147,6 +147,24 @@ public function list_quizs($userId)
 		return $sth->fetchAll();
 		}
 
+/*	public function quizSession($sess)
+		{
+		$sqlQuizList = "SELECT quiz_id FROM sessions WHERE id='$sess'";
+		$sth = $this->dbh->prepare($sqlQuizList);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+*/
+
+	public function countQuizUser($useI, $quiI) 
+	{
+		$sqlCountQuizUser = "SELECT count(*) FROM sessions WHERE (user_id='$useI' AND quiz_id='$quiI')";
+		$sth = $this->dbh->prepare($sqlCountQuizUser);
+		$sth->execute();
+		return $sth->fetchAll();
+	}
+
+
 	public function userQuizScore($uId)
 		{
 		$sqlQuizScore = "SELECT score FROM sessions WHERE user_id='$uId'";

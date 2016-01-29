@@ -50,7 +50,7 @@ class ResultController extends Controller {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
 			if ($dateStop) {
 				$this->studentSessionResult($userId, $sessionId);
-				} else {redirect('home');}
+				} else {$this->redirectToRoute('home');}
 		} else {$this->studentResult($userId);}
 	}
 
@@ -172,15 +172,15 @@ class ResultController extends Controller {
 	}
 
 
-
-
 	public function studentSessionResult($userId, $sessionId) {
 		// $this->answer->setTable('sessions');
 		$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
 		$quizId = intval($quizI);
-		echo($quizId);
-		$score = $this->calculNoteStudent($userId, $quizId);
-		$this->answer->student_score_record($userId, $sessionId, $score);
+		$nbQuizUser = $this->answer->countQuizUser($userId, $quizId);
+		if ($nbQuizUser >= 1) {
+			$score = $this->calculNoteStudent($userId, $quizId);
+			$this->answer->student_score_record($userId, $sessionId, $score);
+		}
 	}
 
 	
