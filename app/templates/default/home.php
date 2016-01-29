@@ -2,6 +2,8 @@
 
 <?php $this->start('main_content') ?>
 
+<?= !empty($alerts) ? $alerts : '' ?>
+
 <div class="jumbotron">
  	<h1>On se fait un quiz ?</h1>
 	<p>Dis-moi quelles sont tes compétences, et voyons ce que tu vaut vraiment !</p>

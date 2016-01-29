@@ -113,7 +113,7 @@
 
     <!-- Begin page content -->
     <section class="container global-content">
-      <?= $this->section('main_content') ?>
+        <?= $this->section('main_content') ?>
     </section>
 
     <footer class="footer">

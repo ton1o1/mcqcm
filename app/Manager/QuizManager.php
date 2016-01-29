@@ -73,7 +73,22 @@ class QuizManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
-    public function lastId(){
+    public function findAllByTags($tags)
+    {
+        foreach($tags as $skill){
+            $in .= $skill . ',';
+        }
+
+        $sql = "SELECT * FROM " . $this->table . ", quizskills WHERE quizs.is_active = :isActive AND quizskills.quiz_id = quizs.id AND quizskills.skill_id IN(" . $in . ") ORDER BY quizs.id DESC";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":isActive", true);
+        $sth->execute();
+
+        return $sth->fetchAll();
+    }
+
+    public function lastId()
+    {
         return $this->dbh->lastInsertId();
     }
 }

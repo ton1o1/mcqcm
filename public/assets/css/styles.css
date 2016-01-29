@@ -46,10 +46,6 @@ body > .container {
     margin-top: -38px;
 }
 
-#skillSearch, #skillSearchAdd{
-    width: 100%;
-}
-
 .clearfix{
     clear: both;
 }
