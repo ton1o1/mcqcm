@@ -10,6 +10,8 @@
 		['GET', '/questionliste', 'Question#questionList', 'question_list'],
 		//route to question search
 		['GET', '/questionrecherche', 'Question#questionSearch', 'question_search'],
+		//route to admin generate data page using Faker
+		['GET', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
 		
 		//route to a question file
 		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
