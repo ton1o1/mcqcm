@@ -32,7 +32,7 @@
   </div>
   <div class="form-group pull-right">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" name="quiz[submit]" value="1" class="btn btn-primary">Etape 2 ></button>
+      <button type="submit" name="quiz[submit]" value="1" class="btn btn-primary">Etape 2 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
     </div>
   </div>
 </form>

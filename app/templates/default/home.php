@@ -25,14 +25,14 @@
 
 <?php
 if(!empty($quizzes)){
-	echo '<ul class="list-group">';
+	echo '<div class="list-group">';
 	                
 	foreach($quizzes as $value){
 		$url = $this->url('quiz_view', ['quizId' => $value['id'], 'quizSlug' => $value['title'][0]]);
-		echo '<li class="list-group-item"><a href="'.$url.'" title="Consulter le quiz : '.$value['title'][1].'">'.$value['title'][1].'</a></li>';
+		echo '<a href="'.$url.'" class="list-group-item" title="Consulter le quiz : '.$value['title'][1].'">'.$value['title'][1].'</a>';
 	}
 
-	echo '</ul>';
+	echo '</div>';
 }
 ?>
 

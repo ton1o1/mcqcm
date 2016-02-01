@@ -3,7 +3,7 @@
 <?php $this->start('main_content') ?>
 	
 	<div class="page-header">
-	<a class="btn btn-danger pull-right" href="<?= $this->url('quiz_delete', ['quizId' => $quiz['id']]) ?>" role="button">Supprimer</a>
+	<a class="btn btn-danger pull-right" href="<?= $this->url('quiz_delete', ['quizId' => $quiz['id']]) ?>" role="button"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>Supprimer</a>
   		<h1>Editer un quiz</h1>
 	</div>
 	
@@ -40,7 +40,7 @@
 
   <div class="form-group pull-right">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" name="quiz[submit]" value="1" class="btn btn-primary">Sauvegarder</button>
+      <button type="submit" name="quiz[submit]" value="1" class="btn btn-primary"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Sauvegarder</button>
     </div>
   </div>
 </form>

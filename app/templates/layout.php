@@ -77,8 +77,8 @@
                     class="glyphicon glyphicon-comment"></span>Quizzes <b class="caret"></b>
                 </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span>Mes quizzes</a></li>
-                        <li><a href="<?= $this->url("quiz_create") ?>"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
+                        <li><a href="<?= $this->url('quiz_view_user', ['userId' => 1]) ?>" title="Voir les quizzes que j'ai créé"><span class="glyphicon glyphicon-question-sign"></span>Mes quizzes</a></li>
+                        <li><a href="<?= $this->url('quiz_create') ?>" title="Créer un nouveau quiz"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
@@ -99,7 +99,7 @@
                         <li><a href="#"><span class="glyphicon glyphicon-user"></span>Profil</a></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cog"></span>Mon compte</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-off"></span>Déconnexion</a></li>
+                        <li><a href="<?= $this->url('user_logout') ?>"><span class="glyphicon glyphicon-off"></span>Déconnexion</a></li>
                     </ul>
                 </li>
             </ul>

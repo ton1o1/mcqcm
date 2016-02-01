@@ -2,26 +2,13 @@
 
 <?php $this->start('main_content') ?>
 
-	<div class="page-header">
-  		<h1><?= $quiz['title'] ?></h1>
-	</div>
+<?= !empty($alerts) ? $alerts : '' ?>
 
-	<?= !empty($alerts) ? $alerts : '' ?>
-
-<?php
-if($w_user && $w_user['id'] == $quiz['creator_id']){
-?>
-
-<ul class="nav nav-tabs">
-  <li role="presentation" class="active"><a href="#">Voir</a></li>
-  <li role="presentation"><a href="<?=$this->url('quiz_edit', ['quizId' => $quiz['id']])?>">Editer</a></li>
-</ul>
-
-<?php
-}
-?>
-
-<p><?=$quiz['description']?></p>
+<div class="jumbotron clearfix">
+  <h1><?= $quiz['title'] ?></h1>
+  <p><?=$quiz['description']?></p>
+  <p class="pull-right"><a class="btn btn-primary btn-lg" title="Lancer le quiz" href="#" role="button">Lancer le quiz !</a></p>
+</div>
 
 <?php $this->stop('main_content') ?>
 

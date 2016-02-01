@@ -80,17 +80,21 @@ class QuizController extends Controller
     /**
      * List all quizzes by user id
      */
-    // public function viewByUser($userId)
-    // {
-    //     $quizzes = $this->manager->findByUserId($userId);
+    public function viewByUser($userId)
+    {
+        $quizzes = $this->manager->findByUserId($userId);
         
-    //     if(!$quizzes){
-    //         echo 'Cet utilisateur n\'a créé aucun quiz.';
-    //     }
-    //     else{
-    //         var_dump($quizzes);
-    //     }
-    // }
+        if($quizzes){
+            $slugify = new Slugify();
+
+            foreach($quizzes as $key => $value){
+                $slug = $slugify->slugify($value['title']);
+                $quizzes[$key]['title'] = [$slug, $value['title']];
+            }
+        }
+
+        $this->show('quiz/view_user', ['quizzes' => $quizzes]);
+    }
 
     /**
      * Quiz creator form
