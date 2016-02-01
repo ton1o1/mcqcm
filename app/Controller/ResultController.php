@@ -56,13 +56,20 @@ class ResultController extends Controller {
 
 	public function viewUser($userId, $sessionId = null) {
 		
-		$this->answer->setTable('sessions');
+		// $this->answer->setTable('sessions');
+		$name = $this->answer->userName($userId);
 		if (!empty($sessionId)) {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
 			if ($dateStop) {
 				$this->studentSessionResult($userId, $sessionId);
 				} else {$this->redirectToRoute('home');}
-		} else {$this->studentResult($userId);}
+		} else {
+			$userResu = $this->studentResult($userId);
+			$resultsStu = $userResu[0];
+			$userRes = $userResu[1];
+
+			$this->show('result/individual_results', ['name' => $name, 'resultsStu' => $resultsStu, 'userRes' => $userRes]);
+		}
 	}
 
 
@@ -205,17 +212,19 @@ class ResultController extends Controller {
 	
 	public function studentResult($userId) {
 		$resultsStu = $this->medium_calculate('student', $userId);
-		print_r($resultsStu);
+		
+
+		// print_r($resultsStu);
 		// $userQuizListId = $this->answer->userQuizList($userId); 
 		// var_dump($quizListId);
 		$resultsUser = $this->answer->userQuizScore($userId);
-		foreach ($resultsUser as $kt => $vt) {
+		/*foreach ($resultsUser as $kt => $vt) {
 			foreach ($vt as $ks => $vs) {
-				echo " X ";
 				echo ($vs);
-				echo " * ";
+				echo " * "; 
 			}
-		}
+		} */
+		return [$resultsStu, $resultsUser];
 	}
 
 

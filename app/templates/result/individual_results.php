@@ -2,32 +2,16 @@
 
 <?php $this->start('main_content') ?>
 
-<form action="" method="POST" class="form-group" novalidate> 
-	<fieldset> 
-		<legend>Résultats</legend> 
-		<h2></h2> 
-		<p></p> 
-		<div> 
-
-				<label for="question-title">Résultats individuels de <?= $userId ?> pour la session <?= $sessionId ?></label> 
-				<textarea name="questionTitle" id="question-title" rows="30" cols="200" disabled><?= $this->viewUser($userId, $sessionId)?></textarea> 
-			</div> 
-			<h2>Scores</h2> 
-			 
-		<div> 
-			<label class="checkbox-inline"> 
-				<? foreach ($quizList as $key => $value) { ?>
-					<p><?= $quiz[0]['title'] ?></p> 
-				<? if (!empty($quizId)) {
-					$this->result->quizResult($quizId);}
-					} ?>
- 			
- 			 
- 		</div> 
- 	</fieldset> 
- </form> 
-
-
-
+	<p></p> 
+		<div> Résultats de <strong><?= $name ?></strong></div> 
+		<br />		
+		<div>Ce candidat a pour note moyenne : <?=$resultsStu['scoreMoyen'] ?> et pour écart-type : <?=$resultsStu['ecartType'] ?></div>
+		<br />
+		<?php foreach($userRes as $key => $value) { 
+			$resultsUser = $value['score'];
+			$quiId = $value['quiz_id'];
+			?>
+		<div>Il a obtenu à ce quiz <?=$quiId ?> une note de : <?=$resultsUser ?> sur 100.</div>
+		<?php } ?>
 
 <?php $this->stop('main_content') ?>

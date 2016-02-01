@@ -50,6 +50,18 @@ public function list_quizs($userId)
 */
 
 
+	public function userName($usId)
+		{
+		if (!is_numeric($usId)) { return false; }
+		$sql = "SELECT last_name, first_name FROM users WHERE id = '$usId'";
+		$sth = $this->dbh->prepare($sql);
+		$sth->execute();
+		$na = $sth->fetchAll();
+		$nam = $na[0]['last_name'] . " " . $na[0]['first_name'];
+		return $nam;
+		}
+
+
 	public function findQuizByUser($useid)
 		{
 		if (!is_numeric($id)) { return false; }
@@ -209,22 +221,23 @@ public function list_quizs($userId)
 
 	public function userQuizScore($uId)
 		{
-		$sqlQuizScore = "SELECT score FROM sessions WHERE user_id='$uId'";
+		$sqlQuizScore = "SELECT score, quiz_id FROM sessions WHERE user_id='$uId'";
 		$sth = $this->dbh->prepare($sqlQuizScore);
 		$sth->execute();
 		return $sth->fetchAll();
 		}
 
+/*
 	public function user_quizs_derouler($userId) {
 
 	  	$this->table = 'quizs';
 		$resultList = $this->findAnswers('$userId')['title'];
-	/*
+	
 	  	$sqlList = "SELECT q.title FROM quizs q WHERE q.user_id = '$userId'";
 		$statementList = $pdo->prepare($sqlList);
 		$statementList->execute();
 		$resultList = $statementList->fetchAll(PDO::FETCH_COLUMN, 0);
-	*/
+	
 		$selected = '';
 		echo '<select name="quizs">',"n";
 		foreach($resultList as $key => $titleQuiz)
@@ -233,6 +246,7 @@ public function list_quizs($userId)
 		}
 			echo '</select>',"\n";
 	}
+*/
 
 	public function student_result_viewer($studentId, $sessionId)
 		{
