@@ -37,10 +37,20 @@ class ResultController extends Controller {
 
 	}
 
-	public function view() {
+	public function viewInput() {
 
-		$this->show('default/results');
-	}
+		// $quizList = $this->answer->quizList();
+		$nombre = 0;
+		$quizTitle = [];
+		$quizScore = [];
+		$quizTitleScore = $this->answer->quizTitleScore();
+		foreach ($quizTitleScore as $key=>$val) {
+			$nombre++;
+			$quizTitle[$nombre] = $val['title'];
+			$quizScore[$nombre] = $val['score'];
+			}
+		$this->show('result/input_results', ['nombre' => $nombre, 'quizTitle' => $quizTitle, 'quizScore' => $quizScore]);
+		}
 
 
 	public function viewUser($userId, $sessionId = null) {
@@ -302,9 +312,10 @@ class ResultController extends Controller {
 				}
 				$ecartMoy = $ecart / $numberScore;
 				$ecartType = sqrt($ecartMoy);
-				print_r($scoreMoyen);
-				print_r($ecartType);
-				return [$scoreMoyen, $ecartType];
+				$this->show('result/resulttemplate', ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType]);
+				// print_r($scoreMoyen);
+				// print_r($ecartType);
+				// return [$scoreMoyen, $ecartType];
 			}
 		}
 

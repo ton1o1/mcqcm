@@ -101,13 +101,27 @@ public function list_quizs($userId)
 			return $resultUserQuiz;
 		}
 
-
+/*
 	public function list_choices_user_quiz($userId, $quizId)
 		{
 			if ((!is_numeric($userId)) || (!is_numeric($quizId))) { return false; }
 
 			$sql = "SELECT a.choices, a.question_id FROM quizs__questions q, answers a 
 			WHERE (q.question_id = a.question_id) AND (a.user_id = '$userId') AND (q.quiz_id = '$quizId')";
+			$statement = $this->dbh->prepare($sql);
+			$statement->execute();
+			$result = $statement->fetchAll();
+			return $result;
+		}
+
+*/ 
+
+	public function list_choices_user_quiz($userId, $sessId)
+		{
+			if ((!is_numeric($userId)) || (!is_numeric($sessId))) { return false; }
+
+			$sql = "SELECT a.choices, a.question_id FROM answers a 
+			WHERE (a.user_id = '$userId') AND (a.session_id = '$sessId')";
 			$statement = $this->dbh->prepare($sql);
 			$statement->execute();
 			$result = $statement->fetchAll();
@@ -138,6 +152,24 @@ public function list_quizs($userId)
 		$sth->execute();
 		return $sth->fetchAll();
 		}
+
+	public function quizTitle($quizId)
+		{
+		$sqlQuizTitle = "SELECT title FROM quizs where id='$quizId'";
+		$sth = $this->dbh->prepare($sqlQuizTitle);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
+
+	public function quizTitleScore()
+		{
+		$sqlQuizTitleTot = "SELECT q.title, s.score FROM quizs q, sessions s where s.quiz_id=q.id";
+		$sth = $this->dbh->prepare($sqlQuizTitleTot);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
+
 
 	public function userQuizList($usId)
 		{
