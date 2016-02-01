@@ -13,116 +13,65 @@ class QuestionController extends Controller
 	 */
 	public function questionBuild()
 	{ 
-		if($_POST)
-		{
-			debug($_POST);
-			//if variables exist, I init them
-			if(!empty($_POST['questionTitle'])){$questionTitle = $_POST['questionTitle'];}
-			if(!empty($_POST['questionType'])){$questionType = $_POST['questionType'];}
-			if(!empty($_POST['quizId'])){$quizId = $_POST['quizId'];}			
+
+		//If $_POST exists, test the keys one by one
+		if($_POST){
+
+			if(!empty($_POST['questionTitle']))
+			{
+				$questionTitle = $_POST['questionTitle'];
+			} else { $errorMsg['title'] = "KO-title ";}
+
+			//if(!empty($_POST['questionType'])){
+			//	$questionType = $_POST['questionType'];
+			//} else { $edrrorMsg['type'] = "KO-type ";}
+
 			//***choices values are stored in an array
-			if(!empty($_POST['choice1'])){$choices[1] = $_POST['choice1'];}
-			if(!empty($_POST['choice2'])){$choices[2] = $_POST['choice2'];}
-			if(!empty($_POST['choice3'])){$choices[3] = $_POST['choice3'];}
+			if(!empty($_POST['choice1'])){
+				$choices[1] = $_POST['choice1'];
+			} else { $errorMsg['choice1'] = "KO-choix1";}
 
-			//***answers that are true are also stored in an array, 
+			if(!empty($_POST['choice2'])){
+				$choices[2] = $_POST['choice2'];
+			} else { $errorMsg['choice2'] = "KO-choix2";}
+
+			if(!empty($_POST['choice3'])){
+				$choices[3] = $_POST['choice3'];
+			} else { $errorMsg['choice3'] = "KO-choix3";}
+
+			if(!empty($_POST['choice4'])){
+				$choices[4] = $_POST['choice4'];
+			} else { $errorMsg['choice4'] = "KO-choix4";}
+
+			debug($_POST);
+			//answers that are true are also stored in an array, 
 			if(!empty($_POST['solution1'])){
-				$solutions[1] = true;
-				$_POST['solution1'] = "checked";
-			} else {$solutions[1] = "";}
+				$solutions[1] = "checked"; //or true?
+			}
 			if(!empty($_POST['solution2'])){
-				$solutions[2] = true;
-				$_POST['solution2'] = "checked";
-			} else {$solutions[2] = "";}
+				$solutions[2] = "checked"; //or true?
+			}
 			if(!empty($_POST['solution3'])){
-				$solutions[3] = true;
-				$_POST['solution3'] = "checked";
-			} else {$solutions[3] = "";}
-
-
-		} else 
-		{
-			//if they doesn't exist, they're false
-			$_POST['questionTitle']= false;
-			//***
- 			$_POST['choice1'] = false;
-			$_POST['choice2'] = false;
-			$_POST['choice3'] = false;
-		}
-
-		//init    
-		$errorMessages = [];
-
-		if(empty($questionTitle)){
-			$errorMessages['title'] = "L'intitulé de la question est vide.";
-		}
-		//***test if at least one choice has been checked as a good solution
-		if(empty($solutions[1]) && empty($solutions[2]) && empty($solutions[3])){
-			$errorMessages['solution'] = "Choisissez au moins une bonne réponse.";
-		}
-		//test if all choices have been written
-		if (empty($choices[1])){
-			$errorMessages['choice1'] = "Le choix 1 n'a pas été rédigé.";
-		}
-		if (empty($choices[2])){
-			$errorMessages['choice2'] = "Le choix 2 n'a pas été rédigé.";
-		}
-		if (empty($choices[3])){
-			$errorMessages['choice3'] = "Le choix 3 n'a pas été rédigé.";
-		}		
-		debug($errorMessages);
-		//init finalErrorMessage
-		$finalErrorMessage = ""; 
-		$successMessage = "";
-		//no error messages means it's okay to insert data
-		if(empty($errorMessages))
-		{
-			$questionManager = new \Manager\QuestionManager();
-			//insert question title in question table
-				if($_POST){
-					$questionManager->insert([
-						//"quiz_id" => $quizId,
-						"creator_id" => 1, //needs to be $_SESSION['id']
-						"title" => $questionTitle,
-					]);
-	
-			//***insert choices in choices table
-				//step 1 : select the last index of the question table
-				$lastId = $questionManager->findLast();
-				
-				//step 2 : insert choice in choice table
-				$choiceManager = new \Manager\ChoiceManager();
-				//$questionManager->setTable('choices');
-				if($_POST){
-					foreach ($choices as $k => $v) {
-						$choiceManager->insert([
-							"question_id" => $lastId['id'],
-							"title" => $v,
-							"is_true" => $solutions[$k],
-							"is_active" => 1,
-						]); 
-					}
-				}
+				$solutions[3] = "checked"; //or true?
+			}
+			if(!empty($_POST['solution4'])){
+				$solutions[4] = "checked"; //or true?
 			}
 
-			$successMessage = "Votre question a été ajoutée à la base de données.";
-		} else 
-		{
-			if ($_POST){
-
-				foreach ($errorMessages as $key => $errorMessage) {
-					$finalErrorMessage .= $errorMessage . "<br/>";
-				}
+			if(empty($_POST['solution1']) && empty($_POST['solution2']) && empty($_POST['solution3']) && empty($_POST['solution4'])){
+				$errorMsg['solution'] = "KO solution";
 			}
+
 		}
-		//debug($_POST);
-		//debug($successMessage);
-		//the show method must always be at the end of the function that display because it contains a die() 
-		$this->show('quiz/question_build', [
-			"errorMessages" => $errorMessages,
-			"finalErrorMessage" => $finalErrorMessage,
-			"dataPosted" => $_POST,
-			"successMessage" => $successMessage,
+		if(!isset($errorMsg)){$errorMsg=NULL;}
+		debug($errorMsg);
+		$insertion = "insertion !!!";
+
+
+		$this->show('question/question_build', [
+			"insertion" => $insertion,
+			"errorMsg" => $errorMsg,
+			"written" => $_POST,
 		]);
 	}
 
@@ -153,7 +102,7 @@ class QuestionController extends Controller
 					</tr>";
 		}
 
-		$this->show('quiz/question_list', ["rows" => $rows]);		
+		$this->show('question/question_list', ["rows" => $rows]);		
 	}
 	//old line : <a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
 	/**
@@ -194,7 +143,7 @@ class QuestionController extends Controller
 		]);
 		} else
 		{
-			$this->show('quiz/question_fail', [
+			$this->show('question/question_fail', [
 				"questionId" => $questionId,
 			]);
 		}
