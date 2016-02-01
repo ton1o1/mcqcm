@@ -38,10 +38,9 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>Dashboard</a></li>
-                <li><a href="#"><span class="glyphicon glyphicon-calendar"></span>Calendar</a></li>
+            <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>Accueil</a></li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-list-alt"></span>Widgets <b class="caret"></b></a>
+                    class="glyphicon glyphicon-list-alt"></span>Catégories <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="http://www.jquery2dotnet.com">Action</a></li>
                         <li><a href="http://www.jquery2dotnet.com">Another action</a></li>
@@ -53,7 +52,7 @@
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-search"></span>Search <b class="caret"></b></a>
+                    class="glyphicon glyphicon-search"></span>Recherche <b class="caret"></b></a>
                     <ul class="dropdown-menu" style="min-width: 300px;">
                         <li>
                             <div class="row">
@@ -75,35 +74,32 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-comment"></span>Chats <span class="label label-primary">42</span>
+                    class="glyphicon glyphicon-comment"></span>Quizzes <b class="caret"></b>
                 </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="label label-warning">7:00 AM</span>Hi :)</a></li>
-                        <li><a href="#"><span class="label label-warning">8:00 AM</span>How are you?</a></li>
-                        <li><a href="#"><span class="label label-warning">9:00 AM</span>What are you doing?</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" class="text-center">View All</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-question-sign"></span>Mes quizzes</a></li>
+                        <li><a href="<?= $this->url("quiz_create") ?>"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-envelope"></span>Inbox <span class="label label-info">32</span>
+                    class="glyphicon glyphicon-envelope"></span>Résultats <span class="label label-primary">32</span>
                 </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="label label-warning">4:00 AM</span>Favourites Snippet</a></li>
-                        <li><a href="#"><span class="label label-warning">4:30 AM</span>Email marketing</a></li>
-                        <li><a href="#"><span class="label label-warning">5:00 AM</span>Subscriber focused email
-                            design</a></li>
+                        <li><a href="#"><span class="label label-success">81 %</span>PHP orienté objet</a></li>
+                        <li><a href="#"><span class="label label-danger">47 %</span>Opquast</a></li>
+                        <li><a href="#"><span class="label label-warning">62 %</span>Javascript</a></li>
+                        <li><a href="#"><span class="label label-success">90 %</span>HTML & CSS</a></li>
                         <li class="divider"></li>
-                        <li><a href="#" class="text-center">View All</a></li>
+                        <li><a href="#" class="text-center">Voir tous mes résultats</a></li>
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>Profile</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span>Settings</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span>Profil</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span>Mon compte</a></li>
                         <li class="divider"></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-off"></span>Logout</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-off"></span>Déconnexion</a></li>
                     </ul>
                 </li>
             </ul>

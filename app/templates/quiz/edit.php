@@ -3,6 +3,7 @@
 <?php $this->start('main_content') ?>
 	
 	<div class="page-header">
+	<a class="btn btn-danger pull-right" href="<?= $this->url('quiz_delete', ['quizId' => $quiz['id']]) ?>" role="button">Supprimer</a>
   		<h1>Editer un quiz</h1>
 	</div>
 	
@@ -36,9 +37,10 @@
       <?= !empty($errors['description']) ? '<p class="text-danger">' . $errors['description'] . '</p>' : '' ?>
     </div>
   </div>
-  <div class="form-group">
+
+  <div class="form-group pull-right">
     <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" name="quiz[submit]" value="1" class="btn btn-default">Sauvegarder</button>
+      <button type="submit" name="quiz[submit]" value="1" class="btn btn-primary">Sauvegarder</button>
     </div>
   </div>
 </form>

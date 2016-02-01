@@ -229,7 +229,7 @@ class QuizController extends Controller
                         $this->alerts->add(['type' => 'success', 'content' => 'Quiz modifié avec succès.']);
                         
                         // Display form
-                        $this->show('quiz/edit', ['quiz' => $_POST['quiz'], 'alerts' => $this->alerts->getAll()]);
+                        $this->show('quiz/edit', ['quiz' => $quiz, 'data' => $_POST['quiz'], 'alerts' => $this->alerts->getAll()]);
                     }
                     else{
                         // Flash message
@@ -281,7 +281,7 @@ class QuizController extends Controller
             if($loggedUser['id'] == $quiz['creator_id']){
 
                 // Confirmation has been sent ?
-                if($_SERVER['REQUEST_METHOD'] == 'POST'){
+                if(!empty($_POST['quiz']['submit'])){
 
                     // Is he sure wants to delete ?
                     if(!empty($_POST['sure']) && $_POST['sure'] == 1){
@@ -300,7 +300,7 @@ class QuizController extends Controller
                     }
                 }
 
-                $this->show('quiz/delete', ['data' => $quiz, 'alerts' => $this->alerts->getAll()]);
+                $this->show('quiz/delete', ['quiz' => $quiz, 'alerts' => $this->alerts->getAll()]);
 
             }
             else {
