@@ -3,6 +3,7 @@
 namespace Controller;
 
 use \W\Controller\Controller;
+use Cocur\Slugify\Slugify;
 
 class QuizController extends Controller
 {
@@ -25,10 +26,19 @@ class QuizController extends Controller
     public function search()
     {
         $quizzes = '';
-        
+
         if(!empty($_GET['tags'])){
 
+            $slugify = new Slugify();
+
             $quizzes = $this->manager->findAllByTags($_GET['tags']);
+
+            if($quizzes){
+                foreach($quizzes as $key => $value){
+                    $slug = $slugify->slugify($value['title']);
+                    $quizzes[$key]['title'] = [$slug, $value['title']];
+                }
+            }
         
         }
 
@@ -39,12 +49,12 @@ class QuizController extends Controller
     /**
      * List all quizzes or display one quiz by id, if given
      */
-    public function view($quizId = null)
+    public function view($quizId = null, $quizSlug = null)
     {
-        if($quizId){
+        if($quizId && $quizSlug){
             $quiz = $this->manager->findActive($quizId);
 
-            if(!$quiz){
+            if(!$quiz || $quiz['slug'] != $quizSlug){
                 $this->showNotFound();
             }
 
@@ -54,6 +64,15 @@ class QuizController extends Controller
         $orderBy = 'id';
         $orderDir = 'DESC'; //Display newer first
         $quizzes = $this->manager->findAllActive($orderBy, $orderDir);
+
+        if($quizzes){
+            $slugify = new Slugify();
+
+            foreach($quizzes as $key => $value){
+                $slug = $slugify->slugify($value['title']);
+                $quizzes[$key]['title'] = [$slug, $value['title']];
+            }
+        }
 
         $this->show('quiz/view_all', ['quizzes' => $quizzes]);
     }
@@ -89,6 +108,8 @@ class QuizController extends Controller
 
             if($validation['success']){
 
+                $slugify = new Slugify();
+
                 // Get user
                 // Dev mode START
                 // $loggedUser = $this->getUser();
@@ -103,8 +124,10 @@ class QuizController extends Controller
                 $this->manager->insert([
                     'creator_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
+                    'date_updated' => $dateCreated->format('Y-m-d H:i:s'),
                     'title' => $_POST['quiz']['title'],
                     'description' => $_POST['quiz']['description'],
+                    'slug' => $slugify->slugify($_POST['quiz']['title']),
                     'is_active' => true
                 ]);
 
@@ -181,23 +204,32 @@ class QuizController extends Controller
         if($quiz){
             
             // User is the owner ?
-            if($loggedUser['id'] == $quiz['user_id']){
+            if($loggedUser['id'] == $quiz['creator_id']){
 
                 // If form submitted
-                if(!empty($_POST['quiz'])){
+                if(!empty($_POST['quiz']['submit'])){
 
                     $validation = $this->validator->check($_POST['quiz']);
 
                     if($validation['success']){
 
-                        // Update quiz in database
-                        $this->manager->update(['title' => $_POST['title']], $quizId, true);
+                        $slugify = new Slugify();
+
+                        // Get date now
+                        $dateUpdated = new \DateTime();
+
+                        $this->manager->update([
+                            'date_updated' => $dateUpdated->format('Y-m-d H:i:s'),
+                            'title' => $_POST['quiz']['title'],
+                            'description' => $_POST['quiz']['description'],
+                            'slug' => $slugify->slugify($_POST['quiz']['title']),
+                        ], $quizId, true);
 
                         // Flash message
                         $this->alerts->add(['type' => 'success', 'content' => 'Quiz modifié avec succès.']);
-
+                        
                         // Display form
-                        $this->show('quiz/edit', ['quiz' => $quiz, 'alerts' => $this->alerts->getAll()]);
+                        $this->show('quiz/edit', ['quiz' => $_POST['quiz'], 'alerts' => $this->alerts->getAll()]);
                     }
                     else{
                         // Flash message
@@ -246,7 +278,7 @@ class QuizController extends Controller
         if($quiz){
             
             // User is the owner ?
-            if($loggedUser['id'] == $quiz['user_id']){
+            if($loggedUser['id'] == $quiz['creator_id']){
 
                 // Confirmation has been sent ?
                 if($_SERVER['REQUEST_METHOD'] == 'POST'){

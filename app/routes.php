@@ -17,11 +17,10 @@
         
         // Quiz
         ['GET', '/quiz/search', 'Quiz#search', 'quiz_search'],                // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
-        ['GET', '/quiz/[i:quizId]?/[a:quizSlug]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id
+        ['GET', '/quiz/view/[i:quizId]?/[:quizSlug]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id
         ['GET|POST', '/quiz/create', 'Quiz#create', 'quiz_create'],            // manual creator
-        // ['GET|POST', '/quiz/generate', 'Quiz#generate', 'quiz_generate'],      // automatic generator
-        ['GET|POST', '/quiz/[i:quizId]/edit', 'Quiz#edit', 'quiz_edit'],       // edit quiz by id
-        ['GET|POST', '/quiz/[i:quizId]/delete', 'Quiz#delete', 'quiz_delete'], // delete quiz by id
+        ['GET|POST', '/quiz/edit/[i:quizId]', 'Quiz#edit', 'quiz_edit'],       // edit quiz by id
+        ['GET|POST', '/quiz/delete/[i:quizId]', 'Quiz#delete', 'quiz_delete'], // delete quiz by id
 
         // Skill
         ['POST', '/skill/search/[source]?', 'Skill#search', 'skill_search'],                // search skills by tag (POST data received with ajax requests, submitted by homepage form)

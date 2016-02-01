@@ -38,7 +38,3 @@
 </form>
 
 <?php $this->stop('main_content') ?>
-
-<?php $this->start('scripts') ?>
-
-<?php $this->stop('scripts') ?>

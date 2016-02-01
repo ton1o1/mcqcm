@@ -28,8 +28,8 @@ if(!empty($quizzes)){
 	echo '<ul class="list-group">';
 	                
 	foreach($quizzes as $value){
-		$url = $this->url('quiz_view', ['quizId' => $value['id']]);
-		echo '<li class="list-group-item"><a href="'.$url.'" title="Consulter le quiz : '.$value['title'].'">'.$value['title'].'</a></li>';
+		$url = $this->url('quiz_view', ['quizId' => $value['id'], 'quizSlug' => $value['title'][0]]);
+		echo '<li class="list-group-item"><a href="'.$url.'" title="Consulter le quiz : '.$value['title'][1].'">'.$value['title'][1].'</a></li>';
 	}
 
 	echo '</ul>';
