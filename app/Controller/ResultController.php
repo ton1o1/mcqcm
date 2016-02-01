@@ -174,11 +174,11 @@ class ResultController extends Controller {
 				$tabSolution[$ky] = intval($vaa);
 				}
 			} 
-
+			$m++;
 			$noteTotale += $this->valCompareQuestion($tabChoice, $tabSolution);
 		} 
 
-		$noteQuiz = $noteTotale * 100 / 20;
+		$noteQuiz = $noteTotale * 100 / $m;
 
 		echo ('<br />' . "\n");
 		echo ('<h2 style="color:red;"><strong>' . "Note : " . $noteQuiz . "/100" . '</strong></h2>');
