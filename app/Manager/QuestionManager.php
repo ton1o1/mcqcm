@@ -19,9 +19,9 @@
 			return $sth->fetch();
 		}
 		//Fonction de guillaume pour récupérer l'id de la dernière ligne insérée
-		// public function lastId(){
-		// 	return $this->dbh->lastInsertId();
-		// }
+		public function lastId(){
+			return $this->dbh->lastInsertId();
+		}
 
 
 

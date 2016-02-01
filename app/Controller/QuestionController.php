@@ -6,7 +6,7 @@ use \W\Controller\Controller;
 
 class QuestionController extends Controller
 {
-		// QUESTION BUILD
+	// QUESTION BUILD
 	/**
 	 * Question builder page
 	 * 3 main parts in this function : test $_POST, insert question and choices, refill the inputs if the submit wasn't ok.
@@ -20,58 +20,69 @@ class QuestionController extends Controller
 			if(!empty($_POST['questionTitle']))
 			{
 				$questionTitle = $_POST['questionTitle'];
-			} else { $errorMsg['title'] = "KO-title ";}
-
-			//if(!empty($_POST['questionType'])){
-			//	$questionType = $_POST['questionType'];
-			//} else { $edrrorMsg['type'] = "KO-type ";}
+			} else 
+			{
+				$errorMsg['title'] = "Veuillez saisir un intitulé de question.";
+			}
 
 			//***choices values are stored in an array
 			if(!empty($_POST['choice1'])){
 				$choices[1] = $_POST['choice1'];
-			} else { $errorMsg['choice1'] = "KO-choix1";}
+			} else 
+			{
+				$errorMsg['choice1'] = "Veuillez saisir le champ 1.";
+			}
 
 			if(!empty($_POST['choice2'])){
 				$choices[2] = $_POST['choice2'];
-			} else { $errorMsg['choice2'] = "KO-choix2";}
+			} else 
+			{
+				$errorMsg['choice2'] = "Veuillez saisir le champ 2.";
+			}
 
 			if(!empty($_POST['choice3'])){
 				$choices[3] = $_POST['choice3'];
-			} else { $errorMsg['choice3'] = "KO-choix3";}
+			} else 
+			{
+				$errorMsg['choice3'] = "Veuillez saisir le champ 3.";
+			}
 
 			if(!empty($_POST['choice4'])){
 				$choices[4] = $_POST['choice4'];
-			} else { $errorMsg['choice4'] = "KO-choix4";}
+			} else 
+			{
+				$errorMsg['choice4'] = "Veuillez saisir le champ 4.";
+			}
 
-			debug($_POST);
+			//debug($_POST);
 			//answers that are true are also stored in an array, 
 			if(!empty($_POST['solution1'])){
-				$solutions[1] = "checked"; //or true?
+				$solutions[1] = "checked";
 			} else
 			{
 				$solutions[1] = false;
 			}
 			if(!empty($_POST['solution2'])){
-				$solutions[2] = "checked"; //or true?
+				$solutions[2] = "checked";
 			} else
 			{
 				$solutions[2] = false;
 			}
 			if(!empty($_POST['solution3'])){
-				$solutions[3] = "checked"; //or true?
+				$solutions[3] = "checked";
 			} else
 			{
 				$solutions[3] = false;
 			}
 			if(!empty($_POST['solution4'])){
-				$solutions[4] = "checked"; //or true?
+				$solutions[4] = "checked";
 			} else
 			{
 				$solutions[4] = false;
 			}
 
 			if(empty($_POST['solution1']) && empty($_POST['solution2']) && empty($_POST['solution3']) && empty($_POST['solution4'])){
-				$errorMsg['solution'] = "KO solution";
+				$errorMsg['solution'] = "Veuillez choisir au moins une bonne réponse.";
 			}
 
 			if(empty($errorMsg))
@@ -84,9 +95,9 @@ class QuestionController extends Controller
 					"title" => $questionTitle,
 				]);
 		
-				//***insert choices in choices table
-					//step 1 : select the last index of the question table
-				$lastId = $questionManager->findLast(); //needs to work with guillaume
+				//insert choices in choices table
+				//step 1 : select the last index of the question table
+				$lastId = $questionManager->lastId(); //needs to work with guillaume
 				
 				//step 2 : insert choice in choice table
 				$choiceManager = new \Manager\ChoiceManager();
@@ -94,7 +105,7 @@ class QuestionController extends Controller
 				if($_POST){
 					foreach ($choices as $k => $v) {
 						$choiceManager->insert([
-							"question_id" => $lastId['id'],
+							"question_id" => $lastId,
 							"title" => $v,
 							"is_true" => $solutions[$k] && true,
 							"is_active" => 1,
@@ -102,16 +113,18 @@ class QuestionController extends Controller
 						]); 
 					}
 				}
+				//enable to reset inputs if the insert succeeds
 				unset($_POST);
+				//init success msg
 				$_POST["success"] = "Votre question vient d'être ajoutée à la base.";
 			}
 
 		}
-		if(!isset($errorMsg)){$errorMsg=NULL;}
-		debug($errorMsg);
-		debug($_POST);
-
-
+		//enable not to have warning with errorMsg echoes  
+		if(!isset($errorMsg))
+		{
+			$errorMsg=NULL;
+		}
 
 		$this->show('question/question_build', [
 			//"insertion" => $insertion,
