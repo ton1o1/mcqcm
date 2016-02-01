@@ -16,14 +16,12 @@ if(!empty($quizzes)){
 		$url = $this->url('quiz_view', ['quizId' => $value['id'], 'quizSlug' => $value['title'][0]]);
 		echo '
 		<div class="panel panel-default">
-			<div class="panel-heading">
-				<h3 class="panel-title">'.$value['title'][1].'</h3>
-			</div>
 			<div class="panel-body">
-				<div class="btn-group" role="group" aria-label="...">
+				<div class="btn-group pull-left" role="group" aria-label="Options du quiz">
   					<a href="' . $url . '" role="button" class="btn btn-default" title="Consulter le quiz : '.$value['title'][1].'" title="Consulter le quiz : '.$value['title'][1].'"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>Voir</a>
   					<a href="' . $this->url('quiz_edit', ['quizId' => $value['id']]) . '" role="button" class="btn btn-primary" title="Editer le quiz : '.$value['title'][1].'"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>Editer</a>
 				</div>
+				<h5 class="quiz-title pull-left"> '.$value['title'][1].'</h5>
 			</div>
 		</div>';
 	}

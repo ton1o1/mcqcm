@@ -46,12 +46,12 @@ body > .container {
     margin-top: -38px;
 }
 
-.clearfix{
-    clear: both;
-}
-
 .global-content{
     margin-top: 50px;
+}
+
+.quiz-title{
+    margin-left: 15px;
 }
 
 /* Error block for errors 403 & 404 */
