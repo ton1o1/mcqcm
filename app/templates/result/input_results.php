@@ -4,7 +4,7 @@
 	<h2>Résultats</h2>
 	
 	<p>Résultats généraux</p>
-	<?php for ($i=0; $i <= 12; $i++) { 
+	<?php for ($i=0; $i <= 10; $i++) {  
 		?><div>Le quiz <?=$quizTitle[$i] ?> a pour note moyenne : <?=$scores[$i]['scoreMoyen']; ?> et pour écart-type : <?=$scores[$i]['ecartType']; ?></div>
 		<?php } ?>
 

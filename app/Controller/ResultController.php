@@ -40,7 +40,6 @@ class ResultController extends Controller {
 	public function viewInput() {
 
 		// $quizList = $this->answer->quizList();
-		
 		$quizTitle = [];
 		$quizId = [];
 		$scores = [];
@@ -50,9 +49,9 @@ class ResultController extends Controller {
 			$quizId[$key] = $val['id'];
 			$scores[$key] = $this->medium_calculate('quiz', $quizId[$key]);
 			}
-
 		$this->show('result/input_results', ['scores' => $scores, 'quizTitle' => $quizTitle]);
 		}
+
 
 
 	public function viewUser($userId, $sessionId = null) {
@@ -69,13 +68,21 @@ class ResultController extends Controller {
 
 	public function viewQuiz($quizId = null) {
 
+
 		$this->answer->setTable('sessions');
 		if (!empty($quizId)) {
 			// $this->answer->setQuizId($quizId);
 		// 	$quizId = $this->quizId;
 			$this->quizResult($quizId);
+			$scoreUser = $this->answer->quizUsers($quizId);
+			$userId = [];
+			$scoreU = [];
+			foreach ($scoreUser as $k => $v) {
+				$userId[$k] = $v['user_id'];
+				$scoreU[$k] = $v['score'];
+				}
 			// $this->teacherSessionResult($quizId);
-
+			$this->show('result/quiz_results', ['quizId' => $quizId, 'userId' => $userId, 'scoreU' => $scoreU]);
 		} else {
 			$this->allResults();
 		}

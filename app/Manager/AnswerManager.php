@@ -153,9 +153,10 @@ public function list_quizs($userId)
 		return $sth->fetchAll();
 		}
 
+
 	public function quizTitle($quizId)
 		{
-		$sqlQuizTitle = "SELECT title FROM quizs where id='$quizId'";
+		$sqlQuizTitle = "SELECT title FROM quizs WHERE id='$quizId'";
 		$sth = $this->dbh->prepare($sqlQuizTitle);
 		$sth->execute();
 		return $sth->fetchAll();
@@ -170,7 +171,16 @@ public function list_quizs($userId)
 		return $sth->fetchAll();
 		}
 
+	
+	public function quizUsers($quizId) 
+		{
+		$sqlQuizUsers = "SELECT user_id, score FROM sessions WHERE quiz_id='$quizId'";
+		$sth = $this->dbh->prepare($sqlQuizUsers);
+		$sth->execute();
+		return $sth->fetchAll();
+		}
 
+	
 	public function userQuizList($usId)
 		{
 		$sqlQuizList = "SELECT quiz_id FROM sessions WHERE user_id='$usId'";
