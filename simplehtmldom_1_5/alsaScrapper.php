@@ -27,14 +27,6 @@
 
 	$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '');
 	
-	for($i = 0; $i < 10; $i++){
-		$sql = "INSERT INTO `users` (`id`, `date_created`) 
-			VALUES (NULL, '".
-			  $faker->date($format = 'Y-m-d', $max = 'now');
-	
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute([]);	
-	}
 
 
 

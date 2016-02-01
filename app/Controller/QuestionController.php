@@ -90,8 +90,8 @@ class QuestionController extends Controller
 				$questionManager = new \Manager\QuestionManager();
 				//insert question title in question table
 				$questionManager->insert([
-					//"quiz_id" => $quizId,
-					"creator_id" => 1, //this value will came from $_SESSION['user']['id']
+					//this value will came from $_SESSION['user']['id']
+					"creator_id" => 1, 
 					"title" => $questionTitle,
 				]);
 		
@@ -127,7 +127,6 @@ class QuestionController extends Controller
 		}
 
 		$this->show('question/question_build', [
-			//"insertion" => $insertion,
 			"errorMsg" => $errorMsg,
 			"written" => $_POST,
 		]);
@@ -191,28 +190,28 @@ class QuestionController extends Controller
 					$question['type'] = "radio";
 				}
 			}
-
 			//get quiz info
 			$Quizs__questionManager = new \Manager\Quizs__questionManager();
-			$Quizs__questionManager->setTable("quizs__questions");
-	
+			$Quizs__questionManager->setTable("quizs__questions");	
 			$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
-	
+			//debug($quizInfo);
 	
 			$this->show('question/question_consult', [
 				"question" => $question,
 				"choices" => $choices,
-				"quizInfo" => $quizInfo[0],
+				"quizInfo" => $quizInfo,
 			]);
 		} else
 		{
-			$this->show('question/question_fail', [
+			//show notfound page
+			$this->show('question/question_not_found', [
 				"questionId" => $questionId,
 			]);
 		}
 	}
 
 	/**
+	 * For AJAX
 	 * Select the first 5 results of a title search among questions
 	 */
 
@@ -222,14 +221,6 @@ class QuestionController extends Controller
 		//search a Question by a string
 		$array = $questionManager->searchQuestion($_GET["input"]);
 		$this->showJson($array);
-
-	}
-
-	function questionType($choices){
-		foreach ($choices as $k => $choice) {
-
-		}
-		
 	}
 
 }
@@ -238,20 +229,6 @@ class QuestionController extends Controller
 
 
 
-
-
-//
-    //[questionTitle]
-    //[quizId]
-    //[questionType]
-    //[solution1]
-    //[choice1]
-    //[solution2]
-    //[choice2]
-    //[solution3]
-    //[choice3]
-    //[solution4]
-    //[choice4]
 
 
 

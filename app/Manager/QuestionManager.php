@@ -39,6 +39,7 @@
 			return $sth->fetchAll();
 		}
 
+
 		/**
 		 * Recherche une question par son intitulé
 		 * @param $title, une chaîne de caractère de recherche
@@ -47,7 +48,7 @@
 		public function searchQuestion($title){
 			//title is actually regex
 
-			$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 2 AND questions.title LIKE :keyword GROUP BY title ORDER BY title ASC LIMIT 5";
+			$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 1 AND questions.title LIKE :keyword GROUP BY title ORDER BY title ASC/* LIMIT 5*/"; //is query without limit is okay with performance ?
 			//WARNING !!!
 			//the line above above is to be replace by 
 			//$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 2 AND questions.title LIKE '%" . $title . "%'";

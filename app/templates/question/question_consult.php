@@ -6,7 +6,7 @@
     <form action="" method="" class="form-group">
   <!-- QUESTION -->       
       <fieldset>
-        <legend>Question n° <?= $question['id'] ?> du Quiz <?= $quizInfo['id'] ?></legend>
+        <legend>Question n° <?= $question['id'] ?> du Quiz <?= $quizInfo[0]['id'] ?></legend>
         <div class="form-group">
           <label for="questionTitle">Intitulé</label>
           <textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question" disabled><?= $question['title'] ?></textarea>

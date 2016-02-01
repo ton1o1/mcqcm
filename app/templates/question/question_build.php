@@ -19,6 +19,7 @@
   <form action="#" method="GET">
     <label for="search-question">Rechercher une question : </label>
     <input type="text" id="search-question" data-url="<?php echo $this->url("question_search"); ?>">
+    <div class="details"></div>
 <!-- END SEARCH BAR -->    
     
   </form>
