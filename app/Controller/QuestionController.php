@@ -47,19 +47,62 @@ class QuestionController extends Controller
 			//answers that are true are also stored in an array, 
 			if(!empty($_POST['solution1'])){
 				$solutions[1] = "checked"; //or true?
+			} else
+			{
+				$solutions[1] = false;
 			}
 			if(!empty($_POST['solution2'])){
 				$solutions[2] = "checked"; //or true?
+			} else
+			{
+				$solutions[2] = false;
 			}
 			if(!empty($_POST['solution3'])){
 				$solutions[3] = "checked"; //or true?
+			} else
+			{
+				$solutions[3] = false;
 			}
 			if(!empty($_POST['solution4'])){
 				$solutions[4] = "checked"; //or true?
+			} else
+			{
+				$solutions[4] = false;
 			}
 
 			if(empty($_POST['solution1']) && empty($_POST['solution2']) && empty($_POST['solution3']) && empty($_POST['solution4'])){
 				$errorMsg['solution'] = "KO solution";
+			}
+
+			if(empty($errorMsg))
+			{
+				$questionManager = new \Manager\QuestionManager();
+				//insert question title in question table
+				$questionManager->insert([
+					//"quiz_id" => $quizId,
+					"creator_id" => 1, //this value will came from $_SESSION['user']['id']
+					"title" => $questionTitle,
+				]);
+		
+				//***insert choices in choices table
+					//step 1 : select the last index of the question table
+				$lastId = $questionManager->findLast(); //needs to work with guillaume
+				
+				//step 2 : insert choice in choice table
+				$choiceManager = new \Manager\ChoiceManager();
+				//$questionManager->setTable('choices');
+				if($_POST){
+					foreach ($choices as $k => $v) {
+						$choiceManager->insert([
+							"question_id" => $lastId['id'],
+							"title" => $v,
+							"is_true" => $solutions[$k] && true,
+							"is_active" => 1,
+						]); 
+					}
+				}
+
+
 			}
 
 		}

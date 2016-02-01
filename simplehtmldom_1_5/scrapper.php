@@ -33,6 +33,7 @@ foreach ($html->find("[class='w3-padding-jumbo'] form label") as $element) {
 }
 
 $html = file_get_html('http://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML');
+$html = file_get_html('foo.php');
 
 //Find all images 
 foreach($html->find("p[class='w3-large']") as $element) {
@@ -43,3 +44,24 @@ foreach($html->find("p[class='w3-large']") as $element) {
 foreach ($html->find("[class='w3-padding-jumbo'] form label") as $element) {
 	echo $element->plaintext . '<br>';
 }
+
+
+
+//open connection
+$ch = curl_init();
+
+//set the url, number of POST vars, POST data
+curl_setopt($ch,CURLOPT_URL, $url);
+curl_setopt($ch,CURLOPT_POST, count($fields));
+curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+
+//execute post
+$result = curl_exec($ch);
+
+//close connection
+curl_close($ch);
+
+
+
+
+
