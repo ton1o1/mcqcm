@@ -34,6 +34,16 @@
 
 <!-- QUESTION -->
   <section class="addQuestion">
+        <div>
+          <label>Quiz n°</label>
+          <input type="number" name="quizId" id= "quizId" min="0" max="100" step="1" value="1" disabled="">
+          <!-- 
+		      ALERT the line above is to be replaced by the one underneath during integration phase !!!
+          <input type="number" name="quizId" min="0" max="100" step="1" value="<?= $quizId ?>"> 
+          <label>Quiz n°<?= $quizId ?></label>
+          -->
+
+        </div>
     <form action="" method="POST" class="form-group" novalidate>
       <fieldset>
         <legend>Créer une question</legend>
@@ -43,14 +53,6 @@
           <textarea name="questionTitle" id="questionTitle" rows="5" cols="100" placeholder="Saisissez l'intitulé de la question"><?php if(isset($written['questionTitle'])) {echo $written['questionTitle'];} ?></textarea>
         </div><div class="error"><?php if(isset($errorMsg['title'])){echo $errorMsg['title'];} ?></div>
 
-        <div>
-          <label>Choisir le quiz, ce champ va disparaître.</label>
-          <input type="number" name="quizId" min="0" max="100" step="1" value="1">
-          <!-- 
-		ALERT the line above is to be replaced by the one underneath during integration phase !!!
-          <input type="number" name="quizId" min="0" max="100" step="1" value="<?= $quizId ?>"> -->
-
-        </div>
         <div class="form-group">
           <label for="questionType">Type de question</label>
           <select name="questionType" id="questionType">

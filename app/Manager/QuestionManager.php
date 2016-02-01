@@ -9,6 +9,7 @@
 		* Récupère la dernière ligne de la table, càd, celle qui vient d'être 	inséré
 		* @param  integer Identifiant
 		* @return mixed Les données
+		* This function is deprecated and will be replaced by lastId()
 		*/
 		public function findLast()
 		{

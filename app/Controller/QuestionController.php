@@ -223,6 +223,20 @@ class QuestionController extends Controller
 		$this->showJson($array);
 	}
 
+	public function ajaxAddQuestion(){
+
+		print_r($_POST);
+		$Quizs__questionManager = new \Manager\Quizs__questionManager();
+		$Quizs__questionManager->insert([
+			"id" => NULL,
+			"quiz_id" => 1,
+			"question_id" => 23,
+			"is_active" => 1
+		]);
+
+	} 
+
+
 }
 
 
