@@ -24,22 +24,16 @@ class QuizController extends Controller
      */
     public function search()
     {
-        $html = '';
-        if(!empty($_POST['tags'])){
-
-            $quizzes = $this->manager->findAllByTags($_POST['tags']);
+        $quizzes = '';
         
-            if($quizzes){
-                $html .= '<ul class="list-group">';
-                
-                foreach($quizzes as $value){
-                    $html .= '<li class="list-group-item">' . $value['title'] . '</li>';
-                }
+        if(!empty($_GET['tags'])){
 
-                $html .= '</ul>';
-            }
+            $quizzes = $this->manager->findAllByTags($_GET['tags']);
+        
         }
-        $this->redirectToRoute('home', ['html' => $html]);
+
+        $this->show('default/home', ['quizzes' => $quizzes]);
+        // $this->redirectToRoute('home', ['html' => $html]);
     }
 
     /**
@@ -48,25 +42,20 @@ class QuizController extends Controller
     public function view($quizId = null)
     {
         if($quizId){
-            $quizzes = $this->manager->findActive($quizId);
+            $quiz = $this->manager->findActive($quizId);
 
-            if(!$quizzes){
+            if(!$quiz){
                 $this->showNotFound();
             }
-        }
-        else{
-            $orderBy = 'id';
-            $orderDir = 'DESC'; //Display newer first
-            $quizzes = $this->manager->findAllActive($orderBy, $orderDir);
+
+            $this->show('quiz/view', ['quiz' => $quiz]);
         }
 
-        if(!$quizzes){
-            echo 'Aucun quiz trouvé.';
-        }
-        else{
-            var_dump($quizzes);
-        }
-        // $this->show('quiz/view', ['quizzes' => $quizzes]);
+        $orderBy = 'id';
+        $orderDir = 'DESC'; //Display newer first
+        $quizzes = $this->manager->findAllActive($orderBy, $orderDir);
+
+        $this->show('quiz/view_all', ['quizzes' => $quizzes]);
     }
 
     /**

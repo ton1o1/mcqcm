@@ -16,8 +16,8 @@
         ['GET|POST', '/user/profile', 'User#profile', 'user_profile'],                // display profile, modify / delete account
         
         // Quiz
-        ['POST', '/quiz/search', 'Quiz#search', 'quiz_search'],                // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
-        ['GET', '/quiz/[i:quizId]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id
+        ['GET', '/quiz/search', 'Quiz#search', 'quiz_search'],                // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
+        ['GET', '/quiz/[i:quizId]?/[a:quizSlug]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id
         ['GET|POST', '/quiz/create', 'Quiz#create', 'quiz_create'],            // manual creator
         // ['GET|POST', '/quiz/generate', 'Quiz#generate', 'quiz_generate'],      // automatic generator
         ['GET|POST', '/quiz/[i:quizId]/edit', 'Quiz#edit', 'quiz_edit'],       // edit quiz by id

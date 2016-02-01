@@ -19,7 +19,7 @@
   <div class="form-group<?= !empty($errors['description']) ? ' has-error' : '' ?>">
     <label for="description" class="col-sm-2 control-label">Description</label>
     <div class="col-sm-10">
-      <textarea name="quiz[description]" class="form-control" rows="4" id="description" placeholder="Ce quiz s'adresse aux développeurs souhaitant valider leurs compétences en PHP orienté objet et leur maîtrise du modèle MVC. Il intègre également une approche basique du fonctionnement global des frameworks PHP."><?= !empty($data['description']) ? $data['description'] : '' ?></textarea>
+      <textarea name="quiz[description]" class="form-control" rows="4" id="description" placeholder="Ex: Ce quiz s'adresse aux développeurs souhaitant valider leurs compétences en PHP orienté objet et leur maîtrise du modèle MVC. Il intègre également une approche basique du fonctionnement global des frameworks PHP."><?= !empty($data['description']) ? $data['description'] : '' ?></textarea>
       <?= !empty($errors['description']) ? '<p class="text-danger">' . $errors['description'] . '</p>' : '' ?>
     </div>
   </div>

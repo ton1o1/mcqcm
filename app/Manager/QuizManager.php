@@ -75,11 +75,15 @@ class QuizManager extends \W\Manager\Manager
 
     public function findAllByTags($tags)
     {
+        $in = '';
+
         foreach($tags as $skill){
             $in .= $skill . ',';
         }
 
-        $sql = "SELECT * FROM " . $this->table . ", quizskills WHERE quizs.is_active = :isActive AND quizskills.quiz_id = quizs.id AND quizskills.skill_id IN(" . $in . ") ORDER BY quizs.id DESC";
+        $in = preg_replace('#,$#', '', $in);
+
+        $sql = "SELECT q.id, q.creator_id, q.date_created, q.title, q.description FROM " . $this->table . " AS q INNER JOIN quizskills AS qs ON q.id = qs.quiz_id WHERE q.is_active = :isActive AND qs.skill_id IN(" . $in . ") ORDER BY q.id DESC";
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(":isActive", true);
         $sth->execute();
