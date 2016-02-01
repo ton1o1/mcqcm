@@ -227,11 +227,11 @@ class QuestionController extends Controller
 
 		print_r($_POST);
 		$Quizs__questionManager = new \Manager\Quizs__questionManager();
-		$Quizs__questionManager->insert([
-			"id" => NULL,
-			"quiz_id" => 1,
-			"question_id" => 23,
-			"is_active" => 1
+		$Quizs__questionManager->setTable("quizs__questions");	
+		$Quizs__questionManager->insert([			
+			"quiz_id" => 3,
+			"question_id" => 40,
+			"is_active" => 1,
 		]);
 
 	} 

@@ -51,14 +51,36 @@ $searchQuestion.on("keyup", function(e){
 	
 				$button = $("<button>");
 				$button.html("Ajouter au quiz").attr("data-id",$id);
+				$tdButton = $("<td>").append($button);
 				$button.on("click", function(e){
 					e.preventDefault;	
-					//var toto = $(this).attr("data-id")
-					//console.log(toto)	
-					ajaxAddQuestionjs($(this).attr("data-id"));
 					$(this).html("Ajouté!")
+					//ajaxAddQuestionjs($(this).attr("data-id"));
+					$questionId = $(this)
+					$quizId = $("#quizId").val()
+					//console.log($urlVal.replace("questionrecherche","questionajouter") + ", quizId= " + $quizId +", questionId = " + $questionId);
+				
+					$.ajax({
+						"url": $urlVal.replace("questionrecherche","questionajouter"), //ok, on se rend independant de 					l'url local
+						//"url": $urlVal.replace("questionrecherche","questionajouter"), //ok, on 					se rend independant de l'url local
+						"data" : { //ecrit automatiquement ?foo=bar à la fin de l'url
+							"quizId" : $quizId, 
+							"questionId" : $(this).attr("data-id")
+						},
+						"dataType": 'json', 
+						"type": "POST"
+					})
+					.done(function(response){ 
+						console.log("insertion d'une question ou pas ?")
+						console.log(response);
+					})
+					.fail(function(){
+						console.log("FAIL add");
+					})
+					.always(function(){
+				
+					});		
 				})
-				$tdButton = $("<td>").append($button);
 
 				//append everything in the following order
 				$tr = $("<tr>")
@@ -82,7 +104,7 @@ $searchQuestion.on("keyup", function(e){
 })
 
 
-
+/*
 function ajaxAddQuestionjs($questionId){
 	
 	$quizId = $("#quizId").val()
@@ -114,7 +136,7 @@ function ajaxAddQuestionjs($questionId){
 
 
 
-
+*/
 
 
 
