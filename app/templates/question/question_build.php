@@ -30,7 +30,7 @@
     </div>
 <!-- END RESULTS -->
   </section>
-
+  <?php echo count($_POST); ?>
 
 <!-- QUESTION -->
   <section class="addQuestion">
@@ -87,7 +87,7 @@
   <!-- END CHOICES -->    
         <div class="form-group">
           <input type="submit" value="Ajouter la question au portefeuille">
-        </div><?php if (isset($inserstion)){echo $inserstion;} ?>
+          <?php if(isset($_POST['success'])){echo $_POST['success'];} ?>
       </fieldset>
     </form>
   </section>

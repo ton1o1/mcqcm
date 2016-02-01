@@ -98,11 +98,11 @@ class QuestionController extends Controller
 							"title" => $v,
 							"is_true" => $solutions[$k] && true,
 							"is_active" => 1,
+
 						]); 
 					}
 				}
-
-
+				$_POST["success"] = "Votre question vient d'être ajoutée à la base.";
 			}
 
 		}
@@ -115,6 +115,7 @@ class QuestionController extends Controller
 			"insertion" => $insertion,
 			"errorMsg" => $errorMsg,
 			"written" => $_POST,
+/*			"$success" => $success,*/
 		]);
 	}
 
@@ -204,11 +205,14 @@ class QuestionController extends Controller
 
 		//search a Question by a string
 		$array = $questionManager->searchQuestion($_GET["input"]);
-		
 		$this->showJson($array);
 
-
 	}
+
+	function isInsertWorked($array){
+		
+	}
+
 
 }
 
@@ -218,8 +222,18 @@ class QuestionController extends Controller
 
 
 
-
-
+//
+    //[questionTitle]
+    //[quizId]
+    //[questionType]
+    //[solution1]
+    //[choice1]
+    //[solution2]
+    //[choice2]
+    //[solution3]
+    //[choice3]
+    //[solution4]
+    //[choice4]
 
 
 
