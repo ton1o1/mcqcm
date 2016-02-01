@@ -30,7 +30,6 @@
     </div>
 <!-- END RESULTS -->
   </section>
-  <?php echo count($_POST); ?>
 
 <!-- QUESTION -->
   <section class="addQuestion">

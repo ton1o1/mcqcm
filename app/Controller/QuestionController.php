@@ -149,15 +149,15 @@ class QuestionController extends Controller
 
 		$this->show('question/question_list', ["rows" => $rows]);		
 	}
-	//old line : <a href='question/" . $v['id'] . "'>" . $v['title'] . "</a> 
+	
 	/**
 	 * Display the content of a question with its choices
 	 */
 	public function questionConsult($questionId){
+		//init Manager
 		$questionManager = new \Manager\QuestionManager();
 		//get question info
 		$question = $questionManager->find($questionId);
-		debug($question);
 
 		//get choices info
 		if($question){
@@ -165,27 +165,32 @@ class QuestionController extends Controller
 			$questionId = $question["id"];	
 	
 			$choices = $choiceManager->findChoiceByQuestionId($questionId);
-			$choicesContent =""; //is it necessary to init this variable
-			$checked = [];
-			foreach ($choices as $k => $v) {
-				$checked[$k] = ($v['is_true']) ? "checked" : "";
+			//allow to display checked/unchecked boxes or radios
+			$count = 0;
+			for ($i = 0, $count; $i < 4; $i++) {
+				if ($choices[$i]['is_true']){
+					$choices[$i]['is_true'] = "checked";
+					$count++;
+				}
+				if ($count > 1){
+					$question['type'] = "checkbox";
+				} else {
+					$question['type'] = "radio";
+				}
 			}
-			//debug($checked);
-	
+
 			//get quiz info
 			$Quizs__questionManager = new \Manager\Quizs__questionManager();
 			$Quizs__questionManager->setTable("quizs__questions");
 	
 			$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
-			//debug($quizInfo);
 	
 	
-			$this->show('quiz/question_consult', [
+			$this->show('question/question_consult', [
 				"question" => $question,
 				"choices" => $choices,
-				"checked" => $checked,
-				"quizInfo" => $quizInfo,
-		]);
+				"quizInfo" => $quizInfo[0],
+			]);
 		} else
 		{
 			$this->show('question/question_fail', [
@@ -193,9 +198,6 @@ class QuestionController extends Controller
 			]);
 		}
 	}
-
-
-
 
 	/**
 	 * Select the first 5 results of a title search among questions
@@ -210,10 +212,12 @@ class QuestionController extends Controller
 
 	}
 
-	function isInsertWorked($array){
+	function questionType($choices){
+		foreach ($choices as $k => $choice) {
+
+		}
 		
 	}
-
 
 }
 
