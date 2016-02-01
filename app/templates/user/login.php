@@ -16,9 +16,9 @@
 
             <div class="checkbox">
               <label>
-                <input type="checkbox" value="remember-me" name="remember"> Rester connecté
+                <input type="checkbox" value="true" name="auto_connect"> Rester connecté
               </label>
-               <a class="pull-right link" href="<?= $this->url("user_recovery_pwd", []);?>">Mot de pass oublié ?</a>
+               <a class="pull-right link" href="<?= $this->url("user_recovery_pwd", []);?>">Mot de passe oublié ?</a>
             </div>
 
             <div class="form-group">

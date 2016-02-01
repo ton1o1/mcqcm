@@ -93,7 +93,10 @@ class UserController extends Controller
 		}
 
 		//cookie autologger present ?
-		
+		if(!empty($_COOKIE['autologin'])){
+
+			//$this->redirectToRoute('user_profile');
+		}
 
 		$errormessage= [];
 
@@ -101,6 +104,8 @@ class UserController extends Controller
 
 			$userEmail = $_POST['userEmail'];
 			$userPassword = $_POST['userPassword'];
+			$autoconnect = $_POST['auto_connect'];
+			debug($_POST);
 			//Test user data in DB
 			
 			$isValid = true;
@@ -120,14 +125,16 @@ class UserController extends Controller
 					$this->authentificationManager->logUserIn($user);
 					//TODO add cookieset and cookie get method
 					//remember me checked ?
-					/*if($rememberme){
-						setcookie("rememberme", "1", time()+3600);
-					}*/
+					if(!empty($autoconnect)){
+						$this->cookieFactory($autoconnect);
+						print_r($_COOKIE);
+						die();
+					}
 					//redirect
 					$this->redirectToRoute('user_profile');
 
 				}
-							}
+			}
 			else {
 				$isValid = false;
 				$errormessage['alerte'] = "Impossible de vous identifier.";
@@ -494,21 +501,20 @@ class UserController extends Controller
 	}
 
 
-	public function cookieFactory($login, $password, $auto_connect = false)
+	public function cookieFactory($auto_connect = false)
 	{
 	 
 	    // Le code précédent ne change pas
 	 
 	    if($auto_connect) {
-	        // IP du client
 	        // Cryptage/Salage des éléments
-	        $key = sha1('SEL1-df546'.$infos['name'].$infos['id'].'SEL2-sd55fd'.$infos['last_connection'].$ip);
+	        $key = "hot cookie";
 	        // Création du cookie
 	        setcookie('autologin', $key, time() + 3600 * 24 * 365, '/', 'mcqcm.dev', false, true);
 	    }
 	}
 
-	public function cookieTester()
+	public function cookieKiller()
 	{
 
 	}
