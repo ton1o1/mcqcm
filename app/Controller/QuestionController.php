@@ -102,20 +102,21 @@ class QuestionController extends Controller
 						]); 
 					}
 				}
+				unset($_POST);
 				$_POST["success"] = "Votre question vient d'être ajoutée à la base.";
 			}
 
 		}
 		if(!isset($errorMsg)){$errorMsg=NULL;}
 		debug($errorMsg);
-		$insertion = "insertion !!!";
+		debug($_POST);
+
 
 
 		$this->show('question/question_build', [
-			"insertion" => $insertion,
+			//"insertion" => $insertion,
 			"errorMsg" => $errorMsg,
 			"written" => $_POST,
-/*			"$success" => $success,*/
 		]);
 	}
 
