@@ -4,9 +4,10 @@
 	<h2>Résultats</h2>
 	
 	<p>Résultats généraux</p>
-	<?php for ($i=1; $i <= $nombre; $i++) { 
-		?><div>Le quiz <?=$quizTitle[$i] ?> a pour score : <?=$quizScore[$i] ?></div>
+	<?php for ($i=0; $i <= 12; $i++) { 
+		?><div>Le quiz <?=$quizTitle[$i] ?> a pour note moyenne : <?=$scores[$i]['scoreMoyen']; ?> et pour écart-type : <?=$scores[$i]['ecartType']; ?></div>
 		<?php } ?>
+
 
 	<p>Résultats individuels</p>
 

@@ -162,10 +162,10 @@ public function list_quizs($userId)
 		}
 
 
-	public function quizTitleScore()
+	public function quizIdTitle()
 		{
-		$sqlQuizTitleTot = "SELECT q.title, s.score FROM quizs q, sessions s where s.quiz_id=q.id";
-		$sth = $this->dbh->prepare($sqlQuizTitleTot);
+		$sqlQuizIdTitle = "SELECT id, title FROM quizs";
+		$sth = $this->dbh->prepare($sqlQuizIdTitle);
 		$sth->execute();
 		return $sth->fetchAll();
 		}

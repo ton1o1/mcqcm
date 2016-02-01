@@ -40,16 +40,18 @@ class ResultController extends Controller {
 	public function viewInput() {
 
 		// $quizList = $this->answer->quizList();
-		$nombre = 0;
+		
 		$quizTitle = [];
-		$quizScore = [];
-		$quizTitleScore = $this->answer->quizTitleScore();
-		foreach ($quizTitleScore as $key=>$val) {
-			$nombre++;
-			$quizTitle[$nombre] = $val['title'];
-			$quizScore[$nombre] = $val['score'];
+		$quizId = [];
+		$scores = [];
+		$quizIdTitle = $this->answer->quizIdTitle();
+		foreach ($quizIdTitle as $key=>$val) {
+			$quizTitle[$key] = $val['title'];
+			$quizId[$key] = $val['id'];
+			$scores[$key] = $this->medium_calculate('quiz', $quizId[$key]);
 			}
-		$this->show('result/input_results', ['nombre' => $nombre, 'quizTitle' => $quizTitle, 'quizScore' => $quizScore]);
+
+		$this->show('result/input_results', ['scores' => $scores, 'quizTitle' => $quizTitle]);
 		}
 
 
@@ -211,8 +213,10 @@ class ResultController extends Controller {
 
 
 	public function teacherSessionResult($sessionId) {
+		$resultsSes = [];
 		$resultsSes = $this->medium_calculate('session', $sessionId);
-		print_r($resultsSes);
+		$this->show('result/resulttemplate', $resultsSes);
+		// print_r($resultsSes);
 	}
 
 	public function quizResult($quizId) {
@@ -312,7 +316,8 @@ class ResultController extends Controller {
 				}
 				$ecartMoy = $ecart / $numberScore;
 				$ecartType = sqrt($ecartMoy);
-				$this->show('result/resulttemplate', ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType]);
+				return ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType];
+				// $this->show('result/resulttemplate', ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType]);
 				// print_r($scoreMoyen);
 				// print_r($ecartType);
 				// return [$scoreMoyen, $ecartType];
