@@ -8,17 +8,17 @@
             <p class="form__indication">Tous les champs du formulaire sont obligatoires.</p>
             <div class="form-group <?php if(!empty($errormessage['userLastName'])){ echo 'has-error';}?>">
                 <label for="userLastName">Nom <span class="required">*</span></label>
-                <input type="text" class="form-control" id="userLastName" name="userLastName" placeholder="Nom" value="<?= $userLastName =(!empty($_POST['userLastName']))?$_POST['userLastName']:'';?>">
+                <input type="text" class="form-control" id="userLastName" name="userLastName" placeholder="Nom" value="<?= $userLastName =(!empty($_POST['userLastName']))?htmlentities($_POST['userLastName']):'';?>">
                 <?= $userLastName =(!empty($errormessage['userLastName']))?$errormessage['userLastName']:'';?>
             </div>
             <div class="form-group <?php if(!empty($errormessage['userFirstName'])){ echo 'has-error';}?>">
                 <label for="userFirstName">Prénom <span class="required">*</span></label>
-                <input type="text" class="form-control" id="userFirstName" name="userFirstName" placeholder="Prénom" value="<?= $userFirstName =(!empty($_POST['userFirstName']))?$_POST['userFirstName']:'';?>">
+                <input type="text" class="form-control" id="userFirstName" name="userFirstName" placeholder="Prénom" value="<?= $userFirstName =(!empty($_POST['userFirstName']))?htmlentities($_POST['userFirstName']):'';?>">
                  <?= $userFirstName =(!empty($errormessage['userFirstName']))?$errormessage['userFirstName']:'';?>
             </div>
             <div class="form-group <?php if(!empty($errormessage['userEmail'])){ echo 'has-error';}?>">
                 <label for="userEmail">Adresse e-mail <span class="required">*</span></label>
-                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="Email" value="<?= $userEmail =(!empty($_POST['userEmail']))?$_POST['userEmail']:'';?>">
+                <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="Email" value="<?= $userEmail =(!empty($_POST['userEmail']))?htmlentities($_POST['userEmail']):'';?>">
                  <?= $userEmail =(!empty($errormessage['userEmail']))?$errormessage['userEmail']:'';?>
             </div>
             <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">

@@ -7,7 +7,7 @@
         <h2>Zone STUDENT</h2>
         <p><?php print_r($_SESSION);?></p>
 
-        <a href="<?= $this->url("user_modify", []);?>">Modifier mon profil</a>
+        <a class="btn btn-default" href="<?= $this->url("user_modify", []);?>">Modifier mon profil</a>
     </div>
 </div>
 <?php $this->stop('main_content') ?>

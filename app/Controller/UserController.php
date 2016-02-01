@@ -17,9 +17,6 @@ class UserController extends Controller
 	}
 
 	/**
-	 * Page d'accueil par défaut
-	 */
-	/**
 	 * [register description]
 	 * @return [type] [description]
 	 */
@@ -29,17 +26,17 @@ class UserController extends Controller
 
 		if(!empty($_POST)) {
 
-		$userFirstName = $_POST['userFirstName'];
-		$userLastName = $_POST['userLastName'];
-		$userEmail = $_POST['userEmail'];
-		$userPassword = $_POST['userPassword'];
-		$userPasswordConfirmed = $_POST['userPasswordConfirmed'];
+			$test['first_name'] =  $_POST['userFirstName'];
+			$test['last_name'] = $_POST['userLastName'];
+			$test['email'] = $_POST['userEmail'];
+			$test['password'] = $_POST['userPassword'];
+			$test['passwordConfirmed'] = $_POST['userPasswordConfirmed'];
 
 			//validation du formulaire
-			$result = $this->testUserForm();
+			$result = $this->testUserForm($test);
+
 			$isValid = $result[0];
 			$errormessage =$result[1];
-
 
 			//Form is valid
 			if($isValid){
@@ -47,10 +44,10 @@ class UserController extends Controller
 				//insert user data in DB
 
 				$this->userManager->insert([
-						"first_name"  => $userFirstName,
-						"last_name"   => $userLastName,
-						"email"       => $userEmail,
-						"password"    => password_hash($userPassword, PASSWORD_DEFAULT),
+						"first_name"  => $test['first_name'],
+						"last_name"   => $test['last_name'],
+						"email"       => $test['email'],
+						"password"    => password_hash($test['password'], PASSWORD_DEFAULT),
 						"date_created" => date('Y-m-d H:i:s'),
 						"is_active" => "1",
 						"role" => "student"
@@ -58,7 +55,7 @@ class UserController extends Controller
 
 
 				//test user data exist in database
-				$result = $this->authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
+				$result = $this->authentificationManager->isValidLoginInfo( $test['email'], $test['password']);
 				if($result)
 				{
 					//$user = new \Manager\UserManager(); 
@@ -93,7 +90,10 @@ class UserController extends Controller
 
 			$this->redirectToRoute('user_profile');
 
-		} 
+		}
+
+		//cookie autologger present ?
+		
 
 		$errormessage= [];
 
@@ -139,11 +139,13 @@ class UserController extends Controller
 		$this->show('user/login', ['errormessage' => $errormessage]);
 	}
 
-
+	/**
+	 * Get user role to redirect him 
+	 * If role isn't define, user is redirected to user_login
+	 */
 	public function profile()
 	{
-		//get user role to redirect him 
-		//if role isn't define, user is redirected to user_login
+		
 		$user = $this->getUser();
 		switch($user['role']){
 
@@ -151,16 +153,17 @@ class UserController extends Controller
 				$this->show('user/profile_student');
 			break;
 
-			case "teacher":			
-				$this->show('user/profile_teacher');
-			break;
 
 			case "administrator":			
 				$this->redirectToRoute('administrator_profile');
 			break;
 
+			case "teacher":			
+				$this->show('user/profile_teacher');
+			break;
+
 			default :		
-				$this->redirectToRoute('user_login'); //Case where role is not define.
+				$this->redirectToRoute('user_login'); //Case where role is not define. 
 			break;
 
 			
@@ -169,49 +172,64 @@ class UserController extends Controller
 
 	}
 
-	public function modify(){
-		
-		$errormessage = [];
-		$user = [];
-
+	public function modifyEmail()
+	{
 		if(!empty($_POST)) {
 
-			$result = $this->testUserForm();
+		}
+
+	}
+
+	public function modifyPassword()
+	{
+
+	}
+
+	public function modify()
+	{
+		
+		$errormessage = [];
+		$user = $this->getUser();
+		
+		if(!empty($_POST)) {
+
+
+			$test['first_name'] = $_POST['userFirstName'];
+			$test['last_name'] = $_POST['userLastName'];
+
+			$result = $this->testUserForm($test);
 			$isValid = $result[0];
 			$errormessage =$result[1];
+
 
 			if($isValid){
 				//Submited data are correct.
 				//update data in database
-				//$userManager = new \Manager\UserManager();
+
 				$this->userManager->update([
-						"first_name"  => $userFirstName,
-						"last_name"   => $userLastName,
-						"email"       => $userEmail,
-						"password"    => password_hash($userPassword, PASSWORD_DEFAULT),
-					],$id);
+						"first_name"  => $test['first_name'],
+						"last_name"   => $test['last_name']
+					],$user['id']);
 				//maj session 
-				$this->refreshUser();
+				$this->authentificationManager->refreshUser();
 				//redirect user
 				$this->redirectToRoute('user_profile');
 			}
 
 		}
-		else {
-
-			$user = $this->getUser();
-
-		}
+		//Display user/modify with userData
 		$this->show('user/modify', [
 				'errormessage' => $errormessage, 
 				'userData'     => $user
 				]);
 	}
 
-
+	/**
+	 * [logout description]
+	 * @return [type] [description]
+	 */
 	public function logout()
 	{
-		//$authentificationManager = new \W\Security\AuthentificationManager();
 		$this->authentificationManager->logUserOut();
 		$this->redirectToRoute('user_login');
 
@@ -219,13 +237,17 @@ class UserController extends Controller
 
 	}
 
+	/**
+	 * [recovery_pwd description]
+	 * @return [type] [description]
+	 */
 	public  function recovery_pwd()
 	{
 		//test if _post
 		if(!empty($_POST)){
 
 			$userEmail = $_POST['userEmail'];
-			
+
 			//test email exist
 			//$userManager = new \Manager\UserManager();
 			$userId = $this->userManager->getUserByUsernameOrEmail($userEmail);
@@ -276,8 +298,9 @@ class UserController extends Controller
 				//send an email
 				
 				$mail = new \PHPMailer;
-				//TODO ->Créer une class
-				$accountManagerMail = 'contact.mcqcm@gmail.com';
+				//TODO ->Créer un Service
+				//Ajouter les données à la conf. 
+				$accountManagerMail = 'contact.mcqcm@gmail.com';	
 				$accountManagerPwd  = '123456mcqcm';
 				$accountManagerName = "Jean Valjean";
 
@@ -324,24 +347,25 @@ class UserController extends Controller
 		}
 	}
 
-	public function renew_pwd($token, $userEmail){
+	/**
+	 * [renew_pwd description]
+	 * @param  [type] $token     [description]
+	 * @param  [type] $userEmail [description]
+	 * @return [type]            [description]
+	 */
+	public function renew_pwd($token, $userEmail)
+	{
 
 
 		if(!empty($_POST)) {
-
-			$isValid = true;
+			
 			//test posted data
-			$userPassword = $_POST['userPassword'];
-			$userPasswordConfirmed = $_POST['userPasswordConfirmed'];
+			$test['password'] = $_POST['userPassword'];
+			$test['passwordConfirmed'] = $_POST['userPasswordConfirmed'];
+			$result = $this->testUserForm($test);
 
-			if(empty($userPassword)) {
-				$isValid = false;
-				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire</div>';
-			}
-			elseif($userPassword !== $userPasswordConfirmed) {
-				$isValid = false;
-				$errormessage['userPassword'] = '<div class="message message--error">Les mots de passe ne correspondent pas</div>';
-			}
+			$isValid = $result[0];
+			$errormessage = $result[1];
 
 			if($isValid) {
 
@@ -356,7 +380,7 @@ class UserController extends Controller
 
 						if($user['token_time'] < date('Y-m-d H:i:s')){
 
-							$errormessage = '<div class="message message--error">Le délai de renouvellement est dépassé. Vous devez effectuer une nouvelle demande.</div>';
+							$errormessage = '<div class="message message--error">Le délai de renouvellement de votre demande est dépassé. Vous devez effectuer une nouvelle demande.</div>';
 							$this->redirectToRoute('user_recovery_pwd', ["errormessage" => $errormessage]);
 						}
 						else {
@@ -399,62 +423,114 @@ class UserController extends Controller
 	}
 
 	/**
-	 * [testUserForm : Use this class to test forms]
-	 * @return $result[ $isvalid, $errormessage]
+	 * Test submited values
+	 * return if tested value are or manage error message 
+	 * @param  array() $test : values to be tested
+	 * @return array()  $formResult = [ $isValid, $errormessage]
 	 */
-	public function testUserForm()
+	public function testUserForm($test)
 	{
-		$userFirstName = $_POST['userFirstName'];
-		$userLastName = $_POST['userLastName'];
-		$userEmail = $_POST['userEmail'];
-		$userPassword = $_POST['userPassword'];
-		$userPasswordConfirmed = $_POST['userPasswordConfirmed'];
-
-		//validation du formulaire
+		//initialisation du test
 		$isValid = true;
 		$errormessage = [];
-		//$userManager = new \Manager\UserManager();
 
-		if(empty($userLastName)) {
-			$isValid = false;
-			$errormessage['userLastName'] = '<div class="message message--error">Vous devez indiquer votre nom!</div';
-		}elseif(strlen($userLastName) <= 1){
-			$isValid = false;
-			$errormessage['userLastName'] = '<div class="message message--error">Votre nom est trop court!"</div';
-		}
-		if(empty($userFirstName)) {
-			$isValid = false;
-			$errormessage['userFirstName'] = '<div class="message message--error">Vous devez indiquer votre prénom!</div';
-		}elseif(strlen($userFirstName) <= 1 ) {
-			$isValid = false;
-			$errormessage['userFirstName'] = '<div class="message message--error">Votre prénom est trop court!</div';
-		}
 
-		if(empty($userEmail)) {
-			$isValid = false;
-			$errormessage['userEmail'] = '<div class="message message--error">Adresse Email obligatoire!</div';
-		}
-		else {
-
-			if($this->userManager->emailExists($userEmail)) {
+		if(isset($test['last_name'])){
+			if(empty($test['last_name'])) {
 				$isValid = false;
-				$errormessage['userEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div';
-			}
-			
-		}
-
-		if(empty($userPassword)) {
-			$isValid = false;
-			$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div';
-		}
-		else {
-			if($userPassword !== $userPasswordConfirmed) {
+				$errormessage['userLastName'] = '<div class="message message--error">Vous devez indiquer votre nom !</div>';
+			}elseif(strlen($test['last_name']) <= 1){
 				$isValid = false;
-				$errormessage['userPassword'] = '<div class="message message--error">Les mots de passe ne correspondent pas !</div';
+				$errormessage['userLastName'] = '<div class="message message--error">Votre nom est trop court !"</div>';
 			}
 		}
+
+		if(isset($test['first_name'])){
+			if(empty($test['first_name'])) {
+				$isValid = false;
+				$errormessage['userFirstName'] = '<div class="message message--error">Vous devez indiquer votre prénom !</div>';
+			}elseif(strlen($test['first_name']) <= 1 ) {
+				$isValid = false;
+				$errormessage['userFirstName'] = '<div class="message message--error">Votre prénom est trop court !</div>';
+			}
+		}
+
+
+		if(isset($test['email'])){
+			if(empty($test['email'])) {
+				$isValid = false;
+				$errormessage['userEmail'] = '<div class="message message--error">Adresse Email obligatoire !</div>';
+			}
+			elseif(!filter_var($test['email'], FILTER_VALIDATE_EMAIL)) {
+				$isValid = false;
+				$errormessage['userEmail'] = '<div class="message message--error">Adresse Email invalide !</div>';				
+
+			}else{
+
+				if($this->userManager->emailExists($test['email'])) {
+					$isValid = false;
+					$errormessage['userEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div>';
+				}
+				
+			}
+		}
+
+		if(isset($test['password'])){
+			if(empty($test['password'])) {
+				$isValid = false;
+				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
+			}
+			else {
+				if($test['password'] !== $test['passwordConfirmed']) {
+					$isValid = false;
+					$errormessage['userPassword'] = '<div class="message message--error">Les mots de passe ne correspondent pas !</div>';
+				}
+			}
+		}
+
 		$formResult = [ $isValid, $errormessage];
 
 		return $formResult;
+	}
+
+
+	public function cookieFactory($login, $password, $auto_connect = false)
+	{
+	 
+	    // Le code précédent ne change pas
+	 
+	    if($auto_connect) {
+	        // IP du client
+	        // Cryptage/Salage des éléments
+	        $key = sha1('SEL1-df546'.$infos['name'].$infos['id'].'SEL2-sd55fd'.$infos['last_connection'].$ip);
+	        // Création du cookie
+	        setcookie('autologin', $key, time() + 3600 * 24 * 365, '/', 'mcqcm.dev', false, true);
+	    }
+	}
+
+	public function cookieTester()
+	{
+
+	}
+
+
+	public function cookieTester()
+	{
+	    // Récupération de la valeur du cookie
+	    $key = $_COOKIE['autologin'];
+	 
+	    $query = "SELECT * FROM users WHERE SHA1(CONCAT('SEL1-df546', `name`, `id`, 'SEL2-sd55fd', `last_connection`, $ip))=$key";
+	    // Execution de la requete
+	    $infos = $users->exec($query);
+	 
+	    if(!is_array($infos) || empty($infos)) {
+	        // Mauvais cookie !
+	        return false;
+	    }
+	 
+	    // Modification de la date de dernière connexion ici...
+	 
+	    $_SESSION['user'] = $infos; // Mise en SESSION
+	    return true;
 	}
 }

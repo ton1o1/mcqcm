@@ -8,7 +8,7 @@
         <!-- Search Form -->
         <h3>Recherche</h3>
         
-        <form action="/administrator/search/" method="POST" id="searchUserForm">
+        <form action="/administrator/search/" method="POST" id="searchUserForm" class="searchUserForm">
             <label for="searchUser">Recherche</label>
             <div class="input-group">
 
@@ -19,12 +19,13 @@
             </div>
         </form>
         <!-- Search Results -->
-        <div class="user-result"></div>
+        <div id="userResult" class="user-result"></div>
 
-        <h3>Liste des profils</h3>
+        
         <!-- User list -->
-        <div class="panel panel-default">
-            <table class="table table-hover" id="user-table" >
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h3>Liste des profils</h3></div>
+            <table class="table table-hover" id="userTable" >
                 <thead>
                     <tr>
                         <th>Nom</th>
@@ -32,12 +33,15 @@
                         <th>Email</th>
                     </tr>
                 </thead>
-                <?=$listProfil;?>
+                <tbody class="scrollable">
+                    <?=$listProfil;?>
+                </tbody>
             </table>
         </div>
-        <?=$listModals;?>
-    </div>
-</div>
+        <p>Un clic sur un utilisateur permet d'acceder à sa fiche et d'en modifier roles et status.<p>
+    </div><!--  end of row -->
+</div><!--  end of page -->
+
 
 
 <div id="usermodal" class="modal fade" tabindex="-1" role="dialog">
@@ -45,20 +49,56 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Gestion de l'état du compte</h4>
+                <h4 class="modal-title">Modification de compte :</h4>
             </div>
-            <div class="modal-body">
-                <p id="usermodal__userName"></p>
-            </div>
-            <div class="modal-footer">
-                <form action="/administrator/set-user-status/" method="POST">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="user_modal__button"></button>
-                    <input type="hidden" name="userStatus" id="user_modal__userStatus" value ="">
-                    <input type="hidden" name="userId" id="user_modal__userId" value ="">
+             <form action="/administrator/set-user-status/" method="POST">
+                <div class="modal-body cf">
+                    <p id="usermodal__userName"></p>
+                    <div class="form-group usermodal__radio">
+                        <p>Etat du compte : </p>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="userActivity" id="userActivity1" value="option1" class="radio-danger" checked>
+                            Actif
+                          </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="userActivity" id="userActivity2" value="option2" class="radio-danger">
+                            Suspendu
+                          </label>
+                        </div>
+                          <div class="btn-group btn-toggle"> 
+                            <button class="btn btn-lg btn-default">Actif</button>
+                            <button class="btn btn-lg btn-primary active">Suspendu</button>
+                          </div>
+                    </div>
+                     <div class="form-group usermodal__radio">
+                        <p>Rôle de l'utilisateur : </p>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="userRole" id="userRole1" value="option1" checked>
+                                Etudiant
+                              </label>
+                        </div>
+                        <div class="radio">
+                          <label>
+                            <input type="radio" name="userRole" id="userRole2" value="option2">
+                            Administrateur
+                          </label>
+                        </  div>
+
+                        <input type="hidden" name="userStatus" id="usermodal__userStatus" value ="">
+                        <input type="hidden" name="userId" id="usermodal__userId" value ="">
+                </div>
+                <div class="modal-footer">
+                   
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="usermodal__button"></button>
+                </div>
                 </form>
-            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 <?php $this->stop('main_content') ?>

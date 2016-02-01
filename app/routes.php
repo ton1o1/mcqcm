@@ -20,11 +20,11 @@
 		//Administrator only
 		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
 		//Change user status
-		['GET|POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
+		['POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
 		//List User 
-		['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'Administrator_findUsers'],
+		['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'administrator_findUsers'],
 		//List User 
-		['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'Administrator_getUserInfo']
+		['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'administrator_getUserInfo']
 
 
 	);

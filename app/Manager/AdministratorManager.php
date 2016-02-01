@@ -3,10 +3,16 @@ namespace Manager;
 
 class AdministratorManager extends \W\Manager\UserManager 
 {
-	public function getUserList(){
+	public function getUserList($from = 0,$offset = 5){
 		
 		$this->setTable("users");
-		return $this->findAll("last_name", "ASC");		
+
+        $sql = "SELECT * FROM ".$this->table." ORDER BY last_name ASC LIMIT ". $from . ",". $offset;
+        $sth = $this->dbh->prepare($sql);
+        $sth->execute();
+        return $sth->fetchAll();
+		
+        //return $this->findAll("last_name", "ASC");		
 	}
 
 
@@ -14,6 +20,11 @@ class AdministratorManager extends \W\Manager\UserManager
         $this->setTable("users");
         $this->update(["is_active"  => $status],$userId);
 
+    }
+
+    public function setUserRole($status, $userId){
+        $this->setTable("users");
+        $this->update(["role"  => $role],$userId);
     }
 
     public function searchUser($search){

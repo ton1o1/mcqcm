@@ -31,5 +31,4 @@
         <a class="link" href="<?= $this->url("user_register", []);?>">créer un nouvreau compte</a>
     </div>
 </div>
-
 <?php $this->stop('main_content') ?>
