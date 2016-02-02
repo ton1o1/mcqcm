@@ -12,22 +12,48 @@
 	// }
 	
 
-	//Alsacreations
+
+
+
+
+	//Creation de l'objet PDO
 	$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '', array(
 		        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8", //on s'assure de communiquer en utf8
 		        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //on récupère nos données en array associatif par défaut
 		        PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING         //on affiche les erreurs. À modifier en prod. 
 		    ));
 
-	$html = file_get_html('http://www.alsacreations.com/quiz/lire/17-jquery-dbutant.html');
+	function findLast($table)
+	{
+			$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '', array(
+		        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8", //on s'assure de communiquer en utf8
+		        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //on récupère nos données en array associatif par défaut
+		        PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING         //on affiche les erreurs. À modifier en prod. 
+		    ));
+		//SELECT les_colonnes FROM la_table WHERE id=LAST_INSERT_ID();
+		$sql = "SELECT * FROM :table WHERE id = LAST_INSERT_ID();";
+		echo $sql;
+		$sth = $pdo->prepare($sql);			
+		$sth->execute([
+			":table" => $table,
+		]);	
+		return $sth->fetch();
+	}
+
+	//acces à la page à scrapper : intitulé des questions
+	$html = file_get_html('http://www.alsacreations.com/quiz/resultat/1');
 	foreach ($html->find("p[class='quiz-intitule']") as $element) {
 		echo $element->plaintext . '<br>';
-
-		$title = $element->plaintext;
-		
+		$title = $element->plaintext;	
 		$sql = "INSERT INTO `questions` (`id`, `creator_id`, `title`) VALUES (NULL, '1', :title);";
 		$stmt = $pdo->prepare($sql);
-		$stmt->execute([":title" => $title]);		
+		$stmt->execute([":title" => $title]);
+
+		//$questionId = findLast("questions");
+		//echo "l'id de la question est " . $questionId;
+		$hey = $pdo->query("SELECT * FROM :table WHERE id = LAST_INSERT_ID();");
+		print_r($hey->fetch());
+
 	}
 	
 
@@ -59,20 +85,6 @@
 //
 //
 	//$html = file_get_html('http://www.alsacreations.com/quiz/lire/17-jquery-dbutant.html');
-
-
-
-
-
-	
-
-
-
-
-
-
-
-	
 
 
 

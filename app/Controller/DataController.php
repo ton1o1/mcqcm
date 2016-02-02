@@ -18,7 +18,12 @@ class DataController extends Controller
 			$nbToInsert = $_POST["nbToInsert"];
 			$dataManager = new \Manager\DataManager();
 			$dataManager->insertUserViaFaker();
-			$resultat = "Succès : ";
+			if($nbToInsert>1){
+				$resultat = "Succès : " . $nbToInsert . "utilisateurs ajoutés";
+			} else {
+				$resultat = "Succès : " . $nbToInsert . "utilisateur ajouté";
+
+			}
 		} else {
 			$resultat = "Aucun utilisateur créé, veuillez saisir un nombre strictement positif d'utilisateurs à insérer.";
 		}
@@ -26,7 +31,6 @@ class DataController extends Controller
 
 		$this->show('admin/data_generate', [
 			"resultat" => $resultat . $nbToInsert . " utilisateurs ajoutés", 
-			"nbInserted" => $nbToInsert, 
 		]);                                                                                                                          
 
 		
