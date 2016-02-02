@@ -12,12 +12,12 @@
 		} ?>
 
 
-	<p>Résultats individuels</p>
+	<p>Résultats détaillés</p>
 
 	<form method="GET">
 
-		<label>Pour un quiz</label>
-		<div><select name="quiz">
+		<label>Choisir un quiz </label><br />
+		<select name="quiz">
 		<?php $nbQuiz = count($quizTitle);
 	 	for ($j=0; $j < $nbQuiz; $j++) {  if ($scores[$j]['scoreMoyen'] > 0.0) { ?>
 			<option value="<?=$quizTitle[$j] ?>"><?=$quizTitle[$j] ?></option>
@@ -25,9 +25,7 @@
 		
 		<?php } ?> </select>
 
-		<label>Pour tous les quizs</label>
-		<button type="submit">Valider</button><br /><br />
-		<button type="submit">Soumettre</button>
+		<button type="submit">Valider</button>
 	</form>
 
 

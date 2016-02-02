@@ -173,8 +173,9 @@ public function viewIndividual($userId) {
 			$moyQuiz = $this->medium_calculate("quiz", $quizId);
 			// $this->teacherSessionResult($quizId);
 			$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'moyQuiz' => $moyQuiz, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
-		} else {
-			$this->allResults();
+			$this->redirectToRoute('result/quiz', ['quizId' => 1]);
+			} else {
+				$this->allResults();
 		}
 	} 
 		
