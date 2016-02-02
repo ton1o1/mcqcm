@@ -54,24 +54,28 @@ class ResultController extends Controller {
 
 
 
-	public function viewUser($userId, $sessionId = null) {
+	public function viewUser($userId, $sessionId) {
 		
-		// $this->answer->setTable('sessions');
+		$this->answer->setTable('sessions');
 		$name = $this->answer->userName($userId);
 		if (!empty($sessionId)) {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
 			if ($dateStop) {
 				$this->studentSessionResult($userId, $sessionId);
+				$this->show('result/user_results', ['name' => $name]);
 				} else {$this->redirectToRoute('home');}
-		} else {
-			$userResu = $this->studentResult($userId);
-			$resultsStu = $userResu[0];
-			$userRes = $userResu[1];
-
-			$this->show('result/individual_results', ['name' => $name, 'resultsStu' => $resultsStu, 'userRes' => $userRes]);
-		}
+		} else {$this->redirectToRoute('home');}
 	}
 
+
+public function viewIndividual($userId) {
+				
+		$userResu = $this->studentResult($userId);
+		$resultsStu = $userResu[0];
+		$userRes = $userResu[1];
+		$this->show('result/individual_results', ['name' => $name, 'resultsStu' => $resultsStu, 'userRes' => $userRes]);
+		
+	}
 
 	public function viewQuiz($quizId = null) {
 
@@ -131,14 +135,8 @@ class ResultController extends Controller {
 			}
 			
 			$resultsTitle = $this->answer->findTitle($key);
-			foreach ($resultsTitle[0] as $key2 => $value2) {
-				echo ('<span style="font-size: 20px;"><strong>' . $value2 . '</strong></span>');
-				}
-
+			$this->show('result/user_results', ['resultsTitle' => $resultsTitle]);
 			}
-
-		echo ". ";
-		echo ('<br />' . "\n");
 
 		}
 
@@ -150,11 +148,6 @@ class ResultController extends Controller {
 	public function calculNoteStudent($userId, $quizId) {
 
 		$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
-		foreach ($resultUserQuiz as $key => $value) {
-			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
-			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
-			} 
-		
 		$resultat = $this->answer->list_choices_user_quiz($userId, $quizId);
 
 		$choiceId = [];
@@ -187,7 +180,7 @@ class ResultController extends Controller {
 		} 
 
 		$noteQuiz = $noteTotale * 100 / $m;
-
+$this->show('result/user_results', ['resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
 		echo ('<br />' . "\n");
 		echo ('<h2 style="color:red;"><strong>' . "Note : " . $noteQuiz . "/100" . '</strong></h2>');
 		return $noteQuiz;

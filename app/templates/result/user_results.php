@@ -1,7 +1,7 @@
 <?php $this->layout('layout', ['title' => 'Résultats']) ?>
 
 <?php $this->start('main_content') ?>
- 
+
 		<h2>Résultats de userId à sessionId</h2> 
 		<p></p> 
 		<div>Résultats individuels de <?=$userId ?> pour la session <?=$sessionId ?>
@@ -9,17 +9,12 @@
 <h2 style="font-size: 24px; color:blue;"><strong><?=$textPresentation ?></strong></h2>
 		
 	<?php	
+	foreach ($resultUserQuiz as $key => $value) {
+			$textPresentation = "Résultats du " . $value["title"] . " pour le candidat " . $value["last_name"] . " " . $value["first_name"] . " : ";
+			echo('<h2 style="font-size: 24px; color:blue;"><strong>' . $textPresentation . '</strong></h2>');
+			} 
 
-		$choiceId = [];
-		$tabSolution = [];
-		$tabChoiceTot = [];
-		$tabChoice = [];
-		$resultSolution = [];
-		$str = "";
-		$strChoice = "";
-		$answer = "";
-		$m = 0;
-		$noteTotale = 0;
+
 
 		foreach ($resultat as $ke => $valu) {
 	
@@ -52,10 +47,8 @@
 
 		// return $note;
 
-	
-
 	} 
-<br /><h2 style="color:red;"><strong>Note : <?=$noteQuiz ?>/100</strong></h2>
 
-<?php 
-$this->stop('main_content') ?>
+<br /><h2 style="color:red;"><strong>Note : <?=$noteQuiz ?> sur 100</strong></h2>
+
+<?php $this->stop('main_content') ?>

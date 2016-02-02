@@ -37,7 +37,8 @@
 
         // Result
         ['GET', '/result/input/[i:userId]?/[i:sessionId]?', 'Result#viewInput', 'result_view_input'],
-        ['GET', '/result/user/[i:userId]/[i:sessionId]?', 'Result#viewUser', 'result_view_session'],
+        ['GET', '/result/user/[i:userId]/[i:sessionId]', 'Result#viewUser', 'result_view_session'],
+        ['GET', '/result/individual/[i:userId]', 'Result#viewIndividual', 'result_view_individual'],
         ['GET', '/result/quiz/[i:quizId]?', 'Result#viewQuiz', 'result_view_quiz'],
 
     );
