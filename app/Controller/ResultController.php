@@ -124,7 +124,7 @@ class ResultController extends Controller {
 						
 						$resulTotTitle[$ke] .= " " . $resultsTitle[0]['title'];
 						}
-						
+
 						$noteTotale += $note;
 					} 
 
@@ -160,7 +160,7 @@ public function viewIndividual($userId) {
 			// $this->answer->setQuizId($quizId);
 		// 	$quizId = $this->quizId;
 			$titleQ = $this->answer->quizTitle($quizId)[0]['title'];
-			$this->quizResult($quizId);
+			// $this->quizResult($quizId);
 			$scoreUser = $this->answer->quizUsers($quizId);
 			$userId = [];
 			$scoreU = [];
@@ -169,8 +169,9 @@ public function viewIndividual($userId) {
 				$name[$k] = $this->answer->userName($userId[$k]);
 				$scoreU[$k] = $v['score'];
 				}
+			$moyQuiz = $this->medium_calculate("quiz", $quizId);
 			// $this->teacherSessionResult($quizId);
-			$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
+			$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'moyQuiz' => $moyQuiz, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
 		} else {
 			$this->allResults();
 		}
