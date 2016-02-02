@@ -47,12 +47,13 @@ $searchQuestion.on("keyup", function(e){
 				$tdTitle = $("<td>").html($title + ", ");
 	
 				$button = $("<button>");
-				$button.html("Ajouter au quiz").attr("data-id",$id);
+				$button.html("Ajouter au quiz").attr("data-id",$id).addClass("btn btn-default");
 				$tdButton = $("<td>").append($button);
 				$button.on("click", function(e){
 					e.preventDefault;	
 					
 					//ajaxAddQuestionjs($(this).attr("data-id"));
+					
 					$questionId = $(this).attr("data-id")
 					$quizId = $("#quizId").val()
 					$this = $(this);
@@ -71,9 +72,9 @@ $searchQuestion.on("keyup", function(e){
 					.done(function(response){ 
 						console.log(response);
 						if(response){
-							$this.html("déjà ajouté !")
+							$this.html("déjà ajouté !").removeClass("btn-default").addClass("btn-warning");
 						} else {
-							$this.html("Ajouté!")
+							$this.html("Ajouté!").removeClass("btn-default").addClass("btn-success");
 						}
 						
 					})
@@ -106,40 +107,6 @@ $searchQuestion.on("keyup", function(e){
 
 })
 
-
-/*
-function ajaxAddQuestionjs($questionId){
-	
-	$quizId = $("#quizId").val()
-	console.log($urlVal.replace("questionrecherche","questionajouter") + ", quizId= " + $quizId +", questionId = " + $questionId);
-
-	$.ajax({
-		"url": "/mcqcm/public/questionajouter", //ok, on se rend independant de l'url local
-		//"url": $urlVal.replace("questionrecherche","questionajouter"), //ok, on se rend independant de l'url local
-		"data" : { //ecrit automatiquement ?foo=bar à la fin de l'url
-			"quizId" : $quizId, 
-			"questionId" : $questionId
-		},
-		"dataType": 'json', 
-		"type": "POST"
-	})
-	.done(function(response){ 
-		console.log("insertion d'une question ou pas ?")
-		console.log(response);
-	})
-	.fail(function(){
-		console.log("FAIL add");
-	})
-	.always(function(){
-
-	});
-
-
-}
-
-
-
-*/
 
 
 

@@ -14,7 +14,7 @@
     </ol>
   </div>  
   
-  <section class="searchQuestion">
+  <section class="searchQuestion container">
 <!-- SEARCH BAR -->
   <form action="#" method="GET">
     <label for="search-question">Rechercher une question : </label>
@@ -25,7 +25,7 @@
   </form>
 <!-- RESULTS -->
     <div class="results-list">
-      <table>
+      <table class="table table-striped table-hover">
       	<!-- RESULTS OF THE SEARCH -->
       </table>
     </div>
@@ -33,7 +33,7 @@
   </section>
 
 <!-- QUESTION -->
-  <section class="addQuestion">
+  <section class="addQuestion container">
         <div>
           <label>Quiz n°</label>
           <input type="number" name="quizId" id= "quizId" min="0" max="100" step="1" value="1" disabled="">

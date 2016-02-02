@@ -1,7 +1,8 @@
 <?php
 
 	require_once '../../vendor/fzaninotto/faker/src/autoload.php';
-	$faker = Faker\Factory::create('fr_FR');
+	//$faker = Faker\Factory::create('fr_FR');
+	$faker = \Faker\Factory::create('fr_FR');
 	
 	$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '');
 	
