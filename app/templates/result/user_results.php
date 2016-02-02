@@ -16,11 +16,9 @@
 
 
 
-		foreach ($resultat as $ke => $valu) {
+	foreach ($resultat as $ke => $valu) { ?>
 	
-			$tabChoice = unserialize($valu["choices"]);
-			$tabChoiceTot = $tabChoiceTot + $tabChoice;
-			?><br /><span style="font-size:20px;">Pour la question <strong><?=$valu["question_id"] ?></strong>, </span>
+			<br /><span style="font-size:20px;">Pour la question <strong><?=$valu["question_id"] ?></strong>, </span>
 
 			<?php
 		
@@ -43,12 +41,12 @@
 
 			?>. <br />
 
-		}
+		<?php } 
 
 		// return $note;
 
-	} 
+	} ?>
 
-<br /><h2 style="color:red;"><strong>Note : <?=$noteQuiz ?> sur 100</strong></h2>
+<br /><h2 style="color:red;"><strong>Note : <?=$noteQuiz ?> sur 100.</strong></h2>
 
 <?php $this->stop('main_content') ?>

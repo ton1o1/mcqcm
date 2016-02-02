@@ -69,7 +69,8 @@ class ResultController extends Controller {
 
 
 public function viewIndividual($userId) {
-				
+		
+		$name = $this->answer->userName($userId);		
 		$userResu = $this->studentResult($userId);
 		$resultsStu = $userResu[0];
 		$userRes = $userResu[1];
@@ -112,33 +113,17 @@ public function viewIndividual($userId) {
 		$tabDiff = array_diff_assoc ($array1, $array2);
 		$lenArray = count($tabDiff);
 
-		if ($lenArray == 0) {
-			
-			$note = 1;
-			echo('<span style="font-size: 20px; color:green;"><strong>' . "réponse exacte" . '</strong>' . ". " . '</span>');
-			echo ('<br />' . "\n");
-		
-		} else { 
-			
-			if ($lenArray == 1) {
-				echo('<span style="font-size: 20px; color:red;"><strong>' . "erreur" . '</strong>' . '</span><span style="font-size: 20px;">' . " pour le choix suivant : " . '</span>');
-			} else {
-				echo('<span style="font-size: 20px; color:red;"><strong>' . "erreurs" . '</strong>' . '</span><span style="font-size: 20px;">' . " pour les choix suivants : " . '</span>'); 
-			}
 
 		foreach ($tabDiff as $key => $value) {
 
-			if ($clef == 1) {
+		/*	if ($clef == 1) {
 				echo ", ";
 			} else {
 				$clef = 1;
-			}
+			} */
 			
 			$resultsTitle = $this->answer->findTitle($key);
-			$this->show('result/user_results', ['resultsTitle' => $resultsTitle]);
 			}
-
-		}
 
 		return $note;
 
@@ -165,8 +150,8 @@ public function viewIndividual($userId) {
 	
 			$tabChoice = unserialize($valu["choices"]);
 			$tabChoiceTot = $tabChoiceTot + $tabChoice;
-			echo('<br />' . "\n");
-			echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
+			
+			// echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
 
 			foreach ($tabChoice as $ky => $v) {
 				
@@ -176,13 +161,39 @@ public function viewIndividual($userId) {
 				}
 			} 
 			$m++;
-			$noteTotale += $this->valCompareQuestion($tabChoice, $tabSolution);
+
+		$note = 0;
+		$noteQTot = [];
+		$tabDiff = [];
+		$textResults = "";
+		$clef = 0;
+
+		$tabDiff = array_diff_assoc ($tabChoice, $tabSolution);
+		$lenArray = count($tabDiff);
+
+
+		foreach ($tabDiff as $key => $value) {
+
+		/*	if ($clef == 1) {
+				echo ", ";
+			} else {
+				$clef = 1;
+			} */
+			
+			$resultsTitle = $this->answer->findTitle($key);
+			
+			}
+
+		
+
+
+			$noteTotale += $note;$this->valCompareQuestion($tabChoice, $tabSolution);
 		} 
 
 		$noteQuiz = $noteTotale * 100 / $m;
-$this->show('result/user_results', ['resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
-		echo ('<br />' . "\n");
-		echo ('<h2 style="color:red;"><strong>' . "Note : " . $noteQuiz . "/100" . '</strong></h2>');
+$this->show('result/user_results', ['resultsTitle' => $resultsTitle, 'tabDiff' => $tabDiff, 'resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
+
+
 		return $noteQuiz;
 	}
 

@@ -16,6 +16,10 @@
 			<?= $this->section('main_content') ?>
 		</section>
 
+	<section>
+			<?= $this->section('second_content') ?>
+		</section>
+
 		<footer>
 		</footer>
 	</div>
