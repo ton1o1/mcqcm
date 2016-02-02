@@ -121,12 +121,7 @@
         </div>
                 <nav class="navigation navigation--footer" role="navigation">
             <ul>
-                <li><a href="<?= $this->url("home", []);?>">accueil</a></li>
-                <li><a href="<?= $this->url("question_builder", []);?>">questions</a></li>
-                <li><a href="<?= $this->url("apropos", []);?>">à propos</a></li>
-                <li><a href="<?= $this->url("contact", []);?>">contactez-nous</a></li>
-                <li><a href="<?= $this->url("user_connection", []);?>">se connecter</a></li>
-            </ul>           
+</ul>           
         </nav>
       </div>
     </footer>

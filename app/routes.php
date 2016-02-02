@@ -6,8 +6,10 @@
         // Global (Default)
         ['GET', '/', 'Default#home', 'home'], // homepage
         ['GET', '/about', 'Default#about', 'about'],
+        ['GET', '/about', 'Default#apropos', 'apropos'],
         ['GET', '/legal', 'Default#legal', 'legal'],
         ['GET', '/contact', 'Default#contact', 'contact'],
+        ['GET', '/', 'Default#home', 'question_builder'],
 
         // User
         ['GET|POST', '/login', 'User#login', 'user_login'],                           // login with credentials (email + password)
@@ -28,12 +30,8 @@
         ['GET|POST', '/quiz/delete/[i:quizId]', 'Quiz#delete', 'quiz_delete'],        // delete quiz by id
 
 
-		//Login
-		['GET|POST', '/connexion/', 'User#login', 'user_login'],
+
 		//Private area
-		['GET|POST', '/inscription/', 'User#register', 'user_register'],
-		['GET|POST', '/profil/', 'User#profile', 'user_profile'],
-		['GET', '/deconnexion/', 'User#logout', 'user_logout'],
 		['GET|POST', '/profil/modifier/', 'User#modify', 'user_modify'],
 		['GET|POST', '/oubli-mdp/', 'User#recovery_pwd', 'user_recovery_pwd'],
 		['GET|POST', '/renouvellement-mdp/[a:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
@@ -43,7 +41,7 @@
 		['POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
 		['POST', '/administrator/change-user/', 'Administrator#changeUser', 'administrator_changeUser'],
 		['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'administrator_findUsers'],
-		['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'administrator_getUserInfo']
+		['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'administrator_getUserInfo'],
 
 
        // Skill
