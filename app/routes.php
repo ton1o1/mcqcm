@@ -14,8 +14,10 @@
 		['POST', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
 		//route to a question file
 		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
+
+
 		//route to admin generate data page using Faker
-		['GET', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
+		['GET|POST', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
 		
 		
 		//route to about, legal and blog

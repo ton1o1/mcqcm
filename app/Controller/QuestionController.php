@@ -13,7 +13,7 @@ class QuestionController extends Controller
 	 */
 	public function questionBuild()
 	{ 
-
+		//$this->allowTo("student");
 		//If $_POST exists, test the keys one by one
 		if($_POST){
 
