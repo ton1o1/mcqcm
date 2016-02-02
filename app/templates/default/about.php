@@ -1,6 +1,7 @@
 <?php $this->layout('layout', ['title' => 'A propos']) ?>
 
 <?php $this->start('main_content') ?>
+
 	<h2>Let's code.</h2>
 	<p>Vous avez atteint la page A propos</p>
 	<h3>A propos de nous</h3>
@@ -13,6 +14,4 @@
 	</dl>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro consequatur obcaecati, praesentium laudantium debitis commodi cumque nobis sequi, sint nesciunt culpa aspernatur quia quo vel autem possimus maxime eum reiciendis.</p>
 
-
-	<p>Et maintenant, RTFM dans <strong><a href="../docs/tuto/" title="Documentation de W">docs/tuto</a></strong>.</p>
 <?php $this->stop('main_content') ?>

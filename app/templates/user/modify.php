@@ -5,7 +5,7 @@
     <div class="row">
          <h2>Modification de profil</h2>
          <!-- modify userInfos -->
-           <h3>Vos données personnelles</h3><button class="text-right" role="button" data-toggle="collapse" href="#modifyUserInfo" aria-expanded="false" aria-controls="modifyUserInfo">Modifier</button>
+           <h3>Vos données personnelles<button class="pull-right btn btn-info" role="button" data-toggle="collapse" href="#modifyUserInfo" aria-expanded="false" aria-controls="modifyUserInfo">Modifier</button></h3>
             <div class="collapse" id="modifyUserInfo">
                 <form action="" method="post" novalidate class="">
                     <div class="form-group <?php if(!empty($errormessage['userLastName'])){ echo 'has-error';}?>">
@@ -23,13 +23,13 @@
             </div>
             <!-- modify password -->
        
-            <h3 class="text-left">Votre mot de passe<button class="text-right" role="button" data-toggle="collapse" href="#modifyPwd" aria-expanded="false" aria-controls="modifyPwd">Modifier</button></h3>
+            <h3>Votre mot de passe<button class="pull-right btn btn-info" role="button" data-toggle="collapse" href="#modifyPwd" aria-expanded="false" aria-controls="modifyPwd">Modifier</button></h3>
             <div class="collapse" id="modifyPwd">
                 <form action="" method="post" novalidate class="">
                     <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">
-                        <label for="userPassword">Mot de passe <span class="required">*</span></label>
-                        <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="Password" value="">
-                        <?= $userPassword =(!empty($errormessage['userPassword']))?$errormessage['userPassword']:'';?>
+                        <label for="userNewPassword">Mot de passe <span class="required">*</span></label>
+                        <input type="password" class="form-control" id="userNewPassword" name="userNewPassword" placeholder="Password" value="">
+                        <?= $userNewPassword =(!empty($errormessage['userNewPassword']))?$errormessage['userNewPassword']:'';?>
                     </div>
                     <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">
                         <label for="userPasswordConfirmed">Confirmer votre mot de passe <span class="required">*</span></label>
@@ -39,14 +39,14 @@
                 </form>
             </div>
             <!-- modify email -->
-            <h3>Votre email</h3><button class="text-right" role="button" data-toggle="collapse" href="#modifyEmail" aria-expanded="false" aria-controls="modifyEmail">Modifier</button>
+            <h3 class="bg-primary">Votre email<button class="pull-right btn btn-info" role="button" data-toggle="collapse" href="#modifyEmail" aria-expanded="false" aria-controls="modifyEmail">Modifier</button></h3>
             <p>Votre adresse email est <?=$w_user['email'];?></p>
             <div class="collapse" id="modifyEmail">
                 <form action="" method="post" novalidate class="">
                     <div class="form-group <?php if(!empty($errormessage['userEmail'])){ echo 'has-error';}?>">
-                        <label for="userEmail">Nouvelle adresse email</label>
-                        <input type="email" class="form-control" id="userEmail" name="userEmail" placeholder="email" value="">
-                        <?= $userEmail =(!empty($errormessage['userEmail']))?$errormessage['userEmail']:'';?>
+                        <label for="userNewEmail">Nouvelle adresse email</label>
+                        <input type="email" class="form-control" id="userNewEmail" name="userNewEmail" placeholder="email" value="">
+                        <?= $userEmail =(!empty($errormessage['userNewEmail']))?$errormessage['userNewEmail']:'';?>
                     </div>
                     <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">
                         <label for="userPassword">Mot de passe actuel<span class="required">*</span></label>

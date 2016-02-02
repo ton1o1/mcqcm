@@ -179,17 +179,79 @@ class UserController extends Controller
 
 	}
 
-	public function modifyEmail()
+	public function modifyEmail($test)
 	{
-		if(!empty($_POST)) {
-		//is it necessary ?
+		$result = $this->testUserForm($test);
+		$isValid = $result[0];
+		$errormessage =$result[1];
+
+		if($isValid){
+			//Submited data are correct.
+			//update data in database
+
+			$this->userManager->update([
+					"email"  => $test['email'],
+				],$user['id']);
+			//maj session 
+			$this->authentificationManager->refreshUser();
+			//redirect user
+			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
+			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+		}else{
+
+			$this->show('user_modify', ["errormessage" => $errormessage]);
 		}
 
 	}
 
-	public function modifyPassword()
+	public function modifyPassword($test)
 	{
-		//is it necessary ?
+		$result = $this->testUserForm($test);
+		$isValid = $result[0];
+		$errormessage =$result[1];
+		if($isValid){
+			//Submited data are correct.
+			//debug($test);
+			//die();
+			//update data in database
+
+			$this->userManager->update([
+					"password"  => $test['password'],
+				],$user['id']);
+			//maj session 
+			$this->authentificationManager->refreshUser();
+			//redirect user
+			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
+			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+		}else{
+
+			$this->show('user_modify', ["errormessage" => $errormessage]);
+		}
+	}
+
+	public function modifyUserInfo($test)
+	{
+		$result = $this->testUserForm($test);
+		$isValid = $result[0];
+		$errormessage =$result[1];
+
+		if($isValid){
+			//Submited data are correct.
+			//update data in database
+
+			$this->userManager->update([
+					"first_name"  => $test['first_name'],
+					"last_name"   => $test['last_name']
+				],$user['id']);
+			//maj session 
+			$this->authentificationManager->refreshUser();
+			//redirect user
+			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
+			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+		}else{
+
+			$this->show('user_modify', ["errormessage" => $errormessage]);
+		}
 	}
 
 	public function modify()
@@ -200,28 +262,29 @@ class UserController extends Controller
 		
 		if(!empty($_POST)) {
 
+			if(isset($_POST['userNewEmail'])){
+				$test['newEmail'] = $_POST['userNewEmail'];
+				$test['password'] = $_POST['userPassword'];
 
-			$test['first_name'] = $_POST['userFirstName'];
-			$test['last_name'] = $_POST['userLastName'];
+				$this->modifyPassword($test);
 
-			$result = $this->testUserForm($test);
-			$isValid = $result[0];
-			$errormessage =$result[1];
-
-
-			if($isValid){
-				//Submited data are correct.
-				//update data in database
-
-				$this->userManager->update([
-						"first_name"  => $test['first_name'],
-						"last_name"   => $test['last_name']
-					],$user['id']);
-				//maj session 
-				$this->authentificationManager->refreshUser();
-				//redirect user
-				$this->redirectToRoute('user_profile');
 			}
+			if(isset($_POST['first_name'])){
+				$test['first_name'] = $_POST['userFirstName'];
+				$test['last_name'] = $_POST['userLastName'];
+				
+				$this->modifyUserInfo($test);
+
+			}
+
+			if(isset($_POST['userPasswordConfirmed'])){			
+
+				$test['userPassword'] = $_POST['userNewPassword'];
+				$test['userPasswordConfirmed'] = $_POST['userPasswordConfirmed'];
+
+				$this->modifyPassword($test);
+			}
+
 
 		}
 		//Display user/modify with userData
@@ -482,6 +545,40 @@ class UserController extends Controller
 				if($this->userManager->emailExists($test['email'])) {
 					$isValid = false;
 					$errormessage['userEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div>';
+				}
+				
+			}
+		}
+
+		//changing user Email
+		if(isset($test['newEmail'])){
+			if(empty($test['newEmail'])) {
+				$isValid = false;
+				$errormessage['newEmail'] = '<div class="message message--error">Adresse Email obligatoire !</div>';
+			}
+			elseif(!filter_var($test['email'], FILTER_VALIDATE_EMAIL)) {
+				$isValid = false;
+				$errormessage['newEmail'] = '<div class="message message--error">Adresse Email invalide !</div>';				
+
+			}
+			else{
+
+				if($this->userManager->emailExists($test['newEmail'])) {
+					$isValid = false;
+					$errormessage['newEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div>';
+				}
+				else{
+					if(isset($test['password'])){
+						if(empty($test['password'])) {
+							$isValid = false;
+							$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
+						}
+						else{
+							//method is password ok
+							$userId = $this->authentificationManager->isValidLoginInfo( $userEmail, $test['password']);
+						}
+
+					}
 				}
 				
 			}
