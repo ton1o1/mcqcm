@@ -61,8 +61,83 @@ class ResultController extends Controller {
 		if (!empty($sessionId)) {
 		$dateStop = $this->answer->find($sessionId)['date_stop'];
 			if ($dateStop) {
-				$this->studentSessionResult($userId, $sessionId);
-				$this->show('result/user_results', ['name' => $name]);
+				
+				// $this->studentSessionResult($userId, $sessionId);
+				$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
+				$quizId = intval($quizI);
+				$nbQuizUser = $this->answer->countQuizUser($userId, $quizId);
+				if ($nbQuizUser >= 1) {
+					// $score = $this->calculNoteStudent($userId, $quizId);
+					$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
+					$resultat = $this->answer->list_choices_user_quiz($userId, $quizId);
+
+					$choiceId = [];
+					$tabSolution = [];
+					$tabChoiceTot = [];
+					$tabChoice = [];
+					$resultSolution = [];
+					$str = "";
+					$strChoice = "";
+					$answer = "";
+					$m = 0;
+					$noteTotale = 0;
+					$resulTotTitle = [];
+
+					foreach ($resultat as $ke => $valu) {
+	
+						$tabChoice = unserialize($valu["choices"]);
+						$tabChoiceTot = $tabChoiceTot + $tabChoice;
+						
+						
+			// echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
+
+					foreach ($tabChoice as $ky => $v) {
+						
+						$resultSolution = $this->answer->list_solution_choice($ky);
+							foreach ($resultSolution[0] as $kee => $vaa) {
+						$tabSolution[$ky] = intval($vaa);
+						}
+					} 
+					$m++;
+
+					$note = 0;
+					$noteQTot = [];
+					$tabDiff = [];
+					$textResults = "";
+
+					$clef = 0;
+
+					$tabDiff = array_diff_assoc ($tabChoice, $tabSolution);
+					$lenArray = count($tabDiff);
+					if ($lenArray == 0) { $note = 1; } else { $note = 0; }
+
+
+					foreach ($tabDiff as $key => $value) {
+
+					/*	if ($clef == 1) {
+							echo ", ";
+						} else {
+							$clef = 1;
+						} */
+						
+						$resultsTitle = $this->answer->findTitle($key);
+						
+						$resulTotTitle[$ke] .= " " . $resultsTitle[0]['title'];
+						}
+						
+						$noteTotale += $note;
+					} 
+
+					$noteQuiz = $noteTotale * 100 / $m;
+					$score = $noteQuiz;
+					$titleQu = $this->answer->quizTitle($quizId)[0]['title'];
+					$name = $this->answer->userName($userId);
+					$this->answer->student_score_record($userId, $sessionId, $score);
+$this->show('result/user_results', ['name' => $name, 'titleQu' => $titleQu, 'resulTotTitle' => $resulTotTitle, 'resultsTitle' => $resultsTitle, 'tabDiff' => $tabDiff, 'resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
+					
+				}
+
+				// $this->show('result/user_results', ['name' => $name]);
 				} else {$this->redirectToRoute('home');}
 		} else {$this->redirectToRoute('home');}
 	}
@@ -181,17 +256,14 @@ public function viewIndividual($userId) {
 			} */
 			
 			$resultsTitle = $this->answer->findTitle($key);
-			
 			}
-
-		
-
-
 			$noteTotale += $note;$this->valCompareQuestion($tabChoice, $tabSolution);
 		} 
 
 		$noteQuiz = $noteTotale * 100 / $m;
-$this->show('result/user_results', ['resultsTitle' => $resultsTitle, 'tabDiff' => $tabDiff, 'resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
+		$titleQu = $this->answer->quizTitle($quizId)[0]['title'];
+		$name = $this->answer->userName($userId);
+$this->show('result/user_results', ['name' => $name, 'titleQu' => $titleQu, 'resultsTitle' => $resultsTitle, 'tabDiff' => $tabDiff, 'resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
 
 
 		return $noteQuiz;
