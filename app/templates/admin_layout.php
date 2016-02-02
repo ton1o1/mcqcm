@@ -2,10 +2,10 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title><?= $this->e($title) ?></title>
+    <title><?= $this->e($title) ?> - MCQCM</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="<?= $this->e($metadesc) ?>">
     <link rel="stylesheet" type="text/css" href="<?= $this->assetUrl('css/bootstrap.min.css') ?>">
+     <link rel="stylesheet" href="<?= $this->assetUrl('css/animate.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/admin.min.css') ?>">
 </head>
 <body>
@@ -20,12 +20,22 @@
                 <a class="navigation__button" href="#">menu</a>
 
                     <ul class="navigation__list">
-                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">accueil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("question_builder", []);?>">profil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("apropos", []);?>">quizz</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">accueil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">profil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">quizz</a></li>
                     </ul>
 
-                <a class="navigation__connexion" href="<?= $this->url("home", []);?>">se connecter |se deconnecter</a>
+                
+                <?php 
+                    if(empty($w_user)){
+                ?>
+                        <a class="navigation__connexion" href="<?= $this->url("user_login", []);?>">se connecter</a>
+                <?php
+                        }
+                    else {
+                ?>
+                        <a class="navigation__connexion" href="<?= $this->url("user_logout", []);?>">se déconnecter</a>
+                <?php }?>
 
               </nav>
            
@@ -52,6 +62,7 @@
 <!-- JS SCRIPTS -->
     <script type="text/javascript" src="<?= $this->assetUrl('js/jquery.min.js') ?>"></script>
     <script type="text/javascript" src="<?= $this->assetUrl('js/bootstrap.js') ?>"></script>
+    <script type="text/javascript" src="<?= $this->assetUrl('js/all.js') ?>"></script>
 
 </body>
 </html>

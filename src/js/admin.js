@@ -1,3 +1,5 @@
+
+
 function completeModal(){
 
     $currentUser = [];
