@@ -22,16 +22,16 @@
         ['GET', '/quiz/user/[i:userId]', 'Quiz#viewByUser', 'quiz_view_user'],        // list all quizzes created by user id
         ['GET|POST', '/quiz/create', 'Quiz#create', 'quiz_create'],                   // manual creator
         ['GET|POST', '/quiz/edit/[i:quizId]', 'Quiz#edit', 'quiz_edit'],              // edit quiz by id
+        ['GET|POST', '/quiz/edit/[i:quizId]/question/edit/[i:questionId]', 'Quiz#editQuestion', 'quiz_edit_question'],
+        ['GET|POST', '/quiz/edit/[i:quizId]/question/delete/[i:questionId]', 'Quiz#deleteQuestion', 'quiz_delete_question'],
         ['GET|POST', '/quiz/delete/[i:quizId]', 'Quiz#delete', 'quiz_delete'],        // delete quiz by id
 
         // Skill
         ['POST', '/skill/search', 'Skill#search', 'skill_search'],          // search skills by tag (POST data received with ajax requests, submitted by homepage form)
 
         // Question
-        ['GET|POST', '/question/create/quiz/[i:quizId]', 'Question#create', 'question_create'],
-        ['GET|POST', '/question/[i:questionId]/edit', 'Question#edit', 'question_edit'],
-        ['GET|POST', '/question/[i:questionId]/delete', 'Question#delete', 'question_delete'],
-
+        ['GET|POST', '/question/create', 'Question#create', 'question_create'],
+        
         // Session
         ['GET', '/session/quiz/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
 

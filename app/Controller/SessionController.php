@@ -15,6 +15,7 @@ class SessionController extends Controller
         $this->alerts = new \Service\Alerts();
         $this->sessionManager = new \Manager\SessionManager();
         // $this->answerManager = new \Manager\AnswerManager();
+        // $this->questionManager = new \Manager\QuestionManager();
     }
 
     /**
@@ -48,13 +49,35 @@ class SessionController extends Controller
                 'score' => 0
             ]);
 
-            $_SESSION['play'] = ['sessionId' => $this->sessionManager->lastId(), 'quizId' => $quizId];
+            $_SESSION['play'] = ['sessionId' => $this->sessionManager->lastId(), 'dateStart' => $dateStart->format('Y-m-d H:i:s'), 'quizId' => $quizId];
         }
 
         // Get questions
-        $questions = $this->questionManager->findByQuizId($_SESSION['play']['quizId']);
+        $questions = $this->sessionManager->questionsByQuizId($_SESSION['play']['quizId']);
 
-        $this->show('session/play', ['currentSession' => $currentSession]);
+        $play = ['sessionId' => $_SESSION['play']['sessionId'], 'dateStart' => $_SESSION['play']['dateStart'], 'quizTitle' => $questions[0]['quizTitle'], 'questions' => [] ];
+
+        foreach($questions as $question){
+
+            $choices = [];
+            $solutionsCount = 0;
+
+            // Get choices
+            $choicesList = $this->sessionManager->choicesByQuestionId($question['questionId']);
+
+            foreach($choicesList as $choice){
+                $choices[] = ['id' => $choice['choiceId'], 'title' => $choice['choiceTitle']];
+                if($choice['isTrue']){
+                    $solutionsCount++;
+                }
+            }
+
+            $play['questions'][] = ['title' => $question['questionTitle'], 'choices' => $choices, 'solutionsCount' => $solutionsCount];
+
+        }
+
+        // var_dump($play);
+        $this->show('session/play', ['play' => $play]);
     }
 
     /**

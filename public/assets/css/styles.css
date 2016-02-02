@@ -84,3 +84,9 @@ body > .container {
   .select2fix{
     margin-top: -50px;
   }
+
+  a.label{
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+  }
