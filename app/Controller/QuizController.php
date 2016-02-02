@@ -102,7 +102,7 @@ class QuizController extends Controller
     public function create()
     {
         // Dev mode START
-        // $this->allowTo('user');
+        $this->allowTo('student');
         // Dev mode END
 
         // If form submitted
@@ -192,13 +192,13 @@ class QuizController extends Controller
     public function edit($quizId)
     {
         // Dev mode START
-        // $this->allowTo('user');
+         $this->allowTo('student');
         // Dev mode END
 
         // Get user
         // Dev mode START
-        // $loggedUser = $this->getUser();
-        $loggedUser = ['id' => 1];
+        $loggedUser = $this->getUser();
+        //$loggedUser = ['id' => 1];
         // Dev mode END
 
         // Get quiz
@@ -266,13 +266,13 @@ class QuizController extends Controller
     public function delete($quizId)
     {
         // Dev mode START
-        // $this->allowTo('user');
+        $this->allowTo('student');
         // Dev mode END
 
         // Get user
         // Dev mode START
-        // $loggedUser = $this->getUser();
-        $loggedUser = ['id' => 1];
+        $loggedUser = $this->getUser();
+        //$loggedUser = ['id' => 1];
         // Dev mode END
 
         // Get quiz

@@ -1,5 +1,4 @@
-<?php $this->layout('admin_layout', ['title' => 'Modification de votre mot de passe']) ?>
-<?php echo "pouet";?>
+<?php $this->layout('layout', ['title' => 'Modification de votre mot de passe']) ?>
 <?php $this->start('main_content') ?>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">

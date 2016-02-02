@@ -1,4 +1,4 @@
-<?php $this->layout('admin_layout', ['title' => 'Profil']) ?>
+<?php $this->layout('layout', ['title' => 'Profil']) ?>
 
 <?php $this->start('main_content') ?>
 <div class="page page__identification">

@@ -5,9 +5,5 @@
 	<p>Vous avez atteint les mentions légales.</p>
 	<h3>Mentions légales</h3>
 	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis illo, ipsam ea ipsa repellendus maiores, cupiditate sunt tenetur? Eos voluptatum assumenda recusandae laborum porro unde ut libero suscipit et excepturi.</p>
-
-
-
-
-	<p>Et maintenant, RTFM dans <strong><a href="../docs/tuto/" title="Documentation de W">docs/tuto</a></strong>.</p>
+	
 <?php $this->stop('main_content') ?>

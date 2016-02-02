@@ -2,3 +2,5 @@ vendor/
 /app/config.php
 /phpDocumentor.phar
 node_modules/
+node_modules/**
+vendor/**

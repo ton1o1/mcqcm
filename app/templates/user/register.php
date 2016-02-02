@@ -1,4 +1,4 @@
-<?php $this->layout('admin_layout', ['title' => 'Inscription']) ?>
+<?php $this->layout('layout', ['title' => 'Inscription']) ?>
 
 <?php $this->start('main_content') ?>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">

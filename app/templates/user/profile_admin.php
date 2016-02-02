@@ -8,7 +8,7 @@
         <!-- Search Form -->
         <h3>Recherche</h3>
         
-        <form action="/administrator/search/" method="POST" id="searchUserForm" class="searchUserForm">
+        <form action="http://mcqcm.dev/mcqcm/public/administrator/search/" method="POST" id="searchUserForm" class="searchUserForm">
             <label for="searchUser">Recherche</label>
             <div class="input-group">
 

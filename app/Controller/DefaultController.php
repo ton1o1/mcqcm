@@ -30,5 +30,10 @@ class DefaultController extends Controller
 		$this->show('default/blog');
 	}
 
+	public function contact()
+	{
+		$this->show('default/contact');
+	}
+
 
 }
