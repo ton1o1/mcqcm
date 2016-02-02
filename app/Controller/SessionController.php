@@ -72,7 +72,7 @@ class SessionController extends Controller
                 }
             }
 
-            $play['questions'][] = ['title' => $question['questionTitle'], 'choices' => $choices, 'solutionsCount' => $solutionsCount];
+            $play['questions'][] = ['id' => $question['questionId'], 'title' => $question['questionTitle'], 'choices' => $choices, 'solutionsCount' => $solutionsCount];
 
         }
 
