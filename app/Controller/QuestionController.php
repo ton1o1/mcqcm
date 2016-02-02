@@ -224,16 +224,12 @@ class QuestionController extends Controller
 	}
 
 	public function ajaxAddQuestion(){
-
-		print_r($_POST);
 		$Quizs__questionManager = new \Manager\Quizs__questionManager();
-		$Quizs__questionManager->setTable("quizs__questions");	
 		$Quizs__questionManager->insert([			
-			"quiz_id" => 3,
-			"question_id" => 40,
+			"quiz_id" => $_POST["quizId"],
+			"question_id" =>  $_POST["questionId"],
 			"is_active" => 1,
 		]);
-
 	} 
 
 

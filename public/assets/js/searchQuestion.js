@@ -4,11 +4,7 @@ var $searchQuestion = $("#search-question");
 var $urlVal = $("#search-question").attr("data-url");
 var $resultsList = $(".results-list");
 var $details = $(".details");
-
-
-
-
-
+console.log($urlVal);
 
 
 $searchQuestion.on("keyup", function(e){
@@ -32,6 +28,7 @@ $searchQuestion.on("keyup", function(e){
 	//$response ici récupère la réponse de la requête AJAX
 	
 			console.log(response.length);
+			console.log(response);
 
 			if(response.length > 5){
 				$details.html( response.length + " résultats au total")
@@ -54,25 +51,31 @@ $searchQuestion.on("keyup", function(e){
 				$tdButton = $("<td>").append($button);
 				$button.on("click", function(e){
 					e.preventDefault;	
-					$(this).html("Ajouté!")
+					
 					//ajaxAddQuestionjs($(this).attr("data-id"));
-					$questionId = $(this)
+					$questionId = $(this).attr("data-id")
 					$quizId = $("#quizId").val()
-					//console.log($urlVal.replace("questionrecherche","questionajouter") + ", quizId= " + $quizId +", questionId = " + $questionId);
-				
+					$this = $(this);
+					console.log($urlVal.replace("questionrecherche","questionajouter"))
+					$route = $urlVal.replace("questionrecherche","questionajouter");
+						console.log("quizId:" + $quizId + " et " + "questionId:" + $questionId)
 					$.ajax({
-						"url": $urlVal.replace("questionrecherche","questionajouter"), //ok, on se rend independant de 					l'url local
-						//"url": $urlVal.replace("questionrecherche","questionajouter"), //ok, on 					se rend independant de l'url local
+						"url": $route, //ok, on se rend independant de 					l'url local
 						"data" : { //ecrit automatiquement ?foo=bar à la fin de l'url
 							"quizId" : $quizId, 
-							"questionId" : $(this).attr("data-id")
+							"questionId" : $questionId,
 						},
-						"dataType": 'json', 
+						"dataType": 'text', 
 						"type": "POST"
 					})
 					.done(function(response){ 
-						console.log("insertion d'une question ou pas ?")
 						console.log(response);
+						if(response){
+							$this.html("déjà ajouté !")
+						} else {
+							$this.html("Ajouté!")
+						}
+						
 					})
 					.fail(function(){
 						console.log("FAIL add");

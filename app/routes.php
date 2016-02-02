@@ -11,7 +11,7 @@
 		//route to question search
 		['GET', '/questionrecherche', 'Question#questionSearch', 'question_search'],
 		//route to add question via the list with ajax
-		['GET', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
+		['POST', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
 		//route to a question file
 		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
 		//route to admin generate data page using Faker
