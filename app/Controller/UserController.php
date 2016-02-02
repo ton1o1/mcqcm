@@ -84,6 +84,7 @@ class UserController extends Controller
 	 */
 	public function login()
 	{
+		$errormessage= [];
 		//already connected ?
 		$user = $this->getUser();
 		if($user){
@@ -92,52 +93,51 @@ class UserController extends Controller
 
 		}
 
-		//cookie autologger present ?
-		if(!empty($_COOKIE['autologin'])){
-
-			//$this->redirectToRoute('user_profile');
-		}
-
-		$errormessage= [];
 
 		if(!empty($_POST)){
 
 			$userEmail = $_POST['userEmail'];
 			$userPassword = $_POST['userPassword'];
-			$autoconnect = $_POST['auto_connect'];
-			debug($_POST);
-			//Test user data in DB
-			
+			$autoconnect = (!empty($_POST['auto_connect'])) ? $_POST['auto_connect'] : false;
 			$isValid = true;
+			
+			//test if user is known 
 			$userId = $this->authentificationManager->isValidLoginInfo( $userEmail, $userPassword);
 			if($userId)
 			{
 				
-				//récupérer les données utilisateur
+				//get user data
 				$user = $this->userManager->find($userId);
 				//Manage suspended users
 				if(!$user['is_active']){
 					$isValid = false;
-					$errormessage['alerte'] = "Votre compte est temporairement suspendu. Vous pouvez contacter un administrateur pour en connaitre la raison ou demander la levée de la suspension.";
+					$errormessage['alerte'] = '<div class="alert alert-danger" role="alert">Votre compte est temporairement suspendu. Vous pouvez contacter un administrateur pour en connaitre la raison ou demander la levée de la suspension.</div>';
+					die();
 				}
 				else {
+
 					//user connection 
 					$this->authentificationManager->logUserIn($user);
-					//TODO add cookieset and cookie get method
+
 					//remember me checked ?
 					if(!empty($autoconnect)){
-						$this->cookieFactory($autoconnect);
-						print_r($_COOKIE);
-						die();
+
+						$cookie = new \Service\cookies();
+						$cookieToken = $cookie->createCookie($autoconnect);
+						
+						$this->userManager->update([
+								"cookie"   => $cookieToken
+							],$user['id']);
+
 					}
-					//redirect
+					//redirect user
 					$this->redirectToRoute('user_profile');
 
 				}
 			}
 			else {
 				$isValid = false;
-				$errormessage['alerte'] = "Impossible de vous identifier.";
+				$errormessage['alerte'] = '<div class="alert alert-danger" role="alert">Impossible de vous identifier.</div>';
 			}
 
 			//Then redirect User to profil
@@ -152,7 +152,7 @@ class UserController extends Controller
 	 */
 	public function profile()
 	{
-		
+
 		$user = $this->getUser();
 		switch($user['role']){
 
@@ -182,14 +182,14 @@ class UserController extends Controller
 	public function modifyEmail()
 	{
 		if(!empty($_POST)) {
-
+		//is it necessary ?
 		}
 
 	}
 
 	public function modifyPassword()
 	{
-
+		//is it necessary ?
 	}
 
 	public function modify()
@@ -237,7 +237,11 @@ class UserController extends Controller
 	 */
 	public function logout()
 	{
+
 		$this->authentificationManager->logUserOut();
+		
+		$cookie = new \Service\Cookies();
+		$cookie->unsetCookie();
 		$this->redirectToRoute('user_login');
 
 		//todo Delete cookie
@@ -269,7 +273,7 @@ class UserController extends Controller
 				$token = \W\Security\StringUtils::randomString(32);
 				//48hours to use the token
 				$date = new \DateTime();
-				$dateLimite = $date->add(new \DateInterval("P2D")); 
+				$dateLimite = $date->add(new \DateInterval("P2D"));
 				//$userManager = new \Manager\UserManager();
 				//add token to user in database
 				$this->userManager->update([
@@ -303,7 +307,8 @@ class UserController extends Controller
 				";
 
 				//send an email
-				
+				//$this->sendEmail($accountManager, $userEmail, $subject, $mailContent);
+				//$mail = new \Service\SendMails;
 				$mail = new \PHPMailer;
 				//TODO ->Créer un Service
 				//Ajouter les données à la conf. 
@@ -500,43 +505,4 @@ class UserController extends Controller
 		return $formResult;
 	}
 
-
-	public function cookieFactory($auto_connect = false)
-	{
-	 
-	    // Le code précédent ne change pas
-	 
-	    if($auto_connect) {
-	        // Cryptage/Salage des éléments
-	        $key = "hot cookie";
-	        // Création du cookie
-	        setcookie('autologin', $key, time() + 3600 * 24 * 365, '/', 'mcqcm.dev', false, true);
-	    }
-	}
-
-	public function cookieKiller()
-	{
-
-	}
-
-
-	public function cookieTester()
-	{
-	    // Récupération de la valeur du cookie
-	    $key = $_COOKIE['autologin'];
-	 
-	    $query = "SELECT * FROM users WHERE SHA1(CONCAT('SEL1-df546', `name`, `id`, 'SEL2-sd55fd', `last_connection`, $ip))=$key";
-	    // Execution de la requete
-	    $infos = $users->exec($query);
-	 
-	    if(!is_array($infos) || empty($infos)) {
-	        // Mauvais cookie !
-	        return false;
-	    }
-	 
-	    // Modification de la date de dernière connexion ici...
-	 
-	    $_SESSION['user'] = $infos; // Mise en SESSION
-	    return true;
-	}
 }

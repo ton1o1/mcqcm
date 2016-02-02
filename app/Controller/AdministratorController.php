@@ -16,13 +16,9 @@ class AdministratorController extends Controller
 
 	}
 
-	public function listProfil(){
-
-	}
 
     /**
-     * Display administrator page
-     * @return [type] [description]
+     * Display administrator profil page
      */
 	public function profil(){
 
@@ -35,21 +31,33 @@ class AdministratorController extends Controller
             ]);
 	}
 
+
+    public function changeUser()
+    {
+
+        if(!empty($_POST)){
+
+            $this->setUserStatus();
+
+            $this->setUserRole();
+
+        }
+        $this->redirectToRoute('administrator_profile');
+    }
+
     /**
      * Change User Status
      */
     public function setUserStatus(){
-
         if(!empty($_POST)){
             //change user status
-            $userStatus = $_POST['userStatus'];
+            $userStatus = $_POST['userActivity'];
             $userId = $_POST['userId'];
-            $userStatus = ($userStatus == '1' ) ? '0' : '1';
-            $this->manager->setUserStatus($userStatus, $userId);
 
+            $userStatus = ($userStatus == '1' ) ? '1' : '0';
+            $this->manager->setUserStatus($userStatus, $userId);
         }
 
-        $this->redirectToRoute('administrator_profile');
     }
 
     /**
@@ -61,12 +69,8 @@ class AdministratorController extends Controller
             //change user status
             $userRole = $_POST['userRole'];
             $userId = $_POST['userId'];
-            $userRole = ($userRole == 'student' ) ? 'administrator' : 'student';
-            $this->manager->setUserStatus($userRole, $userId);
-
+            $this->manager->setUserRole($userRole, $userId);
         }
-
-        $this->redirectToRoute('administrator_profile');
     }
 
     /**
@@ -87,9 +91,9 @@ class AdministratorController extends Controller
             //add class for suspended users
             $suspendClass = ($value['is_active'] == '1')?'default':'danger';
             //add class for admin users
-            $adminClass = ($value['role'] == 'administrator')?' primary': ' '.$suspendClass;
+            $adminClass = ($value['role'] == 'administrator')?'glyphicon glyphicon-sunglasses': ''.$suspendClass;
 
-			$list.= "\r\n\t\t\t\t\t". sprintf('<tr class="%5$s%6$s" id="%4$s" data-toggle="modal" data-target="#usermodal"><td scope="row">%1$s</td><td>%2$s</td><td>%3$s</td></tr>',
+			$list.= "\r\n\t\t\t\t\t". sprintf('<tr class="%5$s" id="%4$s" data-toggle="modal" data-target="#usermodal"><td scope="row">%1$s</td><td>%2$s</td><td>%3$s</td><td><span class="%6$s" aria-hidden="true"></span></td></tr>',
 					 $value['last_name'],
                      $value['first_name'],
 					 $value['email'], 

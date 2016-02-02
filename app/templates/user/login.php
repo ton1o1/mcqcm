@@ -5,6 +5,10 @@
     <div class="row">
         <h2>Identification</h2>
         <form action="" method="post" novalidate class="<?php if(!empty($errormessage)){ echo 'has-error';}?>">
+
+
+                    <?= $alerte = (!empty($errormessage['alerte']))? $errormessage['alerte'] : '';?>
+
             <div class="form-group">
                 <label for="userEmail" class="control-label">Adresse e-mail <span class="required">*</span></label>
                 <input type="email" class="form-control" name="userEmail" id="userEmail" placeholder="Email" value="<?= $userEmail =(!empty($_POST['userEmail']))?$_POST['userEmail']:'';?>">
@@ -18,7 +22,7 @@
               <label>
                 <input type="checkbox" value="true" name="auto_connect"> Rester connecté
               </label>
-               <a class="pull-right link" href="<?= $this->url("user_recovery_pwd", []);?>">Mot de passe oublié ?</a>
+               <a class="pull-right link" href="<?= $this->url("user_recovery_pwd", []);?>" title="renouveller votre mot de passe">Mot de passe oublié ?</a>
             </div>
 
             <div class="form-group">
@@ -28,7 +32,7 @@
             </div>
             
         </form>
-        <a class="link" href="<?= $this->url("user_register", []);?>">créer un nouvreau compte</a>
+        <a class="link" href="<?= $this->url("user_register", []);?>" title="Créer un nouveau compte">Créer un nouvreau compte</a>
     </div>
 </div>
 <?php $this->stop('main_content') ?>

@@ -31,6 +31,7 @@
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Email</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody class="scrollable">
@@ -42,8 +43,6 @@
     </div><!--  end of row -->
 </div><!--  end of page -->
 
-
-
 <div id="usermodal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -51,50 +50,47 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modification de compte :</h4>
             </div>
-             <form action="/administrator/set-user-status/" method="POST">
+             <form action="/administrator/change-user/" method="POST">
                 <div class="modal-body cf">
-                    <p id="usermodal__userName"></p>
+                    <h4>Utilisateur : </h4>
+                    <p class="bg-info" id="usermodal__userName"></p>
                     <div class="form-group usermodal__radio">
                         <p>Etat du compte : </p>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="userActivity" id="userActivity1" value="option1" class="radio-danger" checked>
+                            <input type="radio" name="userActivity" id="usermodal__userActivity1" value="1">
                             Actif
                           </label>
                         </div>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="userActivity" id="userActivity2" value="option2" class="radio-danger">
+                            <input type="radio" name="userActivity" id="usermodal__userActivity2" value="0">
                             Suspendu
                           </label>
                         </div>
-                          <div class="btn-group btn-toggle"> 
-                            <button class="btn btn-lg btn-default">Actif</button>
-                            <button class="btn btn-lg btn-primary active">Suspendu</button>
-                          </div>
                     </div>
                      <div class="form-group usermodal__radio">
                         <p>Rôle de l'utilisateur : </p>
                         <div class="radio">
                             <label>
-                                <input type="radio" name="userRole" id="userRole1" value="option1" checked>
+                                <input type="radio" name="userRole" id="usermodal__userRole1" value="student">
                                 Etudiant
                               </label>
                         </div>
                         <div class="radio">
                           <label>
-                            <input type="radio" name="userRole" id="userRole2" value="option2">
+                            <input type="radio" name="userRole" id="usermodal__userRole2" value="administrator">
                             Administrateur
                           </label>
-                        </  div>
-
+                        </div>
+                    </div>
                         <input type="hidden" name="userStatus" id="usermodal__userStatus" value ="">
                         <input type="hidden" name="userId" id="usermodal__userId" value ="">
                 </div>
                 <div class="modal-footer">
                    
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" id="usermodal__button"></button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary" id="usermodal__button">Modifier</button>
                 </div>
                 </form>
         </div><!-- /.modal-content -->

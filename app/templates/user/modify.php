@@ -14,7 +14,7 @@
             <div class="form-group <?php if(!empty($errormessage['userFirstName'])){ echo 'has-error';}?>">
                 <label for="userFirstName">Prénom <span class="required">*</span></label>
                 <input type="text" class="form-control" id="userFirstName" name="userFirstName" placeholder="Prénom" value="<?= $userFirstName =(!empty($_POST['userFirstName']))?htmlspecialchars($_POST['userFirstName']):htmlspecialchars($userData['first_name']);?>">
-                             <?= $userFirstName =(!empty($errormessage['userFirstName']))?$errormessage['userFirstName']:'';?>
+                 <?= $userFirstName =(!empty($errormessage['userFirstName']))?$errormessage['userFirstName']:'';?>
             </div>
             <button type="submit" class="btn btn-default">Modification</button>
         </form>

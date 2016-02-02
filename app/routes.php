@@ -21,6 +21,7 @@
 		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
 		//Change user status
 		['POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
+		['POST', '/administrator/change-user/', 'Administrator#changeUser', 'administrator_changeUser'],
 		//List User 
 		['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'administrator_findUsers'],
 		//List User 
