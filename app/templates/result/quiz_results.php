@@ -3,12 +3,12 @@
 <?php $this->start('main_content') ?>
 	
 		<p></p> 
-		<div> Résultats au quiz <?= $quizId ?></div> 
+		<div> Résultats au quiz </div> 
 		
-		<div>Le quiz  a pour note moyenne :  et pour écart-type : </div>
-		
-		<?php for ($i=0; $i <= 4; $i++) { 
-			?><div>Le candidat<?=$userId[$i] ?> a obtenu à ce quiz une note de : <?=$scoreU[$i] ?></div>
+		<div>Le quiz <?=$titleQ ?> a pour note moyenne :  et pour écart-type : </div>
+		<?php $nbCandidat = count($name);
+		for ($i=0; $i < $nbCandidat; $i++) { 
+			?><div>Le candidat <?= $name[$i] ?> a obtenu à ce quiz une note de : <?=$scoreU[$i] ?> sur 100.</div>
 		 <?php } ?>
 		 
 

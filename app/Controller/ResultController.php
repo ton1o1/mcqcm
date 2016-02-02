@@ -75,21 +75,22 @@ class ResultController extends Controller {
 
 	public function viewQuiz($quizId = null) {
 
-
 		$this->answer->setTable('sessions');
 		if (!empty($quizId)) {
 			// $this->answer->setQuizId($quizId);
 		// 	$quizId = $this->quizId;
+			$titleQ = $this->answer->quizTitle($quizId)[0]['title'];
 			$this->quizResult($quizId);
 			$scoreUser = $this->answer->quizUsers($quizId);
 			$userId = [];
 			$scoreU = [];
 			foreach ($scoreUser as $k => $v) {
 				$userId[$k] = $v['user_id'];
+				$name[$k] = $this->answer->userName($userId[$k]);
 				$scoreU[$k] = $v['score'];
 				}
 			// $this->teacherSessionResult($quizId);
-			$this->show('result/quiz_results', ['quizId' => $quizId, 'userId' => $userId, 'scoreU' => $scoreU]);
+			$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
 		} else {
 			$this->allResults();
 		}
