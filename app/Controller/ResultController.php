@@ -87,6 +87,7 @@ class ResultController extends Controller {
 	
 						$tabChoice = unserialize($valu["choices"]);
 						$tabChoiceTot = $tabChoiceTot + $tabChoice;
+						$resulTotTitle[$ke] = "";
 						
 						
 			// echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
@@ -121,8 +122,8 @@ class ResultController extends Controller {
 						} */
 						
 						$resultsTitle = $this->answer->findTitle($key);
-						
-						$resulTotTitle[$ke] .= " " . $resultsTitle[0]['title'];
+							
+							$resulTotTitle[$ke] .= " " . $resultsTitle[0]['title'];
 						}
 
 						$noteTotale += $note;
