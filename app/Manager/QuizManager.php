@@ -14,7 +14,7 @@ class QuizManager extends \W\Manager\Manager
             return false;
         }
 
-        $sql = "SELECT * FROM " . $this->table . " WHERE user_id = :userId ORDER BY id DESC";
+        $sql = "SELECT * FROM " . $this->table . " WHERE creator_id = :userId ORDER BY id DESC";
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(":userId", $userId);
         $sth->execute();
@@ -71,5 +71,28 @@ class QuizManager extends \W\Manager\Manager
         $sth->execute();
 
         return $sth->fetchAll();
+    }
+
+    public function findAllByTags($tags)
+    {
+        $in = '';
+
+        foreach($tags as $skill){
+            $in .= $skill . ',';
+        }
+
+        $in = preg_replace('#,$#', '', $in);
+
+        $sql = "SELECT q.id, q.creator_id, q.date_created, q.title, q.description FROM " . $this->table . " AS q INNER JOIN quizskills AS qs ON q.id = qs.quiz_id WHERE q.is_active = :isActive AND qs.skill_id IN(" . $in . ") ORDER BY q.id DESC";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":isActive", true);
+        $sth->execute();
+
+        return $sth->fetchAll();
+    }
+
+    public function lastId()
+    {
+        return $this->dbh->lastInsertId();
     }
 }

@@ -20,9 +20,15 @@
                 <a class="navigation__button" href="#">menu</a>
 
                     <ul class="navigation__list">
+<<<<<<< HEAD
                         <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">accueil</a></li>
                         <li><a class="navigation__item" href="<?= $this->url("home", []);?>">profil</a></li>
                         <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">quizz</a></li>
+=======
+                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">accueil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("question_build", []);?>">profil</a></li>
+                        <li><a class="navigation__item" href="<?= $this->url("about", []);?>">quizz</a></li>
+>>>>>>> session
                     </ul>
 
                 
