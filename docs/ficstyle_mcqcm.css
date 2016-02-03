@@ -1,0 +1,412 @@
+body {
+color:black;
+background: -moz-linear-gradient(left, DarkSlateGray, Silver);
+background: -webkit-linear-gradient(right top, rgb(50,110,130) 0%, rgb(90,155,192) 100%);
+background: -ms-linear-gradient(left, DarkSlateGray, Silver);
+}
+
+h1 {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 24px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+h3 {
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+#presentation {
+width: 40%;
+margin: 1% auto;
+background-color: rgba(90, 170, 236, 0.3);
+text-align:center;
+display:block;
+text-decoration:none;
+text-align:center;
+padding: 1%;
+}
+
+/* html {font-size: 20px;}
+body {font-size: 1.0em;}
+div#entete {font-size: 1.0em;}
+div#menu_principal {font-size: 1.0em;}
+div#contenu0{}
+div#contenu1{}
+div#contenu2{}
+div#contenu3{}
+div#contenu9{}
+div#contenu10{}
+div#contenu11{}
+div#contenu12{}
+div#contenu13{}
+div#contenu14{}
+div#contenu15{}
+div#contenu16{}
+div#contenu17{}
+div#contenu18{} */
+
+
+#entete, #menu, #contenu, #footer {
+padding:0px 0;
+width:99%;
+}
+
+
+#entete {
+width:99%;
+margin-left:1%;
+background-color: rgba(160, 190, 236, 0.6);
+text-align:center;
+}
+
+
+#menu_principal  {
+width: 99%;
+margin: auto;
+}
+
+ul {
+  padding: 0;
+  width: 99%;
+  margin-left: 1%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  border-radius: 10px;
+  background: -moz-linear-gradient(left, LightCyan, White);
+  background: -webkit-linear-gradient(right top, #C0C0C0 0%, #2F4F4F 100%);
+  background: -ms-linear-gradient(left, LightCyan, White);
+  text-align: left;
+  float: left;
+  list-style-type: none;
+ }
+
+li {
+ float: left; /*pour IE*/
+ border-left: 1px solid black;
+ }
+
+ul li a {
+ display:block;
+ float:left;   
+ width:250px;
+ line-height:50px; /*hauteur de l'image de fond*/
+ /* background:black url(images/noir-1.png) repeat-x; */
+ color:#BBB;
+ text-decoration:none;
+ text-align:center;
+ }
+
+ul li a:hover {
+ /* background:black url(images/noir-2.png) repeat-x; */
+ color: #FFF;
+ }  
+
+.gauche {
+  background-color: rgba(125, 160, 220, 0.2);
+  width: 35%;
+  display:block;
+  float:left;
+  text-decoration:none;
+  text-align:center;
+  padding: 1%;
+  margin: 1%;
+}
+
+.droite {
+  background-color: rgba(155, 180, 210, 0.2);
+  width: 55%;
+  display:block;
+  float:left;
+  text-decoration:none;
+  text-align:center;
+  padding: 1%;
+  margin: 1%;
+}
+
+.centre {
+  background-color: rgba(155, 180, 210, 0.2);
+}
+
+#wrapper {
+  background-color: rgba(145, 170, 190, 0.6);
+  display: block;
+}
+
+#graphe  {
+float:left;
+width: 60%;
+margin-left:1%;
+margin-bottom:1%;
+margin-top:1%;
+background-color: rgba(185, 200, 220, 0.5);
+}
+
+
+#contenu0  {
+float:left;
+width:49%;
+/* height:300px; */
+margin-left:1%;
+margin-bottom:1%;
+margin-top:1%;
+background-color: rgba(145, 160, 180, 0.5);
+}
+
+
+#contenu0 a {
+float:left;
+margin-left:3%;
+margin-right:3%; 
+margin-bottom:3%;
+margin-top:3%;
+display: inline-block;
+background: url("../Images/UExplf_sombre.jpg") no-repeat;
+}
+
+
+#contenu0 a:hover img{
+visibility: hidden;
+}
+
+
+#contenu1 {
+float:left;
+width:49%;
+/* height:300px; */
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+background-color: rgba(95, 115, 175, 0.5);
+}
+
+
+#contenu1 a {
+float:left;
+margin-left:3%;
+margin-right:3%; 
+margin-bottom:3%;
+margin-top:3%;
+display: inline-block;
+background: url("../Images/Casteilla_sombre.jpg") no-repeat;
+}
+
+
+#contenu1 a:hover img{
+visibility: hidden;
+}
+
+
+#contenu2 {
+float:left;
+width:49%;
+/* height:300px; */
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+background-color: rgba(50, 105, 170, 0.5);
+}
+
+
+#contenu2 a {
+float:left;
+margin-left:3%;
+margin-right:3%; 
+margin-bottom:3%;
+margin-top:3%;
+display: inline-block;
+background: url("../Images/Exosr_sombre.jpg") no-repeat;
+}
+
+
+#contenu2 a:hover img{
+visibility: hidden;
+}
+
+
+#contenu3 {
+float:left;
+width:49%;
+/* height:300px; */
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+background-color: rgba(50, 100, 130, 0.5);
+}
+
+
+#contenu3 a {
+float:left;
+margin-left:3%;
+margin-right:3%; 
+margin-bottom:3%;
+margin-top:3%;
+display: inline-block;
+background: url("../Images/Memo_prepas_sombre.jpg") no-repeat;
+}
+
+
+#contenu3 a:hover img{
+visibility: hidden;
+}
+
+
+#documents {
+float:left;
+float:bottom;
+width:90%;
+/* height:60%; */
+margin-left:1%;
+margin-right:1%;
+margin-top:1%;
+margin-bottom:1%;
+padding-left:1%;
+padding-bottom:1%;
+background-color:rgba(160,180,170,0.6);
+}
+
+
+#documents a {
+float:left;
+float:bottom;
+margin-left:1%;
+margin-right:1%; 
+margin-bottom:1%;
+margin-top:1%;
+display: inline-block;
+background: url("../Images/Bouton_On.png") no-repeat;
+}
+
+
+#documents a:hover img {
+visibility: hidden;
+}
+
+#clearfix {
+  clear: both;
+  overflow: auto;
+}
+
+
+#main {
+/* position: absolute;
+left: 20px;
+top: 20px; */
+float:left;
+width: 80%;
+/* height:400px; */
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+padding-left:1%;
+background-color: rgba(230, 165, 155, 0.4);
+}
+
+
+#main a {
+float:left;
+margin-left:1%;
+margin-right:1%; 
+margin-bottom:1%;
+margin-top:1%;
+display: inline-block;
+}
+
+
+#main a:hover img {
+visibility: hidden;
+}
+
+#explanations {
+float:left;
+width: 80%;
+/* height:400px; */
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+padding-left:1%;
+background-color: rgba(230, 165, 155, 0.4);
+}
+
+#exercices {
+float:left;
+float:bottom;
+width: 90%;
+margin-left:1%;
+margin-top:1%;
+margin-bottom:1%;
+padding-left:1%;
+background-color:rgba(160,165,160,0.6);
+}
+
+
+#exercices a {
+float:left;
+float:bottom;
+margin-left:1%; 
+margin-bottom:1%;
+margin-top:1%;
+display: inline-block;
+background: url("../Images/Bouton_On.png") no-repeat;
+}
+
+
+#exercices a:hover img{
+visibility: hidden;
+}
+
+
+#footer {
+margin-left:1%;
+width:99%;
+background-color:rgba(145, 130, 90, 0.4);
+text-align:center;
+clear:both;
+}
+
+
+.images {
+  float:top;
+  float:left;
+  height:225px;
+  width:150px;
+}
+
+
+.images6 {
+  float:left;
+  margin-left:1%;
+  width: 2%;
+}
+
+
+.images8 {
+  float:top;
+  float:left;
+  float:bottom;
+  margin-left:2%;
+  margin-right:2%;
+  margin-top:1%
+  width: 150px;
+}
+
+
+.images10 {
+  float:top;
+  float:left;
+  height: 75px;
+  width: 50px;
+}
+
+
+.images12 {
+  float:left;
+  margin-left:1%;
+}
