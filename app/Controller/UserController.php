@@ -62,7 +62,7 @@ class UserController extends Controller
 					//user connection
 					$this->authentificationManager->logUserIn($user);
 					//afficher le profil user
-					$_SESSION['messageInfo'] = '<div ="message message--info">Bienvenue</div>';
+					$_SESSION['messageInfo'] = '<div ="alert alert-info">Bienvenue</div>';
 					$this->redirectToRoute('user_profile');
 				}else {
 					//probleme d'insertion dans la table ?
@@ -112,7 +112,6 @@ class UserController extends Controller
 				if(!$user['is_active']){
 					$isValid = false;
 					$errormessage['alerte'] = '<div class="alert alert-danger" role="alert">Votre compte est temporairement suspendu. Vous pouvez contacter un administrateur pour en connaitre la raison ou demander la levée de la suspension.</div>';
-					die();
 				}
 				else {
 
@@ -203,12 +202,12 @@ class UserController extends Controller
 			//maj session 
 			$this->authentificationManager->refreshUser();
 			//redirect user
-			$messageInfo = '<div class="message message--info">Modificationde votre adresse Email validée !</div>';
+			$messageInfo = '<div class="alert alert-info">Modification de votre adresse Email validée !</div>';
 			$_SESSION['messageInfo'] = $messageInfo;
 			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
 		}else{
 
-			$errormessage['modifyEmail'] = '<div class="message message--info">Problème de soumission !</div>';
+			$errormessage['modifyEmail'] = '<div class="alert alert-info">Problème de soumission !</div>';
 			$this->show('user/modify', ["errormessage" => $errormessage]);
 		}
 
@@ -238,11 +237,11 @@ class UserController extends Controller
 			//maj session 
 			$this->authentificationManager->refreshUser();
 			//redirect user
-			$messageInfo = '<div class="message message--info">Modification de votre mot de passe validée !</div>';
+			$messageInfo = '<div class="alert alert-info">Modification de votre mot de passe validée !</div>';
 			$_SESSION['messageInfo'] = $messageInfo;
 			$this->redirectToRoute('user_profile');
 		}else{
-			$errormessage['modifyPassword'] = '<div class="message message--info">Problème de soumission !</div>';
+			$errormessage['modifyPassword'] = '<div class="alert alert-info">Problème de soumission !</div>';
 			$this->show('user/modify', ["errormessage" => $errormessage]);
 		}
 	}
@@ -264,11 +263,11 @@ class UserController extends Controller
 			//maj session 
 			$this->authentificationManager->refreshUser();
 			//redirect user
-			$messageInfo = '<div class="message message--info">Modification de vos données validée !</div>';
+			$messageInfo = '<div class="alert alert-info">Modification de vos données validée !</div>';
 			$_SESSION['messageInfo'] = $messageInfo;
 			$this->redirectToRoute('user_profile');
 		}else{
-			$errormessage['modifyUserInfo'] = '<div class="message message--info">Problème de soumission !</div>';
+			$errormessage['modifyUserInfo'] = '<div class="alert alert-danger">Problème de soumission !</div>';
 			$this->show('user/modify', ["errormessage" => $errormessage]);
 		}
 	}
@@ -427,11 +426,11 @@ class UserController extends Controller
 				//Attach an image file
 				//send the message, check for errors
 				if (!$mail->send()) {
-				    $messageInfo = '<div class="message message--info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
+				    $messageInfo = '<div class="alert alert-info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
 				    //TODO addd error to logs
 				} 
 				else {
-				    $messageInfo = '<div class="message message--info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
+				    $messageInfo = '<div class="alert alert-info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
 				}
 
 				//inform user for success
@@ -505,7 +504,7 @@ class UserController extends Controller
 					$messageInfo = 'Erreur rencontrée. Renouvelez votre demande';
 					$_SESSION['messageInfo'] = $messageInfo;
 					$this->redirectToRoute('user_login');
-						
+
 					}
 					
 				}

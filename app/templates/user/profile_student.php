@@ -12,6 +12,7 @@
         <?php if(!empty($_SESSION['messageInfo'])){ echo $_SESSION['messageInfo']; unset($_SESSION['messageInfo']);}?>
 
         <a class="btn btn-default" href="<?= $this->url("user_modify", []);?>">Modifier mon profil</a>
+        <a class="btn btn-default" href="<?= $this->url("quiz_view_user",[]);?>">Accéder à mes quiz</a>
     </div>
 </div>
 <?php $this->stop('main_content') ?>
