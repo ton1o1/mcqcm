@@ -3,11 +3,13 @@
 <?php $this->start('main_content') ?>
 
     <div class="page-header">
+        <button type="button" class="btn btn-success pull-right quiz-submit"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>J'ai terminé le quiz (irréversible)</button>
         <h1><?= $play['quizTitle'] ?></h1>
     </div>
 
     <?= !empty($alerts) ? $alerts : '' ?>
 
+    <form name="quiz" method="post" action="<?= $this->url('session_close') ?>">
     <?php
     $panels = '';
     $tabs =
@@ -53,7 +55,9 @@
 
     <button type="button" id="prevQuestion" class="btn btn-primary pull-left question-nav"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Question précédente</button>
     <button type="button" id="nextQuestion" class="btn btn-primary pull-right question-nav" data-question="2">Question suivante <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-    
+    <button type="button" class="btn btn-success pull-right quiz-submit" id="lastButton"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>J'ai terminé le quiz (irréversible)</button>
+    </form>
+
 <?php $this->stop('main_content') ?>
 
 <?php $this->start('scripts') ?>
@@ -68,8 +72,9 @@
     // Set last question id
     var lastQuestion = <?= $countQuestions ?>;
     
-    // Hide prev button
+    // Hide prev & last button
     $("#prevQuestion").hide();
+    $("#lastButton").hide();
     
     // Hide all question panels
     $(".question").hide();
@@ -100,6 +105,7 @@
         // Reset buttons display
         $("#nextQuestion").show();
         $("#prevQuestion").show();
+        $("#lastButton").hide();
 
         // Check if some button needs to be hidden
         if(currentQuestion == 1){
@@ -107,6 +113,7 @@
         }
         else if(currentQuestion == lastQuestion){
             $("#nextQuestion").hide();
+            $("#lastButton").show();
         }
 
         // Hide all question panels
@@ -151,7 +158,20 @@
         questionPanel.toggleClass("panel-warning");
         questionTab.toggleClass("label-warning");
         $(this).toggleClass("btn-warning");
+
+        // Text of the button
+        if(questionPanel.hasClass("panel-warning")){
+            $(this).html("Enlever le marquage");
+        }
+        else{
+            $(this).html("Marquer");
+        }
         
+    });
+
+    // Quiz close event
+    $(".quiz-submit").on("click", function(){
+        $("form[name=quiz]").submit();
     });
 
     </script>

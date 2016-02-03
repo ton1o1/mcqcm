@@ -55,7 +55,7 @@ body > .container {
 }
 
 /* Error block for errors 403 & 404 */
- #block_error{
+ #block-error{
       width: 845px;
       height: 384px;
       border: 1px solid #cccccc;
@@ -63,10 +63,10 @@ body > .container {
       border-radius: 4px;
       background: #fff url(error.gif) no-repeat 0 51px;
   }
-  #block_error div{
+  #block-error div{
       padding: 100px 40px 0 186px;
   }
-  #block_error div h2{
+  #block-error div h2{
       color: #218bdc;
       font-size: 24px;
       display: block;

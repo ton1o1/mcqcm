@@ -83,6 +83,9 @@
                 </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+                <?php
+                if(!empty($w_user)){
+                ?>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-comment"></span>Quizzes <b class="caret"></b>
                 </a>
@@ -104,7 +107,7 @@
                     </ul>
                 </li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-user"></span>Admin <b class="caret"></b></a>
+                    class="glyphicon glyphicon-user"></span><?= ucfirst($w_user['first_name']) . ' ' . ucfirst($w_user['last_name']) ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= $this->url('user_profile') ?>"><span class="glyphicon glyphicon-user"></span>Profil</a></li>
                         <li><a href="<?= $this->url('user_profile') ?>"><span class="glyphicon glyphicon-cog"></span>Mon compte</a></li>
@@ -112,6 +115,14 @@
                         <li><a href="<?= $this->url('user_logout') ?>"><span class="glyphicon glyphicon-off"></span>Déconnexion</a></li>
                     </ul>
                 </li>
+                <?php }
+                else{
+                ?>
+                <li><a href="<?= $this->url('user_login') ?>"><span class="glyphicon glyphicon-lock"></span>Connexion</a></li>
+                <li><a href="<?= $this->url('user_register') ?>"><span class="glyphicon glyphicon-plus"></span>Inscription</a></li>
+                <?php
+                }
+                ?>
             </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -128,10 +139,6 @@
         <div class="text-muted right">
             <a href="<?= $this->url("about") ?>" title="En savoir plus sur les créateurs de MCQCM">A propos</a> - <a href="<?= $this->url("legal") ?>" title="Consulter les mentions légales et conditions d'utilisation">Mentions légales</a> - <a href="<?= $this->url("contact") ?>" title="Contacter notre équipe">Nous contacter</a>
         </div>
-                <nav class="navigation navigation--footer" role="navigation">
-            <ul>
-</ul>           
-        </nav>
       </div>
     </footer>
 
@@ -139,7 +146,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
-<script src="<?= $this->assetUrl('js/scripts.js') ?>"></script>
 <?= $this->section('scripts') ?>
 
 </body>

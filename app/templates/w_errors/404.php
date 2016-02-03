@@ -1,7 +1,7 @@
 <?php $this->layout('layout', ['title' => 'Perdu ?']) ?>
 
 <?php $this->start('main_content'); ?>
-<div id="block_error">
+<div id="block-error">
     <div>
 		<h2>Vous êtes perdu ?</h2>
     <p>
