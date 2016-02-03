@@ -55,21 +55,16 @@
         
         // Session
 
-        ['GET', '/session/quiz/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
-
-
         // Questions
         ['GET|POST', '/question/create/quiz/[i:quizId]', 'Question#create', 'question_create'],
         ['GET|POST', '/question/[i:questionId]/edit', 'Question#edit', 'question_edit'],
         ['GET|POST', '/question/[i:questionId]/delete', 'Question#delete', 'question_delete'],
 
-        // Sessions
-       // ['GET', '/session/quiz/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
 
         // Answers
 
         ['POST', '/answers/session/[i:sessionId]/save', 'Session#save', 'session_save'], // save answers during session (POST data received with ajax requests, submitted by session_play page)
-        ['POST', '/answers/session/[i:sessionId]/close', 'Session#close', 'session_close'], // save answers and close session (set date_stop in sessions table and redirect to result_view route)
+        //['POST', '/answers/session/[i:sessionId]/close', 'Session#close', 'session_close'], // save answers and close session (set date_stop in sessions table and redirect to result_view route)
 
         ['GET', '/session/play/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
         // V2.0 ['POST', '/session/save', 'Session#save', 'session_save'], // save answers during session (POST data received with ajax requests, submitted by session_play page)
