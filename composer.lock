@@ -4,8 +4,10 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+
     "hash": "4cc99866649bde68be2a6521d64be1a8",
     "content-hash": "b679c8b113f8727e6c713f5acd42184a",
+
     "packages": [
         {
             "name": "altorouter/altorouter",
@@ -59,6 +61,7 @@
             "time": "2014-04-16 09:44:40"
         },
         {
+
             "name": "cocur/slugify",
             "version": "v1.4",
             "source": {
@@ -70,12 +73,26 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/cocur/slugify/zipball/05f00fa75f1c53edfcf4d0425e7e62e95b8888dd",
                 "reference": "05f00fa75f1c53edfcf4d0425e7e62e95b8888dd",
+
+            "name": "fzaninotto/faker",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
+
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
+
                 "codeclimate/php-test-reporter": "dev-master",
                 "laravel/framework": "~4.1",
                 "latte/latte": "~2.2",
@@ -97,6 +114,23 @@
             "autoload": {
                 "psr-4": {
                     "Cocur\\Slugify\\": "src"
+
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "suggest": {
+                "ext-intl": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -105,6 +139,7 @@
             ],
             "authors": [
                 {
+
                     "name": "Ivo Bathke",
                     "email": "ivo.bathke@gmail.com"
                 },
@@ -120,6 +155,18 @@
                 "slugify"
             ],
             "time": "2015-09-29 18:26:32"
+
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2015-05-29 06:29:14"
+
         },
         {
             "name": "ircmaxell/password-compat",

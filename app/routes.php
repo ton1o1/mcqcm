@@ -61,5 +61,24 @@
         ['GET', '/result/session/[i:sessionId]', 'Result#viewSession', 'result_view_session'],
         ['GET', '/result/quiz/[i:quizId]?', 'Result#viewQuiz', 'result_view_quiz'],
 
+
+        //Question bis Area
+		//route to question form builder
+		['GET|POST', '/questionediteur', 'Question#questionBuild', 'question_build'],
+		//route to question list 
+		['GET', '/questionliste', 'Question#questionList', 'question_list'],
+		//route to question search
+		['GET', '/questionrecherche', 'Question#questionSearch', 'question_search'],
+		//route to add question via the list with ajax
+		['POST', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
+		//route to a question file
+		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
+		//route to admin generate data page using Faker
+		['GET|POST', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
+
+
+
+
+
     );
 

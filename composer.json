@@ -12,7 +12,8 @@
         "league/url": "^3.3",
         "respect/validation": "^1.0",
         "phpmailer/phpmailer": "~5.2",
-        "cocur/slugify": "^1.4"
+        "cocur/slugify": "^1.4",
+        "fzaninotto/faker": "^1.5"
     },
     "autoload": {
         "psr-4": {
