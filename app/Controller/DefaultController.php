@@ -15,6 +15,7 @@ class DefaultController extends Controller
 		$this->show('default/home');
 	}
 
+
 	public function about()
 	{
 		$this->show('default/about');
@@ -36,4 +37,26 @@ class DefaultController extends Controller
 	}
 
 
+
+/*
+
+public function answerviewerinput()
+{
+	$this->show('view/answerviewerinput');
 }
+
+public function answerviewer()
+{
+	$this->show('view/answerviewer');
+}
+
+
+public function answerviewerresults()
+{
+	$this->show('view/answerviewerresults');
+}
+*/
+
+
+}
+

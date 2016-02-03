@@ -2,6 +2,7 @@
 
 <?php $this->start('main_content') ?>
 
+
 <?= !empty($alerts) ? $alerts : '' ?>
 
 <div class="jumbotron">
