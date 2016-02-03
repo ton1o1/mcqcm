@@ -73,7 +73,7 @@ class QuizManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
-    public function findAllByTags($tags)
+    public function totalByTags($tags)
     {
         $in = '';
 
@@ -83,7 +83,31 @@ class QuizManager extends \W\Manager\Manager
 
         $in = preg_replace('#,$#', '', $in);
 
-        $sql = "SELECT q.id, q.creator_id, q.date_created, q.title, q.description FROM " . $this->table . " AS q INNER JOIN quizskills AS qs ON q.id = qs.quiz_id WHERE q.is_active = :isActive AND qs.skill_id IN(" . $in . ") ORDER BY q.id DESC";
+        $sql = "SELECT COUNT(q.id) FROM " . $this->table . " AS q INNER JOIN quizskills AS qs ON q.id = qs.quiz_id WHERE q.is_active = :isActive AND qs.skill_id IN(" . $in . ")";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":isActive", true);
+        $sth->execute();
+
+        return $sth->fetch();
+    }
+
+    public function findByTags($tags, $page)
+    {
+        $offSet = 0;
+
+        if($page > 1){
+            $offSet = ($page - 1) * 30;
+        }
+
+        $in = '';
+
+        foreach($tags as $skill){
+            $in .= $skill . ',';
+        }
+
+        $in = preg_replace('#,$#', '', $in);
+
+        $sql = "SELECT q.id, q.creator_id, q.date_created, q.title, q.description FROM " . $this->table . " AS q INNER JOIN quizskills AS qs ON q.id = qs.quiz_id WHERE q.is_active = :isActive AND qs.skill_id IN(" . $in . ") ORDER BY q.id DESC LIMIT " . $offSet . ", 10";
         $sth = $this->dbh->prepare($sql);
         $sth->bindValue(":isActive", true);
         $sth->execute();
