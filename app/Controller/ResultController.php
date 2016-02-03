@@ -58,14 +58,16 @@ class ResultController extends Controller {
 		
 		$this->answer->setTable('sessions');
 		$name = $this->answer->userName($userId);
+
 		if (!empty($sessionId)) {
-		$dateStop = $this->answer->find($sessionId)['date_stop'];
+			$dateStop = $this->answer->find($sessionId)['date_stop'];
+
 			if ($dateStop) {
-				
 				// $this->studentSessionResult($userId, $sessionId);
 				$quizI = $this->answer->findQuizBySession($sessionId)[0]['quiz_id'];
 				$quizId = intval($quizI);
 				$nbQuizUser = $this->answer->countQuizUser($userId, $quizId);
+
 				if ($nbQuizUser >= 1) {
 					// $score = $this->calculNoteStudent($userId, $quizId);
 					$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
@@ -88,92 +90,84 @@ class ResultController extends Controller {
 						$tabChoice = unserialize($valu["choices"]);
 						$tabChoiceTot = $tabChoiceTot + $tabChoice;
 						$resulTotTitle[$ke] = "";
-						
-						
-			// echo ('<span style="font-size:20px;">' . "Pour la question " . '<strong>' . $valu["question_id"] . '</strong>' . ", " . '</span>');
 
-					foreach ($tabChoice as $ky => $v) {
-						
-						$resultSolution = $this->answer->list_solution_choice($ky);
-							foreach ($resultSolution[0] as $kee => $vaa) {
-						$tabSolution[$ky] = intval($vaa);
-						}
-					} 
-					$m++;
-
-					$note = 0;
-					$noteQTot = [];
-					$tabDiff = [];
-					$textResults = "";
-
-					$clef = 0;
-
-					$tabDiff = array_diff_assoc ($tabChoice, $tabSolution);
-					$lenArray = count($tabDiff);
-					if ($lenArray == 0) { $note = 1; } else { $note = 0; }
-
-
-					foreach ($tabDiff as $key => $value) {
-
-					/*	if ($clef == 1) {
-							echo ", ";
-						} else {
-							$clef = 1;
-						} */
-						
-						$resultsTitle = $this->answer->findTitle($key);
+						foreach ($tabChoice as $ky => $v) {
 							
+							$resultSolution = $this->answer->list_solution_choice($ky);
+							foreach ($resultSolution[0] as $kee => $vaa) {
+								$tabSolution[$ky] = intval($vaa);
+							}
+						} 
+
+						$m++;
+
+						$note = 0;
+						$noteQTot = [];
+						$tabDiff = [];
+						$textResults = "";
+						$clef = 0;
+
+						$tabDiff = array_diff_assoc ($tabChoice, $tabSolution);
+						$lenArray = count($tabDiff);
+						if ($lenArray == 0) { $note = 1; } else { $note = 0; }
+
+
+						foreach ($tabDiff as $key => $value) {
+							
+							$resultsTitle = $this->answer->findTitle($key);	
 							$resulTotTitle[$ke] .= " " . $resultsTitle[0]['title'];
-						}
+							}
 
-						$noteTotale += $note;
-					} 
+							$noteTotale += $note;
+						} 
 
-					$noteQuiz = $noteTotale * 100 / $m;
-					$score = $noteQuiz;
-					$titleQu = $this->answer->quizTitle($quizId)[0]['title'];
-					$name = $this->answer->userName($userId);
-					$this->answer->student_score_record($userId, $sessionId, $score);
+					$userSessionExist = $this->answer->userSession($userId, $sessionId);
+					if ($userSessionExist) {
+						$noteQuiz = $noteTotale * 100 / $m;
+						$score = $noteQuiz;
+						$titleQu = $this->answer->quizTitle($quizId)[0]['title'];
+						$name = $this->answer->userName($userId);
+						$this->answer->student_score_record($userId, $sessionId, $score);
+
 $this->show('result/user_results', ['name' => $name, 'titleQu' => $titleQu, 'resulTotTitle' => $resulTotTitle, 'resultsTitle' => $resultsTitle, 'tabDiff' => $tabDiff, 'resultUserQuiz' => $resultUserQuiz, 'resultat' => $resultat, 'noteQuiz' => $noteQuiz]);
-					
+					} else {$this->redirectToRoute('result_view_input');}
 				}
 
 				// $this->show('result/user_results', ['name' => $name]);
-				} else {$this->redirectToRoute('home');}
+			} else {$this->redirectToRoute('home');}
 		} else {$this->redirectToRoute('home');}
 	}
 
 
 public function viewIndividual($userId) {
 		
-		$name = $this->answer->userName($userId);		
-		$userResu = $this->studentResult($userId);
-		$resultsStu = $userResu[0];
-		$userRes = $userResu[1];
-		$this->show('result/individual_results', ['name' => $name, 'resultsStu' => $resultsStu, 'userRes' => $userRes]);
+	$name = $this->answer->userName($userId);		
+	$userResu = $this->studentResult($userId);
+	$resultsStu = $userResu[0];
+	$userRes = $userResu[1];
+	$this->show('result/individual_results', ['name' => $name, 'resultsStu' => $resultsStu, 'userRes' => $userRes]);
 		
 	}
 
 	public function viewQuiz($quizId = null) {
 
-		$this->answer->setTable('sessions');
-		if (!empty($quizId)) {
-			// $this->answer->setQuizId($quizId);
-		// 	$quizId = $this->quizId;
-			$titleQ = $this->answer->quizTitle($quizId)[0]['title'];
-			// $this->quizResult($quizId);
-			$scoreUser = $this->answer->quizUsers($quizId);
-			$userId = [];
-			$scoreU = [];
-			foreach ($scoreUser as $k => $v) {
-				$userId[$k] = $v['user_id'];
-				$name[$k] = $this->answer->userName($userId[$k]);
-				$scoreU[$k] = $v['score'];
-				}
-			$moyQuiz = $this->medium_calculate("quiz", $quizId);
-			// $this->teacherSessionResult($quizId);
-			$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'moyQuiz' => $moyQuiz, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
-			$this->redirectToRoute('result/quiz', ['quizId' => 1]);
+	$this->answer->setTable('sessions');
+	if (!empty($quizId)) {
+		$titleQ = $this->answer->quizTitle($quizId)[0]['title'];
+		// $this->quizResult($quizId);
+		$scoreUser = $this->answer->quizUsers($quizId);
+		$userId = [];
+		$scoreU = [];
+
+		foreach ($scoreUser as $k => $v) {
+			$userId[$k] = $v['user_id'];
+			$name[$k] = $this->answer->userName($userId[$k]);
+			$scoreU[$k] = $v['score'];
+			}
+
+		$moyQuiz = $this->medium_calculate("quiz", $quizId);
+		$this->show('result/quiz_results', ['userId' => $userId, 'name' => $name, 'quizId' => $quizId, 'moyQuiz' => $moyQuiz, 'titleQ' => $titleQ, 'scoreU' => $scoreU]);
+		$this->redirectToRoute('result/quiz', ['quizId' => 1]);
 			} else {
 				$this->allResults();
 		}
@@ -191,20 +185,12 @@ public function viewIndividual($userId) {
 		$tabDiff = array_diff_assoc ($array1, $array2);
 		$lenArray = count($tabDiff);
 
-
 		foreach ($tabDiff as $key => $value) {
-
-		/*	if ($clef == 1) {
-				echo ", ";
-			} else {
-				$clef = 1;
-			} */
 			
 			$resultsTitle = $this->answer->findTitle($key);
 			}
 
 		return $note;
-
 	}
 
 
@@ -338,32 +324,6 @@ $this->show('result/user_results', ['name' => $name, 'titleQu' => $titleQu, 'res
 		}
 	}
 
-	
-
-/*
-	public function allResults() {
-		$sqlAll = "SELECT DISTINCT session_id FROM sessions_users";
-		$statementAll = $pdo->prepare($sqlAll);
-		$statementAll->execute();
-		$resultAll = $statementAll->fetchAll(PDO::FETCH_COLUMN, 0);
-		foreach($resultAll as $key => $value) {
-			teacherResult($value);
-		}
-	}
-}
-
-*/
-
-
-/*
-	$answers = new \AnswerController;
-	$results = $answers->studentSessionResult($sessionId, $userId);
-
-	$answer = new \AnswerManager;
-	$result = $answer->chp_table_id_find($champ, $table, $id);
-	$results = $answer->studentSessionResult($sessionId, $userId);
-*/
-
 
 	public function medium_calculate($x, $id) {
 			$totalScore = 0;
@@ -413,13 +373,9 @@ $this->show('result/user_results', ['name' => $name, 'titleQu' => $titleQu, 'res
 				$ecartMoy = $ecart / $numberScore;
 				$ecartType = sqrt($ecartMoy);
 				return ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType];
-				// $this->show('result/resulttemplate', ['scoreMoyen' => $scoreMoyen, 'ecartType' => $ecartType]);
-				// print_r($scoreMoyen);
-				// print_r($ecartType);
-				// return [$scoreMoyen, $ecartType];
+				
 			}
 		}
-
 
 	}
 
