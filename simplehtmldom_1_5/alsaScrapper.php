@@ -20,7 +20,7 @@
 
 
 	//Creation de l'objet PDO
-	$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '', array(
+/*	$pdo = new PDO('mysql:host=localhost;dbname=mcqcm', 'root', '', array(
 		        PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8", //on s'assure de communiquer en utf8
 		        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, //on récupère nos données en array associatif par défaut
 		        PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING         //on affiche les erreurs. À modifier en prod. 
@@ -59,37 +59,54 @@
 
 	}
 	
+	$html = file_get_html('http://www.alsacreations.com/quiz/lire/17-jquery-dbutant.html');
+*/
+
+
+
+
+echo "Les questions sont dans l'ordre";
+
+echo "<pre>";
+
+
+
+$html = file_get_html('http://www.alsacreations.com/quiz/resultat/9');
+
+
+
+echo "QUESTIONS";
+foreach ($html->find("[class='quiz-intitule]") as $element) {
+	echo $element->plaintext . '<br>';
+}
+
+echo "CHOIX";
+foreach ($html->find("[class='quiz-resultats-question'] li") as $k => $element) {
+	echo $element->plaintext . '<br>';
+	if(($k+1)%4===0){
+		echo '<br>';
+	}
+}
+
+echo "REPONSE";
+foreach ($html->find("[class='quiz-check']") as $k => $element) {
+	echo $element->plaintext . '<br>';
+}
 
 
 
 
 
 
-	//echo "<pre>";
-	//print_r($html->find("p[class='quiz-intitule']"));
-//
-//
-//
-//
-	//for($i=1; $i<11;$i++){
-	//	foreach ($html->find('.[name="rep['.$i.']"] label') as $element) {
-	//		echo "- ". $element->plaintext . '<br>';
-	//	}
-	//}
-//
-//
-//
-//
-	//$html->find("p[class='quiz-intitule']");
-//
-//
-	////http://www.alsacreations.com/quiz/resultat/18
-	//
-//
-//
-	//$html = file_get_html('http://www.alsacreations.com/quiz/lire/17-jquery-dbutant.html');
 
 
+
+
+	// for($i=1; $i<11;$i++){
+	// 	foreach ($html->find('.[name="rep['.$i.']"] label') as $element) {
+	// 		echo "- ". $element->plaintext . '<br>';
+	// 	}
+	// }
 
 
 
