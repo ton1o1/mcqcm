@@ -35,7 +35,7 @@ RECHERCHE VIA REQUETE AJAX
 				if(response.length > 5){
 					$details.html( response.length + " résultats au total sur 5 affichés");
 				}
-				if(!response){
+				if(response.length === 0){
 					$details.empty();
 					$details.html(" 0 résultat");					
 				}

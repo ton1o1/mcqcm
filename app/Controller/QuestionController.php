@@ -167,7 +167,7 @@ class QuestionController extends Controller
 
 		$questionManager = new \Manager\QuestionManager();
 
-		$questionManager->setTable('questions');
+		//$questionManager->setTable('questions');
 		$listQuestions = $questionManager->findAll($orderBy, $orderDir);
 		//When AJAX ready, add a third column with a link to quiz if it exists
 
@@ -175,13 +175,14 @@ class QuestionController extends Controller
 		$rows = "";
 
 		foreach ($listQuestions as $k => $v) {
+
 			$rows .= "<tr>
 						<td>" .
 							$v['id'] .
 						"</td>
 						<td>
 							<a href='question/" . $v['id'] . "'>" . $v['title'] . "</a>  
-						</td> 
+						</td>
 					</tr>";
 		}
 		//display the list
