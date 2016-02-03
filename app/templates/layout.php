@@ -137,7 +137,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
-<script src="<?= $this->assetUrl('js/scripts.js') ?>"></script>
 <?= $this->section('scripts') ?>
 </body>
 </html>

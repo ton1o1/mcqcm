@@ -23,6 +23,16 @@ class SkillManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
+    public function totalByTag($query)
+    {
+        $sql = "SELECT COUNT(*) FROM " . $this->table . " WHERE tag LIKE :tag";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":tag", "%" . $query . "%");
+        $sth->execute();
+
+        return $sth->fetch();
+    }
+
     public function findExactTag($query)
     {
         $sql = "SELECT * FROM " . $this->table . " WHERE tag = :tag LIMIT 1";

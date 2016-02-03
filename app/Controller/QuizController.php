@@ -25,9 +25,16 @@ class QuizController extends Controller
      */
     public function search()
     {
-        $quizzes = '';
+        $quizzes = null;
+        $total = null;
+        $tags = [];
 
         if(!empty($_GET['tags'])){
+
+            foreach($_GET['tags'] as $tag){
+                $tag = explode('|', $tag);
+                $tags[] = $tag[0];
+            }
 
             $page = 1;
 
@@ -42,8 +49,8 @@ class QuizController extends Controller
 
             $slugify = new Slugify();
 
-            $total = $this->manager->totalByTags($_GET['tags']);
-            $quizzes = $this->manager->findByTags($_GET['tags'], $page);
+            $total = $this->manager->totalByTags($tags);
+            $quizzes = $this->manager->findByTags($tags, $page);
 
             if($quizzes){
                 foreach($quizzes as $key => $value){
@@ -91,9 +98,14 @@ class QuizController extends Controller
     /**
      * List all quizzes by user id
      */
-    public function viewByUser($userId)
+    public function viewByUser()
     {
-        $quizzes = $this->manager->findByUserId($userId);
+        $this->allowTo('student');
+
+        // Get user
+        $loggedUser = $this->getUser();
+
+        $quizzes = $this->manager->findByUserId($loggedUser['id']);
         
         if($quizzes){
             $slugify = new Slugify();
@@ -112,9 +124,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        // Dev mode START
         $this->allowTo('student');
-        // Dev mode END
 
         // If form submitted
         if(!empty($_POST['quiz']['submit'])){
@@ -126,10 +136,7 @@ class QuizController extends Controller
                 $slugify = new Slugify();
 
                 // Get user
-                // Dev mode START
-                // $loggedUser = $this->getUser();
-                $loggedUser = ['id' => 1];
-                // Dev mode END
+                $loggedUser = $this->getUser();
 
                 // Save new quiz in database
 
@@ -148,7 +155,15 @@ class QuizController extends Controller
 
                 $lastQuizId = $this->manager->lastId();
 
+                $skills = [];
+
                 foreach($_POST['quiz']['skills'] as $skill){
+                    $skill = explode('|', $skill);
+                    $skills[] = $skill[0];
+                }
+
+                foreach($skills as $skill){
+
                     $skillInt = (int) $skill;
 
                     if($skillInt > 0){
@@ -202,15 +217,10 @@ class QuizController extends Controller
      */
     public function edit($quizId)
     {
-        // Dev mode START
-         $this->allowTo('student');
-        // Dev mode END
+        $this->allowTo('student');
 
         // Get user
-        // Dev mode START
         $loggedUser = $this->getUser();
-        //$loggedUser = ['id' => 1];
-        // Dev mode END
 
         // Get quiz
         $quiz = $this->manager->findActive($quizId);
@@ -276,15 +286,10 @@ class QuizController extends Controller
      */
     public function delete($quizId)
     {
-        // Dev mode START
         $this->allowTo('student');
-        // Dev mode END
 
         // Get user
-        // Dev mode START
         $loggedUser = $this->getUser();
-        //$loggedUser = ['id' => 1];
-        // Dev mode END
 
         // Get quiz
         $quiz = $this->manager->findActive($quizId);

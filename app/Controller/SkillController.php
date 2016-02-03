@@ -21,7 +21,7 @@ class SkillController extends Controller
      */
     public function search()
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['q'])){
+        if(!empty($_POST['q'])){
             
             $slugify = new Slugify();
 
@@ -37,6 +37,7 @@ class SkillController extends Controller
                 }
             }
 
+            $total = $this->manager->totalByTag($query);
             $skills = $this->manager->findByTag($query, $page);
             $exactTag = $this->manager->findExactTag($query);
             
@@ -54,7 +55,15 @@ class SkillController extends Controller
                 }
             }
 
-            echo json_encode($skills);
+            $result = [];
+
+            foreach($skills as $skill){
+                $result[] = ['id' => $skill['id'].'|'.$skill['tag'], 'tag' => $skill['tag']];
+            }
+
+            $result = ['results' => $result, 'total' => $total['COUNT(*)']];
+
+            echo json_encode($result);
         }
         else{
             return;

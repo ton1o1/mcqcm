@@ -128,8 +128,7 @@ class SessionController extends Controller
             unset($_SESSION['play']);
         }
 
-        // Redirect on result page
+        // Redirect to result page
         // $this->redirectToRoute('result_view_session', ['userId' => $loggedUser['id'], 'sessionId' => $sessionId]);
-
     }
 }

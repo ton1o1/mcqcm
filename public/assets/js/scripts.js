@@ -1,5 +1,6 @@
 $(function() {
 
+  // Homepage skills search
     $("#skillSearch").select2({
         theme: "bootstrap",
         language: "fr",
@@ -7,7 +8,7 @@ $(function() {
         multiple: true,
         ajax: {
             method: "POST",
-          url: "http://mcqcm.dev/skill/search",
+          url: urlSkillSearch,
           dataType: "json",
           delay: 250,
           data: function (params) {
@@ -25,9 +26,9 @@ $(function() {
             params.page = params.page || 1;
 
             return {
-              results: data,
+              results: data.results,
               pagination: {
-                more: (params.page * 30) < data.total_count
+                more: (params.page * 30) < data.total
               }
             };
           },
@@ -41,10 +42,16 @@ $(function() {
           return skill.tag;
         },
         templateSelection: function(skill) {
-          return skill.tag;
+          if(skill.tag){
+            return skill.tag;
+          }
+          else{
+            return skill.text;
+          }
         }
     });
-
+  
+  // Quiz creator skills search
     $("#skillSearchAdd").select2({
         theme: "bootstrap",
         language: "fr",
@@ -52,7 +59,7 @@ $(function() {
         multiple: true,
         ajax: {
             method: "POST",
-          url: "http://mcqcm.dev/skill/search",
+          url: urlSkillSearch,
           dataType: "json",
           delay: 250,
           data: function (params) {
@@ -70,9 +77,9 @@ $(function() {
             params.page = params.page || 1;
 
             return {
-              results: data,
+              results: data.results,
               pagination: {
-                more: (params.page * 30) < data.total_count
+                more: (params.page * 30) < data.total
               }
             };
           },
@@ -91,8 +98,23 @@ $(function() {
             }
         },
         templateSelection: function(skill) {
-          return skill.tag;
+          if(skill.tag){
+            return skill.tag;
+          }
+          else{
+            return skill.text;
+          }
         }
+    });
+
+// Homepage pagination
+$(".page-nav").on("click", function(){
+        
+        // Get page selection
+        var page = $(this).data("page");
+
+        $("input[name=page]").val(page);
+        $("form[name=search]").submit();
     });
 
 });
