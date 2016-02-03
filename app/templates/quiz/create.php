@@ -26,7 +26,18 @@
   <div class="form-group<?= !empty($errors['skills']) ? ' has-error' : '' ?>">
     <label for="skillSearchAdd" class="col-sm-2 control-label">Compétences visées</label>
     <div class="col-sm-10 select2fix">
-    <select name="quiz[skills][]" id="skillSearchAdd" class="form-control" multiple></select>
+    <select name="quiz[skills][]" id="skillSearchAdd" class="form-control" multiple>
+        <?php
+        if(!empty($data['skills'])){
+            foreach($data['skills'] as $tag){
+                $tag = explode('|', $tag);
+                $tagId = $tag[0];
+                $tagLabel = $tag[1];
+                echo '<option value="'.$tagId.'|'.$tagLabel.'" text="'.$tagLabel.'" selected="selected">'.$tagLabel.'</option>';
+            }
+        }
+        ?>
+    </select>
       <?= !empty($errors['skills']) ? '<p class="text-danger">' . $errors['skills'] . '</p>' : '' ?>
     </div>
   </div>
@@ -38,3 +49,68 @@
 </form>
 
 <?php $this->stop('main_content') ?>
+
+<?php $this->start('scripts') ?>
+
+<script>
+$(function() {
+
+    // Skills search
+    $("#skillSearchAdd").select2({
+        theme: "bootstrap",
+        language: "fr",
+        placeholder: "Saisir un ou plusieurs mots clés de compétences.",
+        multiple: true,
+        ajax: {
+            method: "POST",
+          url: "<?= $this->url('skill_search') ?>",
+          dataType: "json",
+          delay: 250,
+          data: function (params) {
+            return {
+              q: params.term, // search term
+              page: params.page,
+              source: 'creator'
+            };
+          },
+          processResults: function (data, params) {
+            // parse the results into the format expected by Select2
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data, except to indicate that infinite
+            // scrolling can be used
+            params.page = params.page || 1;
+
+            return {
+              results: data.results,
+              pagination: {
+                more: (params.page * 30) < data.total
+              }
+            };
+          },
+          cache: true
+        },
+        escapeMarkup: function (markup) {
+          return markup; // let our custom formatter work
+        },
+        minimumInputLength: 2,
+        templateResult: function(skill) {
+          if(skill.new){
+            return "Aucun résultat pour le tag exact \"" + skill.tag + "\", cliquez pour le créer";
+            }
+            else{
+            return skill.tag;
+            }
+        },
+        templateSelection: function(skill) {
+          if(skill.tag){
+            return skill.tag;
+          }
+          else{
+            return skill.text;
+          }
+        }
+    });
+});
+</script>
+
+<?php $this->stop('scripts') ?>
