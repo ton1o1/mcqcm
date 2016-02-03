@@ -37,7 +37,7 @@ class ResultController extends Controller {
 
 	}
 
-	public function viewInput() {
+	public function viewInput($userId = NULL, $sessionId = NULL) {
 
 		// $quizList = $this->answer->quizList();
 		$quizTitle = [];
@@ -49,7 +49,7 @@ class ResultController extends Controller {
 			$quizId[$key] = $val['id'];
 			$scores[$key] = $this->medium_calculate('quiz', $quizId[$key]);
 			}
-		$this->show('result/input_results', ['scores' => $scores, 'quizTitle' => $quizTitle]);
+		$this->show('result/input_results', ['userId' => $userId, 'sessionId' => $sessionId, 'scores' => $scores, 'quizId' => $quizId, 'quizTitle' => $quizTitle]);
 		}
 
 
