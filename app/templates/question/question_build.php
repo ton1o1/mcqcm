@@ -36,7 +36,7 @@
     <section class="addQuestion container">
       <div>
         <label>Quiz n°</label>
-        <input type="number" name="quizId" id= "quizId" min="0" max="100" step="1" value="1" disabled="">
+        <input type="text" name="quizId" id= "quizId" min="0" max="100" step="1" value="<?= $quizId ?>" disabled="">
             <!-- 
   		      ALERT the line above is to be replaced by the one underneath during integration phase !!!
             <input type="number" name="quizId" min="0" max="100" step="1" value="<?= $quizId ?>"> 

@@ -17,7 +17,7 @@ class QuestionController extends Controller
 ****************************************/
 
 
-	public function questionBuild()
+	public function questionBuild($quizId)
 	{ 
 		// If $_POST exists, test the keys one by one
 		if($_POST){
@@ -119,6 +119,19 @@ class QuestionController extends Controller
 						]); 
 					}
 				}
+				// insertion de quiz-question
+				$quizs_questionManager = new \Manager\Quizs__questionManager();
+				if($_POST){
+					foreach ($quizs_questions as $k => $v) {
+						$quizs_questionManager->insert([
+							"quiz_id" => $quizId,
+							"question_id" => $lastId,
+							"is_active" => 1,
+						]); 
+					}
+				}				
+
+
 				//enable to reset inputs if the insertion succeeds
 				unset($_POST);
 				//init success msg
@@ -136,6 +149,8 @@ class QuestionController extends Controller
 		$this->show('question/question_build', [
 			"errorMsg" => $errorMsg,
 			"written" => $_POST,
+			"quizId" => $quizId,
+
 		]);
 	}
 

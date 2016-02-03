@@ -48,7 +48,7 @@
         ['POST', '/skill/search', 'Skill#search', 'skill_search'],          // search skills by tag (POST data received with ajax requests, submitted by homepage form)
 
         // Question
-        ['GET|POST', '/question/create', 'Question#create', 'question_create'],
+        //['GET|POST', '/question/create', 'Question#create', 'question_create'],
         
         // Session
         ['GET', '/session/play/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
@@ -62,7 +62,7 @@
 
         //Question bis Area
 		//route to question form builder
-		['GET|POST', '/questionediteur', 'Question#questionBuild', 'question_build'],
+		['GET|POST', '/questionediteur/[i:quizId]', 'Question#questionBuild', 'question_build'],
 		//route to question list 
 		['GET', '/questionliste', 'Question#questionList', 'question_list'],
 		//route to question search

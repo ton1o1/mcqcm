@@ -146,7 +146,6 @@ class QuizController extends Controller
                 $this->manager->insert([
                     'creator_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
-                    'date_updated' => $dateCreated->format('Y-m-d H:i:s'),
                     'title' => $_POST['quiz']['title'],
                     'description' => $_POST['quiz']['description'],
                     'slug' => $slugify->slugify($_POST['quiz']['title']),
@@ -194,7 +193,9 @@ class QuizController extends Controller
                 // // Redirect to question creator page
                 // $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
                 // $this->show('quiz/create', ['alerts' => $this->alerts->getAll()]);
-                $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+                $this->redirectToRoute('question_build', [
+                    'quizId' => $lastQuizId,
+                ]);
 
             }
             else{
