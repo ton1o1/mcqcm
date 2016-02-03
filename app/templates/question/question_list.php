@@ -18,6 +18,9 @@
       </tr>
     </tfoot>
     <tbody>
+    <!-- 
+      it will display the list just underneath
+    -->
       <?= $rows ?>
     </tbody>
   </table>

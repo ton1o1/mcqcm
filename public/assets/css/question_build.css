@@ -1,0 +1,38 @@
+/*
+Style perso philip
+ */
+#search-question {
+	display: block-inline;
+	width: 400px;
+}
+
+.process li{
+	font-size: 10px;
+}
+
+.results-list{
+	height: 150px;
+}
+
+.searchQuestion{
+	padding: 20px;
+}
+
+tr {
+	height: 15px;
+}
+
+td {
+	padding: 0 25px 0 25px;
+}
+
+.details {
+	font-size: 12px;
+	font-style: italic;
+	font-weight: bold;
+	color: #666;
+}
+
+.btn {
+	padding: 1px;
+}

@@ -1,4 +1,5 @@
 <?php
+
   
     $w_routes = array(
 
@@ -14,11 +15,13 @@
         // User
         ['GET|POST', '/login', 'User#login', 'user_login'],                           // login with credentials (email + password)
         ['GET|POST', '/logout', 'User#logout', 'user_logout'],
+
         ['GET|POST', '/register', 'User#register', 'user_register'],                  // register (email + password + passwordRepeat [+ captcha])
         ['GET|POST', '/reset-password', 'User#resetPassword', 'user_reset_password'], // reset password (email [+ captcha])
         ['GET', '/user/dashboard', 'User#dashboard', 'user_dashboard'],               // display user dashboard
         ['GET|POST', '/user/profile', 'User#profile', 'user_profile'],                // display profile, modify / delete account
         
+
         // Quiz
         ['GET', '/quiz/search', 'Quiz#search', 'quiz_search'],                        // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
         ['GET', '/quiz/view/[i:quizId]?/[:quizSlug]?', 'Quiz#view', 'quiz_view'],     // list all or view one by id
@@ -48,16 +51,52 @@
         ['POST', '/skill/search', 'Skill#search', 'skill_search'],          // search skills by tag (POST data received with ajax requests, submitted by homepage form)
 
         // Question
-        ['GET|POST', '/question/create', 'Question#create', 'question_create'],
+        //['GET|POST', '/question/create', 'Question#create', 'question_create'],
+
         
         // Session
+
+        // Questions
+        ['GET|POST', '/question/create/quiz/[i:quizId]', 'Question#create', 'question_create'],
+        ['GET|POST', '/question/[i:questionId]/edit', 'Question#edit', 'question_edit'],
+        ['GET|POST', '/question/[i:questionId]/delete', 'Question#delete', 'question_delete'],
+
+
+        // Answers
+
+        ['POST', '/answers/session/[i:sessionId]/save', 'Session#save', 'session_save'], // save answers during session (POST data received with ajax requests, submitted by session_play page)
+        //['POST', '/answers/session/[i:sessionId]/close', 'Session#close', 'session_close'], // save answers and close session (set date_stop in sessions table and redirect to result_view route)
+
         ['GET', '/session/play/[i:quizId]', 'Session#play', 'session_play'], // dynamic session interface to play a quiz by id
         // V2.0 ['POST', '/session/save', 'Session#save', 'session_save'], // save answers during session (POST data received with ajax requests, submitted by session_play page)
         ['POST', '/session/close', 'Session#close', 'session_close'],
 
+
         // Result
-        ['GET', '/result/session/[i:sessionId]', 'Result#viewSession', 'result_view_session'],
+
+        ['GET', '/result/input/[i:userId]?/[i:sessionId]?', 'Result#viewInput', 'result_view_input'],
+        ['GET', '/result/user/[i:userId]/[i:sessionId]', 'Result#viewUser', 'result_view_session'],
+        ['GET', '/result/individual/[i:userId]', 'Result#viewIndividual', 'result_view_individual'],
         ['GET', '/result/quiz/[i:quizId]?', 'Result#viewQuiz', 'result_view_quiz'],
+
+
+        //Question bis Area
+		//route to question form builder
+		['GET|POST', '/questionediteur/[i:quizId]', 'Question#questionBuild', 'question_build'],
+		//route to question list 
+		['GET', '/questionliste', 'Question#questionList', 'question_list'],
+		//route to question search
+		['GET', '/questionrecherche', 'Question#questionSearch', 'question_search'],
+		//route to add question via the list with ajax
+		['POST', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
+		//route to a question file
+		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
+		//route to admin generate data page using Faker
+		['GET|POST', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
+
+
+
+
 
     );
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
+<head>
 
-  <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?= $this->assetUrl('css/select2-bootstrap.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('fonts/mcqcm-font/fonts.css') ?>">
+    <link rel="stylesheet" href="<?= $this->assetUrl('css/question_build.css') ?>">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -22,6 +23,13 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+
+
+
+
+
+
+
 
   <body>
 
@@ -39,64 +47,22 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span>Accueil</a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-list-alt"></span>Catégories <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="http://www.jquery2dotnet.com">Action</a></li>
-                        <li><a href="http://www.jquery2dotnet.com">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-search"></span>Recherche <b class="caret"></b></a>
-                    <ul class="dropdown-menu" style="min-width: 300px;">
-                        <li>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <form class="navbar-form navbar-left" role="search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Search" />
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-primary" type="button">
-                                                Go!</button>
-                                        </span>
-                                    </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
+            <li><a href="<?= $this->url('quiz_search') ?>"><span class="glyphicon glyphicon-search"></span>Rechercher un quiz</a></li>
+            <li><a href="<?= $this->url('result_view_input') ?>"><span class="glyphicon glyphicon-search"></span>Classements</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <?php
                 if(!empty($w_user)){
                 ?>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-comment"></span>Quizzes <b class="caret"></b>
+                    class="glyphicon glyphicon-comment"></span>Mes quizzes <b class="caret"></b>
                 </a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= $this->url('quiz_view_user', ['userId' => 1]) ?>" title="Voir les quizzes que j'ai créé"><span class="glyphicon glyphicon-question-sign"></span>Mes quizzes</a></li>
                         <li><a href="<?= $this->url('quiz_create') ?>" title="Créer un nouveau quiz"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
                     </ul>
                 </li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
-                    class="glyphicon glyphicon-envelope"></span>Résultats <span class="label label-primary">32</span>
-                </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span class="label label-success">81 %</span>PHP orienté objet</a></li>
-                        <li><a href="#"><span class="label label-danger">47 %</span>Opquast</a></li>
-                        <li><a href="#"><span class="label label-warning">62 %</span>Javascript</a></li>
-                        <li><a href="#"><span class="label label-success">90 %</span>HTML & CSS</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#" class="text-center">Voir tous mes résultats</a></li>
-                    </ul>
-                </li>
+                <li><a href="<?= $this->url('result_view_individual', ['userId' => $w_user['id']]) ?>"><span class="glyphicon glyphicon-search"></span>Mes résultats</a></li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span><?= ucfirst($w_user['first_name']) . ' ' . ucfirst($w_user['last_name']) ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -138,5 +104,6 @@
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
 <?= $this->section('scripts') ?>
+
 </body>
 </html>
