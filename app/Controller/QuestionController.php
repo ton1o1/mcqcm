@@ -19,6 +19,7 @@ class QuestionController extends Controller
 
 	public function questionBuild($quizId)
 	{ 
+		session_start();
 		// If $_POST exists, test the keys one by one
 		if($_POST){
 
@@ -97,10 +98,12 @@ class QuestionController extends Controller
 				//insert question title in question table
 				$questionManager->insert([
 					//this value will came from $_SESSION['user']['id']
-					"creator_id" => 1, 
+					"creator_id" => $_SESSION['user']['id'], 
 					"title" => $questionTitle,
 				]);
 				
+				//debug($_POST); debug(get_defined_vars());debug($_COOKIE);debug($_SESSION);
+
 				//select the last index of the question table
 				$lastId = $questionManager->lastId();
 
