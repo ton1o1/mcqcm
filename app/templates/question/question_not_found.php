@@ -2,6 +2,7 @@
 
 <?php $this->start('main_content'); ?>
 
+	<!-- Custom 404 error page for questions -->
 	<h1>
 		Désolé, la question n° <?= $questionId ?> est introuvable.
 	</h1>

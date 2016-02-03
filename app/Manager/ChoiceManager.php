@@ -4,6 +4,10 @@ namespace Manager;
 class ChoiceManager extends \W\Manager\Manager 
 {
 
+/************************************************************
+    DISPLAY CHOICES IN ORDER TO CONSULT QUESTION DETAILS
+************************************************************/
+
     /**
      * Find active choices by quiz_id
      * @param  integer $quizId

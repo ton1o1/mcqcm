@@ -6,15 +6,20 @@ use \W\Controller\Controller;
 
 class QuestionController extends Controller
 {
-	// QUESTION BUILD
+
 	/**
 	 * Question builder page
 	 * 3 main parts in this function : test $_POST, insert question and choices, refill the inputs if the submit wasn't ok.
 	 */
+
+/****************************************
+	CREATE AND ADD A NEW QUESTION TO A QUIZ
+****************************************/
+
+
 	public function questionBuild()
 	{ 
-		//$this->allowTo("student");
-		//If $_POST exists, test the keys one by one
+		// If $_POST exists, test the keys one by one
 		if($_POST){
 
 			if(!empty($_POST['questionTitle']))
@@ -25,7 +30,7 @@ class QuestionController extends Controller
 				$errorMsg['title'] = "Veuillez saisir un intitulé de question.";
 			}
 
-			//***choices values are stored in an array
+			//choices values are stored in an array
 			if(!empty($_POST['choice1'])){
 				$choices[1] = $_POST['choice1'];
 			} else 
@@ -55,7 +60,7 @@ class QuestionController extends Controller
 			}
 
 			//debug($_POST);
-			//answers that are true are also stored in an array, 
+			//true choices named solutions are also stored in an array, 
 			if(!empty($_POST['solution1'])){
 				$solutions[1] = "checked";
 			} else
@@ -80,11 +85,12 @@ class QuestionController extends Controller
 			{
 				$solutions[4] = false;
 			}
-
+			//init message if none of the checkbox has been checked
 			if(empty($_POST['solution1']) && empty($_POST['solution2']) && empty($_POST['solution3']) && empty($_POST['solution4'])){
 				$errorMsg['solution'] = "Veuillez choisir au moins une bonne réponse.";
 			}
 
+			//if all the inputs are okay, question and choices insertion happen
 			if(empty($errorMsg))
 			{
 				$questionManager = new \Manager\QuestionManager();
@@ -97,7 +103,7 @@ class QuestionController extends Controller
 		
 				//insert choices in choices table
 				//step 1 : select the last index of the question table
-				$lastId = $questionManager->lastId(); //needs to work with guillaume
+				$lastId = $questionManager->lastId();
 				
 				//step 2 : insert choice in choice table
 				$choiceManager = new \Manager\ChoiceManager();
@@ -113,26 +119,29 @@ class QuestionController extends Controller
 						]); 
 					}
 				}
-				//enable to reset inputs if the insert succeeds
+				//enable to reset inputs if the insertion succeeds
 				unset($_POST);
 				//init success msg
 				$_POST["success"] = "Votre question vient d'être ajoutée à la base.";
 			}
 
 		}
-		//enable not to have warning with errorMsg echoes  
+		//prevent from having error message with echo if there's no $errorMsg  
 		if(!isset($errorMsg))
 		{
 			$errorMsg=NULL;
 		}
 
+		//display template
 		$this->show('question/question_build', [
 			"errorMsg" => $errorMsg,
 			"written" => $_POST,
 		]);
 	}
 
-	//END QUESTION BUILD
+/****************************************
+	LIST ALL THE QUESTIONS
+****************************************/
 	
 	/**
 	 * List of all the questions in order to have a global view
@@ -142,10 +151,12 @@ class QuestionController extends Controller
 	{
 
 		$questionManager = new \Manager\QuestionManager();
+
 		$questionManager->setTable('questions');
-		//
 		$listQuestions = $questionManager->findAll($orderBy, $orderDir);
 		//When AJAX ready, add a third column with a link to quiz if it exists
+
+		//init the html code to insert
 		$rows = "";
 
 		foreach ($listQuestions as $k => $v) {
@@ -158,16 +169,20 @@ class QuestionController extends Controller
 						</td> 
 					</tr>";
 		}
-
+		//display the list
 		$this->show('question/question_list', ["rows" => $rows]);		
 	}
 	
+/****************************************
+	DISPLAY DETAILS OF A QUESTION
+****************************************/
 	/**
 	 * Display the content of a question with its choices
 	 */
 	public function questionConsult($questionId){
 		//init Manager
 		$questionManager = new \Manager\QuestionManager();
+
 		//get question info
 		$question = $questionManager->find($questionId);
 
@@ -190,12 +205,14 @@ class QuestionController extends Controller
 					$question['type'] = "radio";
 				}
 			}
+
 			//get quiz info
 			$Quizs__questionManager = new \Manager\Quizs__questionManager();
 			$Quizs__questionManager->setTable("quizs__questions");	
 			$quizInfo = $Quizs__questionManager->findQuizIdBy($questionId);
 			//debug($quizInfo);
 	
+			//display question details
 			$this->show('question/question_consult', [
 				"question" => $question,
 				"choices" => $choices,
@@ -203,6 +220,7 @@ class QuestionController extends Controller
 			]);
 		} else
 		{
+			//this is actually a custom page for questions
 			//show notfound page
 			$this->show('question/question_not_found', [
 				"questionId" => $questionId,
@@ -210,8 +228,12 @@ class QuestionController extends Controller
 		}
 	}
 
+
+/****************************************
+	RESEARCH QUESTIONS VIA AJAX
+****************************************/
+
 	/**
-	 * For AJAX
 	 * Select the first 5 results of a title search among questions
 	 */
 
@@ -223,6 +245,12 @@ class QuestionController extends Controller
 		$this->showJson($array);
 	}
 
+/****************************************
+	ADD QUESTIONS VIA AJAX
+****************************************/
+	/**
+	 * Enable to add questions to current quiz via Ajax
+	 */
 	public function ajaxAddQuestion(){
 		$Quizs__questionManager = new \Manager\Quizs__questionManager();
 		$Quizs__questionManager->insert([			

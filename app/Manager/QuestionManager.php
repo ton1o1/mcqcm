@@ -5,26 +5,35 @@
 
 	class QuestionManager extends \W\Manager\Manager
 	{
+
+
+
 		/**
-		* Récupère la dernière ligne de la table, càd, celle qui vient d'être 	inséré
-		* @param  integer Identifiant
+		* This function is DEPRECATED and will be replaced by lastId()
+		* Récupère la dernière ligne de la table, càd, celle qui vient d'être inséré
+		* @param integer Identifiant
 		* @return mixed Les données
-		* This function is deprecated and will be replaced by lastId()
 		*/
 		public function findLast()
 		{
-			//SELECT les_colonnes FROM la_table WHERE id=LAST_INSERT_ID();
+			
 			$sql = "SELECT * FROM " . $this->table . " WHERE $this->primaryKey 	= LAST_INSERT_ID()";
 			$sth = $this->dbh->prepare($sql);			
 			$sth->execute();	
 			return $sth->fetch();
 		}
+
+/**************************************************
+	GET THE ID OF THE LAST INSERTION 
+**************************************************/
 		//Fonction de guillaume pour récupérer l'id de la dernière ligne insérée
 		public function lastId(){
 			return $this->dbh->lastInsertId();
 		}
 
-
+/**************************************************
+	GET A QUESTION WITH ITS ID 
+**************************************************/
 
 		public function findQuestion($id)
 		{
@@ -41,18 +50,19 @@
 		}
 
 
+/**************************************************
+	RESEARCH A QUESTION BY ITS TEXT
+**************************************************/
+
 		/**
-		 * Recherche une question par son intitulé
-		 * @param $title, une chaîne de caractère de recherche
-		 * @return un fichier JSON 
+		 * Research a question according to its letters
+		 * @param $title, the string to match
+		 * @return JSON file
 		 */
 		public function searchQuestion($title){
-			//title is actually regex
+			//%title% is sql regex
 
-			$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 1 AND questions.title LIKE :keyword GROUP BY title ORDER BY title ASC/* LIMIT 5*/"; //is query without limit is okay with performance ?
-			//WARNING !!!
-			//the line above above is to be replace by 
-			//$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 2 AND questions.title LIKE '%" . $title . "%'";
+			$sql = "SELECT questions.*, quizs__questions.* FROM `questions` LEFT JOIN quizs__questions ON questions.id = quizs__questions.question_id WHERE quizs__questions.quiz_id != 3 AND questions.title LIKE :keyword GROUP BY title ORDER BY title ASC LIMIT 5 "; //is query without limit is okay with performance ?
 
 			if (!empty($orderBy)){
 		
@@ -63,16 +73,13 @@
 				$orderDir = strtoupper($orderDir);
 			}
 
-
 			$sth = $this->dbh->prepare($sql);
 			$sth->execute([
 				":keyword" => "%" . $title . "%",
 			]);
 		
-			return $sth->fetchAll();
-	
+			return $sth->fetchAll();	
 		}
-
 	}
 
 

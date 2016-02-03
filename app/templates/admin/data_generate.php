@@ -1,8 +1,7 @@
 
 <?php $this->layout('layout', ['title' => 'Data']) ?>
 
-	<?php ?>
-<?php $this->start('main_content') ?>
+	<?php $this->start('main_content') ?>
 	<h2>Hello, welcome, to the data generator back office</h2>
 	<p>Because as workers, we all know we are pretty lazy when it comes to insert manually data</p>
 
@@ -15,11 +14,8 @@
 	</form>
 	<?php if(isset($resultat)){echo $resultat;} ?>
 
-	<br/>
-	<br/>
-	<br/>
 	<h3>Scrapper</h3>
-	<p></p>
+	<!-- Will display scrapper functionalities if we have some additional time and that won't happen :( -->
 
 	<p>Et maintenant, RTFM dans <strong><a href="../docs/tuto/" title="Documentation de W">docs/tuto</a></strong>.</p>
 <?php $this->stop('main_content') ?>

@@ -1,4 +1,7 @@
 <?php
+
+	//The scrapper script is not finished
+
 	require('simple_html_dom.php');
 
 	// $html = file_get_html('http://www.w3schools.com/quiztest/quiztest.asp?qtest=HTML');
