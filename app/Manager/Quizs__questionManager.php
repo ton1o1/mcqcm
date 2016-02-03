@@ -30,7 +30,13 @@ class Quizs__questionManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
-    
+/**************************************************
+    GET THE ID OF THE LAST INSERTION 
+**************************************************/
+        //enable to get the id of the last inserted line
+        public function lastId(){
+            return $this->dbh->lastInsertId();
+        }    
 
 
 }   

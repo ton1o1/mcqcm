@@ -100,12 +100,21 @@ class QuestionController extends Controller
 					"creator_id" => 1, 
 					"title" => $questionTitle,
 				]);
-		
-				//insert choices in choices table
-				//step 1 : select the last index of the question table
-				$lastId = $questionManager->lastId();
 				
-				//step 2 : insert choice in choice table
+				//select the last index of the question table
+				$lastId = $questionManager->lastId();
+
+				//insert the relation between the quiz and the question
+				$quizs_questionManager = new \Manager\Quizs__questionManager();
+				if($_POST){
+					$quizs_questionManager->insert([
+						"quiz_id" => $quizId,	
+						"question_id" => $lastId,
+						"is_active" => 1,
+					]);
+				}
+				
+				//insert choice in choice table
 				$choiceManager = new \Manager\ChoiceManager();
 				//$questionManager->setTable('choices');
 				if($_POST){
@@ -119,19 +128,7 @@ class QuestionController extends Controller
 						]); 
 					}
 				}
-				// insertion de quiz-question
-				$quizs_questionManager = new \Manager\Quizs__questionManager();
-				if($_POST){
-					foreach ($quizs_questions as $k => $v) {
-						$quizs_questionManager->insert([
-							"quiz_id" => $quizId,
-							"question_id" => $lastId,
-							"is_active" => 1,
-						]); 
-					}
-				}				
-
-
+			
 				//enable to reset inputs if the insertion succeeds
 				unset($_POST);
 				//init success msg
