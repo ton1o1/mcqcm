@@ -29,9 +29,21 @@ class QuizController extends Controller
 
         if(!empty($_GET['tags'])){
 
+            $page = 1;
+
+            if(!empty($_GET['page'])){
+            
+                $pageInt = (int) $_GET['page'];
+
+                if($pageInt > 1){
+                    $page = $pageInt;
+                }
+            }
+
             $slugify = new Slugify();
 
-            $quizzes = $this->manager->findAllByTags($_GET['tags']);
+            $total = $this->manager->totalByTags($_GET['tags']);
+            $quizzes = $this->manager->findByTags($_GET['tags'], $page);
 
             if($quizzes){
                 foreach($quizzes as $key => $value){
@@ -42,8 +54,7 @@ class QuizController extends Controller
         
         }
 
-        $this->show('default/home', ['quizzes' => $quizzes]);
-        // $this->redirectToRoute('home', ['html' => $html]);
+        $this->show('default/home', ['quizzes' => $quizzes, 'total' => $total['COUNT(q.id)']]);
     }
 
     /**

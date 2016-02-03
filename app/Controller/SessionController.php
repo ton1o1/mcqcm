@@ -7,15 +7,12 @@ use \W\Controller\Controller;
 class SessionController extends Controller
 {
     private $alerts;
-    private $sessionManager;
-    // private $answerManager;
+    private $manager;
 
     public function __construct()
     {
         $this->alerts = new \Service\Alerts();
-        $this->sessionManager = new \Manager\SessionManager();
-        // $this->answerManager = new \Manager\AnswerManager();
-        // $this->questionManager = new \Manager\QuestionManager();
+        $this->manager = new \Manager\SessionManager();
     }
 
     /**
@@ -23,15 +20,10 @@ class SessionController extends Controller
      */
     public function play($quizId)
     {
-        // Dev mode START
-        // $this->allowTo('user');
-        // Dev mode END
-
+        $this->allowTo('student');
+        
         // Get user
-        // Dev mode START
-        // $loggedUser = $this->getUser();
-        $loggedUser = ['id' => 1];
-        // Dev mode END
+        $loggedUser = $this->getUser();
 
         // If no quiz is played currently
         if(empty($_SESSION['play'])){
@@ -41,7 +33,7 @@ class SessionController extends Controller
             // Get date start
             $dateStart = new \DateTime();
 
-            $this->sessionManager->insert([
+            $this->manager->insert([
                 'user_id' => $loggedUser['id'],
                 'quiz_id' => $quizId,
                 'date_start' => $dateStart->format('Y-m-d H:i:s'),
@@ -49,11 +41,11 @@ class SessionController extends Controller
                 'score' => 0
             ]);
 
-            $_SESSION['play'] = ['sessionId' => $this->sessionManager->lastId(), 'dateStart' => $dateStart->format('Y-m-d H:i:s'), 'quizId' => $quizId];
+            $_SESSION['play'] = ['sessionId' => $this->manager->lastId(), 'dateStart' => $dateStart->format('Y-m-d H:i:s'), 'quizId' => $quizId];
         }
 
         // Get questions
-        $questions = $this->sessionManager->questionsByQuizId($_SESSION['play']['quizId']);
+        $questions = $this->manager->questionsByQuizId($_SESSION['play']['quizId']);
 
         $play = ['sessionId' => $_SESSION['play']['sessionId'], 'dateStart' => $_SESSION['play']['dateStart'], 'quizTitle' => $questions[0]['quizTitle'], 'questions' => [] ];
 
@@ -63,7 +55,7 @@ class SessionController extends Controller
             $solutionsCount = 0;
 
             // Get choices
-            $choicesList = $this->sessionManager->choicesByQuestionId($question['questionId']);
+            $choicesList = $this->manager->choicesByQuestionId($question['questionId']);
 
             foreach($choicesList as $choice){
                 $choices[] = ['id' => $choice['choiceId'], 'title' => $choice['choiceTitle']];
@@ -76,33 +68,68 @@ class SessionController extends Controller
 
         }
 
-        // var_dump($play);
         $this->show('session/play', ['play' => $play]);
     }
 
     /**
      * Save answers during session
      */
-    public function save($sessionId)
+    public function save()
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-        }
-        else{
-            $this->redirectToRoute('home');
-        }
+        // For V2.0
     }
 
     /**
      * Save answers and close session
      */
-    public function close($sessionId)
+    public function close()
     {
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        $this->allowTo('student');
 
+        // Do we have a session to close ?
+        if(!empty($_SESSION['play']['sessionId'])){
+
+            // Check if session is active
+            $active = $this->manager->findActive($_SESSION['play']['sessionId']);
+
+            if($active){
+
+                // Get user
+                $loggedUser = $this->getUser();
+
+                // Get session id
+                $sessionId = $_SESSION['play']['sessionId'];
+
+                // Save answers
+                if(!empty($_POST)){
+                    foreach($_POST as $questionId => $choicesId){
+                        $this->manager->setTable("answers");
+                        $this->manager->insert([
+                            'session_id' => $sessionId,
+                            'user_id' => $loggedUser['id'],
+                            'question_id' => $questionId,
+                            'choices' => serialize($choicesId)
+                        ]);
+                    }
+                }
+
+                // Close session
+                
+                // Get date
+                $dateStop = new \DateTime();
+
+                $this->manager->setTable("sessions");
+                $this->manager->update([
+                    'date_stop' => $dateStop->format('Y-m-d H:i:s'),
+                ], $sessionId, true);
+            }
+
+            // Destroy session
+            unset($_SESSION['play']);
         }
-        else{
-            $this->redirectToRoute('home');
-        }
+
+        // Redirect on result page
+        // $this->redirectToRoute('result_view_session', ['userId' => $loggedUser['id'], 'sessionId' => $sessionId]);
+
     }
 }

@@ -42,6 +42,21 @@ class SessionManager extends \W\Manager\Manager
         return $sth->fetchAll();
     }
 
+    public function findActive($sessionId)
+    {
+        if (!is_numeric($sessionId)){
+            return false;
+        }
+
+        $sql = "SELECT * FROM " . $this->table . " WHERE $this->primaryKey = :sessionId AND date_stop = :dateStop LIMIT 1";
+        $sth = $this->dbh->prepare($sql);
+        $sth->bindValue(":sessionId", $sessionId);
+        $sth->bindValue(":dateStop", "0000-00-00 00:00:00");
+        $sth->execute();
+
+        return $sth->fetch();
+    }
+
     public function lastId()
     {
         return $this->dbh->lastInsertId();
