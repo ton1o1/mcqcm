@@ -34,7 +34,7 @@
 		//Private area
 		['GET|POST', '/profil/modifier/', 'User#modify', 'user_modify'],
 		['GET|POST', '/oubli-mdp/', 'User#recovery_pwd', 'user_recovery_pwd'],
-		['GET|POST', '/renouvellement-mdp/[a:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
+		['GET|POST', '/renouvellement-mdp/[*:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
 
 		//Administrator only area
 		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
