@@ -102,10 +102,9 @@ body > .container {
   }
 
   .visuel p,
-  .visuel h2
-  {
+  .visuel h2 {
     color: #FFF;
-
+  }
 
   #javascript-error{
     width: 100%;
