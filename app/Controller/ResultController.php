@@ -71,7 +71,7 @@ class ResultController extends Controller {
 				if ($nbQuizUser >= 1) {
 					// $score = $this->calculNoteStudent($userId, $quizId);
 					$resultUserQuiz = $this->answer->list_user_quiz($userId, $quizId);
-					$resultat = $this->answer->list_choices_user_quiz($userId, $quizId);
+					$resultat = $this->answer->list_choices_user_quiz($userId, $sessionId);
 
 					$choiceId = [];
 					$tabSolution = [];

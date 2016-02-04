@@ -73,11 +73,13 @@ class AnswerManager extends Manager
 
 	public function list_choices_user_quiz($userId, $sessId)
 		{
-			if ((!is_numeric($userId)) || (!is_numeric($sessId))) { return false; }
+			// if ((!is_numeric($userId)) || (!is_numeric($sessId))) { return false; }
 
 			$sql = "SELECT a.choices, a.question_id FROM answers a 
-			WHERE (a.user_id = '$userId') AND (a.session_id = '$sessId')";
+			WHERE a.user_id = :userId AND a.session_id = :sessId";
 			$statement = $this->dbh->prepare($sql);
+			$statement->bindValue(":userId", $userId);
+			$statement->bindValue(":sessId", $sessId);
 			$statement->execute();
 			$result = $statement->fetchAll();
 			return $result;

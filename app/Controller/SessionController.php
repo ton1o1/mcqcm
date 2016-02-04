@@ -112,11 +112,20 @@ class SessionController extends Controller
                     $choicesList = $this->manager->choicesByQuestionId($question['questionId']);
 
                     foreach($choicesList as $choice){
+                        $answers = $_POST[$question['questionId']];
+                        if(!is_array($answers)){
+                            $answers = [$answers];
+                        }
                         $answer = 0;
-                        if(!empty($_POST[$question['questionId']]) && in_array($choice['choiceId'], $_POST[$question['questionId']])){
+                        if(!empty($_POST[$question['questionId']]) && in_array($choice['choiceId'], $answers)){
                             $answer = 1;
                         }
-                        $choices[] = $choice['choiceId'] => $answer;
+                        $choices[] = [$choice['choiceId'] => $answer];
+                    }
+
+                    $choicesFinal = [];
+                    foreach($choices as $key => $value){
+                        $choicesFinal = $choicesFinal + $choices[$key];
                     }
 
                     // Save answer (even if no choice checked, according to method used to calculate the results)
@@ -125,7 +134,7 @@ class SessionController extends Controller
                         'session_id' => $sessionId,
                         'user_id' => $loggedUser['id'],
                         'question_id' => $question['questionId'],
-                        'choices' => serialize($choices)
+                        'choices' => serialize($choicesFinal)
                     ]);
 
                 }
