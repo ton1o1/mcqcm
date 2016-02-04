@@ -12,5 +12,9 @@
 	//instancie notre appli en lui passant la config et les routes
 	$app = new W\App($w_routes, $w_config);
 
+	//check cookie exist
+	$newCookie = new \Service\Cookies();
+	$newCookie->cookieTester();
+	
 	//exécute l'appli
 	$app->run();

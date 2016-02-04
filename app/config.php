@@ -5,7 +5,7 @@ $w_config = [
 	'db_host' => 'localhost',						//hôte (ip, domaine) de la bdd
     'db_user' => 'root',							//nom d'utilisateur pour la bdd
     'db_pass' => '',								//mot de passe de la bdd
-    'db_name' => '',								//nom de la bdd
+    'db_name' => 'mcqcm',								//nom de la bdd
     'db_table_prefix' => '',						//préfixe ajouté aux noms de table
 
 	//authentification, autorisation
@@ -16,7 +16,7 @@ $w_config = [
 	'security_password_property' => 'password',		//nom de la colonne pour le "mot de passe"
 	'security_role_property' => 'role',				//nom de la colonne pour le "role"
 
-	'security_login_route_name' => 'login',			//nom de la route affichant le formulaire de connexion
+	'security_login_route_name' => 'user_login',			//nom de la route affichant le formulaire de connexion
 ];
 
 require('routes.php');
