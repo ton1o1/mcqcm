@@ -13,7 +13,9 @@
         <li>Valider le formulaire ok</li>
       </ol>
     </div>  
-    
+    <section class="questions-list">
+    <a href="<?= $this->url('question_list') ?>" class="btn btn-default" role="button">Afficher les questions</a>
+    </section>
     <section class="searchQuestion container">
   <!-- SEARCH BAR -->
     <form action="#" method="GET">
