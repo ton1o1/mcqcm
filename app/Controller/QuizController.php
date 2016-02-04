@@ -189,14 +189,11 @@ class QuizController extends Controller
                 }
 
                 // Flash message
-                $this->alerts->add(['type' => 'success', 'content' => 'Quiz créé avec succès.']);
-                // // Redirect to question creator page
-                // $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
-                // $this->show('quiz/create', ['alerts' => $this->alerts->getAll()]);
+                // $this->alerts->add(['type' => 'success', 'content' => 'Quiz créé avec succès.']);
+
                 $this->redirectToRoute('question_build', [
                     'quizId' => $lastQuizId,
                 ]);
-
             }
             else{
                 // Flash message

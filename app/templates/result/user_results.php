@@ -2,10 +2,36 @@
 
 <?php $this->start('main_content') ?>
 
-		<strong><u>Résultats du candidat <?=$name ?> au quiz <?=$titleQu ?></u></strong>
-		<p></p><br /> 
-		
-	<?php	
+	<div class="page-header">
+  		<h1>Résultats <small><?=$titleQu ?></small></h1>
+	</div>
+
+	<?php
+	if($noteQuiz >= 50){
+		$color = 'success';
+		$icon = 'ok';
+	}
+	else{
+		$color = 'danger';
+		$icon = 'remove';
+	}
+	?>
+
+	<div class="panel panel-<?= $color ?>">
+  		<div class="panel-heading">
+    		<h3 class="panel-title"><span class="glyphicon glyphicon-<?= $icon ?>" aria-hidden="true"></span>Mon score</h3>
+  		</div>
+	  	<div class="panel-body text-center quiz-score">
+    		<?=$noteQuiz ?> %
+  		</div>
+	</div>
+	
+	<div class="panel panel-default">
+  		<div class="panel-heading">
+    		<h3 class="panel-title"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>En détails</h3>
+  		</div>
+	  	<div class="panel-body">
+    		<?php	
 
 	foreach ($resultat as $kez => $valuz) { ?>
 	
@@ -23,7 +49,7 @@
 			<?php echo($resulTotTitle[$kez]); } ?>. 
 		<br />
 	<?php }  ?>
-
-<br /><h4 style="color:red;"><strong>Note : <?=$noteQuiz ?> sur 100</strong></h4>.
+  		</div>
+	</div>
 
 <?php $this->stop('main_content') ?>

@@ -92,13 +92,24 @@ body > .container {
   }
 
 
+
   .visuel{
     background: url(../img/cover-2048.jpg) center top no-repeat;
     background-size: cover;
+  }
+  .quiz-score{
+    font-size: 40px;
   }
 
   .visuel p,
   .visuel h2
   {
     color: #FFF;
+
+
+  #javascript-error{
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
   }

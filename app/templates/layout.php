@@ -48,7 +48,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="<?= $this->url('quiz_search') ?>"><span class="glyphicon glyphicon-search"></span>Rechercher un quiz</a></li>
-            <li><a href="<?= $this->url('result_view_input') ?>"><span class="glyphicon glyphicon-search"></span>Classements</a></li>
+            <li><a href="<?= $this->url('result_view_input') ?>"><span class="glyphicon glyphicon-list"></span>Classements</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <?php
@@ -62,7 +62,7 @@
                         <li><a href="<?= $this->url('quiz_create') ?>" title="Créer un nouveau quiz"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= $this->url('result_view_individual', ['userId' => $w_user['id']]) ?>"><span class="glyphicon glyphicon-search"></span>Mes résultats</a></li>
+                <li><a href="<?= $this->url('result_view_individual', ['userId' => $w_user['id']]) ?>"><span class="glyphicon glyphicon-signal"></span>Mes résultats</a></li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span><?= ucfirst($w_user['first_name']) . ' ' . ucfirst($w_user['last_name']) ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
@@ -85,6 +85,8 @@
       </div>
     </nav>
 
+    <div class="alert alert-danger text-center" id="javascript-error" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Javascript n'est pas activé sur votre navigateur. Pour une interface plus cool et intuitive, veuillez l'activer.</div>
+
     <!-- Begin page content -->
     <section class="container global-content">
         <?= $this->section('main_content') ?>
@@ -103,6 +105,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
+<script>$("#javascript-error").hide();</script>
+
 <?= $this->section('scripts') ?>
 
 </body>
