@@ -19,7 +19,6 @@ class QuestionController extends Controller
 
 	public function questionBuild($quizId)
 	{ 
-		session_start();
 		// If $_POST exists, test the keys one by one
 		if($_POST){
 
@@ -269,9 +268,10 @@ class QuestionController extends Controller
 	 */
 	public function ajaxAddQuestion(){
 		$Quizs__questionManager = new \Manager\Quizs__questionManager();
+		$Quizs__questionManager->setTable('quizs__questions');
 		$Quizs__questionManager->insert([			
-			"quiz_id" => $_POST["quizId"],
-			"question_id" =>  $_POST["questionId"],
+			"quiz_id" => (int) $_POST["quizId"],
+			"question_id" =>  (int) $_POST["questionId"],
 			"is_active" => 1,
 		]);
 	} 

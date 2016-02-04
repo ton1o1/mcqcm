@@ -98,10 +98,12 @@
     </section>
 
     <p>Et maintenant, RTFM dans <strong><a href="../docs/tuto/" title="Documentation de W">docs/tuto</a></strong>.</p>
-    <script type="text/javascript" src="/mcqcm/public/assets/js/jquery.min.js"> 
-    </script>
-    <script type="text/javascript" src="/mcqcm/public/assets/js/searchQuestion.js"></script>
+
   <?php $this->stop('main_content') ?>
+
+  <?php $this->start('scripts') ?>
+    <script type="text/javascript" src="<?=$this->assetUrl('js/searchQuestion.js') ?>"></script>
+  <?php $this->stop('scripts') ?>
 
 
 

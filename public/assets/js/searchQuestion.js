@@ -41,7 +41,7 @@ RECHERCHE VIA REQUETE AJAX
 				}
 
 				for (var i = 0, c = 5; i < c; i++){
-					console.log(response[i].title + response[i].id + " coucou")
+					console.log(response[i].title + " " + response[i].id + " coucou")
 			
 						$id = response[i].id;
 						$tdId = $("<td>").html($id + ", ");
