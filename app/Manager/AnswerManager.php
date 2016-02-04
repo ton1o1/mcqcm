@@ -162,7 +162,7 @@ class AnswerManager extends Manager
 
 	public function userQuizScore($uId)
 		{
-		$sqlQuizScore = "SELECT score, quiz_id FROM sessions WHERE user_id='$uId'";
+		$sqlQuizScore = "SELECT sessions.score AS score, sessions.id AS sessionId, quizs.title AS quizTitle FROM sessions, quizs WHERE sessions.user_id='$uId' AND sessions.quiz_id = quizs.id";
 		$sth = $this->dbh->prepare($sqlQuizScore);
 		$sth->execute();
 		return $sth->fetchAll();

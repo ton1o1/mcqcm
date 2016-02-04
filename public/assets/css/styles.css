@@ -90,3 +90,7 @@ body > .container {
     cursor: pointer;
     color: white;
   }
+
+  .quiz-score{
+    font-size: 40px;
+  }
