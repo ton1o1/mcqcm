@@ -1,9 +1,11 @@
 <?php $this->layout('layout', ['title' => 'Retrouver votre mot de passe']) ?>
 
 <?php $this->start('main_content') ?>
+<div class="jumbotron visuel">
+         <h2>Vous souhaitez retrouver votre mot de passe</h2>
+</div>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">
-         <h2>Vous souhaitez retrouver votre mot de passe</h2>
         <?= $messageInfo = (!empty($messageInfo)) ? $messageInfo : '';?>
         <form action="" method="post" novalidate class="<?php if(!empty($messageInfo)){ echo 'is-hidden';}?>">
            <p>Indiquez votre adresse e-mail :</p>

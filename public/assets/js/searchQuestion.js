@@ -50,7 +50,7 @@ RECHERCHE VIA REQUETE AJAX
 						$tdTitle = $("<td>").html($title + ", ");
 			
 						$button = $("<button>");
-						$button.html("Ajouter au quiz").attr("data-id",$id).addClass("btn btn-default"	);
+						$button.html("Ajouter au quiz").attr("data-id",$id).addClass("btn btn-default btn--question"	);
 						$tdButton = $("<td>").append($button);
 	
 						$button.on("click", function(e){

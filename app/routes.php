@@ -9,7 +9,7 @@
         ['GET', '/about', 'Default#about', 'about'],
         ['GET', '/about', 'Default#apropos', 'apropos'],
         ['GET', '/legal', 'Default#legal', 'legal'],
-        ['GET', '/contact', 'Default#contact', 'contact'],
+        ['GET|POST', '/contact', 'Default#contact', 'contact'],
         ['GET', '/', 'Default#home', 'question_builder'],
 
         // User

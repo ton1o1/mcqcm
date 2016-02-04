@@ -1,14 +1,15 @@
 <?php $this->layout('admin_layout', ['title' => 'Profil']) ?>
 
 <?php $this->start('main_content') ?>
+    <div class="jumbotron visuel">
+            <h2>Zone d'administration</h2>
+            <!-- Search Form -->
+    </div>
 <div class="page">
     <div class="row">
-
-        <h2>Zone admin</h2>
-        <!-- Search Form -->
         <h3>Recherche</h3>
         
-        <form action="http://mcqcm.dev/mcqcm/public/administrator/search/" method="POST" id="searchUserForm" class="searchUserForm">
+        <form action="<?= $this->url('administrator_profile');?>search/" method="POST" id="searchUserForm" class="searchUserForm">
             <label for="searchUser">Recherche</label>
             <div class="input-group">
 
@@ -19,7 +20,7 @@
             </div>
         </form>
         <!-- Search Results -->
-        <div id="userResult" class="user-result" data-url="<? $this->url('profile_admin');?>"></div>
+        <div id="userResult" class="user-result" data-url="<?= $this->url('administrator_profile');?>"></div>
 
         
         <!-- User list -->
@@ -50,7 +51,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modification de compte :</h4>
             </div>
-             <form action="/administrator/change-user/" method="POST">
+             <form action="<?= $this->url('administrator_profile');?>change-user/" method="POST">
                 <div class="modal-body cf">
                     <h4>Utilisateur : </h4>
                     <p class="bg-info" id="usermodal__userName"></p>

@@ -1,8 +1,10 @@
 <?php $this->layout('layout', ['title' => 'Modification de votre mot de passe']) ?>
 <?php $this->start('main_content') ?>
+         <div class="jumbotron visuel">
+         <h2>Modification de votre mot de passe</h2>
+         </div>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">
-         <h2>Modification de votre mot de passe</h2>
         <form action="" method="post" novalidate class="">
            
            <div class="form-group <?php if(!empty($errormessage['userPassword'])){ echo 'has-error';}?>">

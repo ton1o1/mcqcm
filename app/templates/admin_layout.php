@@ -17,14 +17,6 @@
         
             <nav class="navigation navigation--header" role="menu">
 
-                <a class="navigation__button" href="#">menu</a>
-
-                    <ul class="navigation__list">
-                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">accueil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("home", []);?>">profil</a></li>
-                        <li><a class="navigation__item" href="<?= $this->url("user_register", []);?>">quizz</a></li>
-                    </ul>
-
                 
                 <?php 
                     if(empty($w_user)){
@@ -62,7 +54,7 @@
 <!-- JS SCRIPTS -->
     <script type="text/javascript" src="<?= $this->assetUrl('js/jquery.min.js') ?>"></script>
     <script type="text/javascript" src="<?= $this->assetUrl('js/bootstrap.js') ?>"></script>
-    <script type="text/javascript" src="<?= $this->assetUrl('js/all.js') ?>"></script>
+    <script type="text/javascript" src="<?= $this->assetUrl('js/admin.js') ?>"></script>
 
 </body>
 </html>
