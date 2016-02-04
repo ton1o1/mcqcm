@@ -94,3 +94,10 @@ body > .container {
   .quiz-score{
     font-size: 40px;
   }
+
+  #javascript-error{
+    width: 100%;
+    position: absolute;
+    top: 50px;
+    left: 0;
+  }

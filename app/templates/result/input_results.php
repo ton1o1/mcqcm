@@ -2,9 +2,10 @@
 
 <?php $this->start('main_content') ?>
 
+	<div class="page-header">
+  		<h1>Classements</h1>
+	</div>
 
-	<h2>Résultats</h2>
-	
 	<p><strong><u>Résultats généraux</u></strong></p>
 	<?php $nbQuiz = count($quizTitle);
 	for ($i=0; $i < $nbQuiz; $i++) { 

@@ -85,6 +85,8 @@
       </div>
     </nav>
 
+    <div class="alert alert-danger text-center" id="javascript-error" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Javascript n'est pas activé sur votre navigateur. Pour une interface plus cool et intuitive, veuillez l'activer.</div>
+
     <!-- Begin page content -->
     <section class="container global-content">
         <?= $this->section('main_content') ?>
@@ -103,6 +105,8 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="<?= $this->assetUrl('js/select2.full.min.js') ?>"></script>
+<script>$("#javascript-error").hide();</script>
+
 <?= $this->section('scripts') ?>
 
 </body>
