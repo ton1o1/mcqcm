@@ -100,51 +100,21 @@ class SessionController extends Controller
                 // Get session id
                 $sessionId = $_SESSION['play']['sessionId'];
 
-                // START older version, actually this version work with Aurelien's ResultController
-                // Get questions
-                $questions = $this->manager->questionsByQuizId($_SESSION['play']['quizId']);
-
-                foreach($questions as $question){
-
-                    $choices = [];
-
-                    // Get choices
-                    $choicesList = $this->manager->choicesByQuestionId($question['questionId']);
-
-                    foreach($choicesList as $choice){
-                        $answer = 0;
-                        if(!empty($_POST[$question['questionId']]) && in_array($choice['choiceId'], $_POST[$question['questionId']])){
-                            $answer = 1;
-                        }
-                        $choices[] = $choice['choiceId'] => $answer;
-                    }
-
-                    // Save answer (even if no choice checked, according to method used to calculate the results)
-                    $this->manager->setTable("answers");
-                    $this->manager->insert([
-                        'session_id' => $sessionId,
-                        'user_id' => $loggedUser['id'],
-                        'question_id' => $question['questionId'],
-                        'choices' => serialize($choices)
-                    ]);
-
-                }
-                // END older version
-
-                // START optimized version, but not effective with Aurelien's ResultController
                 // Save answers
-                // if(!empty($_POST)){
-                //     foreach($_POST as $questionId => $choicesId){
-                //         $this->manager->setTable("answers");
-                //         $this->manager->insert([
-                //             'session_id' => $sessionId,
-                //             'user_id' => $loggedUser['id'],
-                //             'question_id' => $questionId,
-                //             'choices' => serialize($choicesId)
-                //         ]);
-                //     }
-                // }
-                // END optimized version
+                if(!empty($_POST)){
+                    foreach($_POST as $questionId => $choicesId){
+                        if(!is_array($choicesId)){
+                            $choicesId = [$choicesId];
+                        }
+                        $this->manager->setTable("answers");
+                        $this->manager->insert([
+                            'session_id' => $sessionId,
+                            'user_id' => $loggedUser['id'],
+                            'question_id' => $questionId,
+                            'choices' => serialize($choicesId)
+                        ]);
+                    }
+                }
 
                 // Close session
                 

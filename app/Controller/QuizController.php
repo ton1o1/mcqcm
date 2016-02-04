@@ -146,7 +146,6 @@ class QuizController extends Controller
                 $this->manager->insert([
                     'creator_id' => $loggedUser['id'],
                     'date_created' => $dateCreated->format('Y-m-d H:i:s'),
-                    'date_updated' => $dateCreated->format('Y-m-d H:i:s'),
                     'title' => $_POST['quiz']['title'],
                     'description' => $_POST['quiz']['description'],
                     'slug' => $slugify->slugify($_POST['quiz']['title']),

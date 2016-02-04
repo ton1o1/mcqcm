@@ -39,7 +39,7 @@
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="<?= $this->url('quiz_search') ?>"><span class="glyphicon glyphicon-search"></span>Rechercher un quiz</a></li>
-            <li><a href="<?= $this->url('result_view_input') ?>"><span class="glyphicon glyphicon-search"></span>Classements</a></li>
+            <li><a href="<?= $this->url('result_view_input') ?>"><span class="glyphicon glyphicon-list"></span>Classements</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
                 <?php
@@ -53,7 +53,7 @@
                         <li><a href="<?= $this->url('quiz_create') ?>" title="Créer un nouveau quiz"><span class="glyphicon glyphicon-plus"></span>Créer un quiz</a></li>
                     </ul>
                 </li>
-                <li><a href="<?= $this->url('result_view_individual', ['userId' => $w_user['id']]) ?>"><span class="glyphicon glyphicon-search"></span>Mes résultats</a></li>
+                <li><a href="<?= $this->url('result_view_individual', ['userId' => $w_user['id']]) ?>"><span class="glyphicon glyphicon-signal"></span>Mes résultats</a></li>
                 <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
                     class="glyphicon glyphicon-user"></span><?= ucfirst($w_user['first_name']) . ' ' . ucfirst($w_user['last_name']) ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
