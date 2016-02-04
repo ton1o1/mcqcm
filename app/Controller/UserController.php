@@ -25,20 +25,18 @@ class UserController extends Controller
 		$errormessage = [];
 
 		if(!empty($_POST)) {
-
 			$test['first_name'] =  $_POST['userFirstName'];
 			$test['last_name'] = $_POST['userLastName'];
 			$test['email'] = $_POST['userEmail'];
 			$test['password'] = $_POST['userPassword'];
 			$test['passwordConfirmed'] = $_POST['userPasswordConfirmed'];
-
 			//validation du formulaire
 			$result = $this->testUserForm($test);
 
 			$isValid = $result[0];
 			$errormessage =$result[1];
 
-			//Form is valid
+			//form is valid
 			if($isValid){
 
 				//insert user data in DB
@@ -56,6 +54,7 @@ class UserController extends Controller
 
 				//test user data exist in database
 				$result = $this->authentificationManager->isValidLoginInfo( $test['email'], $test['password']);
+
 				if($result)
 				{
 					//$user = new \Manager\UserManager(); 
@@ -63,6 +62,7 @@ class UserController extends Controller
 					//user connection
 					$this->authentificationManager->logUserIn($user);
 					//afficher le profil user
+					$_SESSION['messageInfo'] = '<div ="alert alert-info">Bienvenue</div>';
 					$this->redirectToRoute('user_profile');
 				}else {
 					//probleme d'insertion dans la table ?
@@ -112,7 +112,6 @@ class UserController extends Controller
 				if(!$user['is_active']){
 					$isValid = false;
 					$errormessage['alerte'] = '<div class="alert alert-danger" role="alert">Votre compte est temporairement suspendu. Vous pouvez contacter un administrateur pour en connaitre la raison ou demander la levée de la suspension.</div>';
-					die();
 				}
 				else {
 
@@ -179,8 +178,51 @@ class UserController extends Controller
 
 	}
 
-	public function modifyEmail($test)
+	/**
+	 *
+	 *  Modify user email when user is logged
+	 * @param  array() $test values to be tested
+	 * @param  array() $user user datas
+	 *
+	 */
+	public function modifyEmail($test,$user)
 	{
+		$result = $this->testUserForm($test);
+		$isValid = $result[0];
+		$errormessage =$result[1];
+
+		if($isValid){
+
+			//Submited data are correct.
+			//update data in database
+
+			$this->userManager->update([
+					"email"  => $test['userEmailModify'],
+				],$user['id']);
+			//maj session 
+			$this->authentificationManager->refreshUser();
+			//redirect user
+			$messageInfo = '<div class="alert alert-info">Modification de votre adresse Email validée !</div>';
+			$_SESSION['messageInfo'] = $messageInfo;
+			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+		}else{
+
+			$errormessage['modifyEmail'] = '<div class="alert alert-info">Problème de soumission !</div>';
+			$this->show('user/modify', ["errormessage" => $errormessage]);
+		}
+
+	}
+
+	/**
+	 *
+	 *  Modify password when user is logged
+	 * @param  array() $test values to be tested
+	 * @param  array() $user user datas
+	 *
+	 */
+	public function modifyPassword($test,$user)
+	{
+
 		$result = $this->testUserForm($test);
 		$isValid = $result[0];
 		$errormessage =$result[1];
@@ -190,46 +232,21 @@ class UserController extends Controller
 			//update data in database
 
 			$this->userManager->update([
-					"email"  => $test['email'],
+					"password"  => password_hash($test['userNewPassword'],PASSWORD_DEFAULT),
 				],$user['id']);
 			//maj session 
 			$this->authentificationManager->refreshUser();
 			//redirect user
-			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
-			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+			$messageInfo = '<div class="alert alert-info">Modification de votre mot de passe validée !</div>';
+			$_SESSION['messageInfo'] = $messageInfo;
+			$this->redirectToRoute('user_profile');
 		}else{
-
-			$this->show('user_modify', ["errormessage" => $errormessage]);
-		}
-
-	}
-
-	public function modifyPassword($test)
-	{
-		$result = $this->testUserForm($test);
-		$isValid = $result[0];
-		$errormessage =$result[1];
-		if($isValid){
-			//Submited data are correct.
-			//debug($test);
-			//die();
-			//update data in database
-
-			$this->userManager->update([
-					"password"  => $test['password'],
-				],$user['id']);
-			//maj session 
-			$this->authentificationManager->refreshUser();
-			//redirect user
-			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
-			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
-		}else{
-
-			$this->show('user_modify', ["errormessage" => $errormessage]);
+			$errormessage['modifyPassword'] = '<div class="alert alert-info">Problème de soumission !</div>';
+			$this->show('user/modify', ["errormessage" => $errormessage]);
 		}
 	}
 
-	public function modifyUserInfo($test)
+	public function modifyUserInfo($test,$user)
 	{
 		$result = $this->testUserForm($test);
 		$isValid = $result[0];
@@ -246,43 +263,53 @@ class UserController extends Controller
 			//maj session 
 			$this->authentificationManager->refreshUser();
 			//redirect user
-			$messageInfo = '<div class="message message--info">Modificatioin validée !</div>';
-			$this->redirectToRoute('user_profile',["messageInfo" => $messageInfo]);
+			$messageInfo = '<div class="alert alert-info">Modification de vos données validée !</div>';
+			$_SESSION['messageInfo'] = $messageInfo;
+			$this->redirectToRoute('user_profile');
 		}else{
-
-			$this->show('user_modify', ["errormessage" => $errormessage]);
+			$errormessage['modifyUserInfo'] = '<div class="alert alert-danger">Problème de soumission !</div>';
+			$this->show('user/modify', ["errormessage" => $errormessage]);
 		}
 	}
 
+	/**
+	 * 
+	 * Modify user data : call distinct methods depending on submited datas
+	 * 
+	 */
 	public function modify()
 	{
 		
 		$errormessage = [];
 		$user = $this->getUser();
 		
+
+
 		if(!empty($_POST)) {
 
-			if(isset($_POST['userNewEmail'])){
-				$test['newEmail'] = $_POST['userNewEmail'];
-				$test['password'] = $_POST['userPassword'];
+			if(isset($_POST['userEmailModify'])){
+				$test['userEmailModify'] = $_POST['userEmailModify'];
+				$test['userPasswordConfirme'] = $_POST['userPasswordConfirme'];
+				$test['userEmail'] = $user['email']; //we need to pass user email to check if couple email/password exist
 
-				$this->modifyPassword($test);
+				$this->modifyEmail($test,$user);
 
 			}
-			if(isset($_POST['first_name'])){
+			if(isset($_POST['userFirstName'])){
 				$test['first_name'] = $_POST['userFirstName'];
 				$test['last_name'] = $_POST['userLastName'];
-				
-				$this->modifyUserInfo($test);
+
+				$this->modifyUserInfo($test,$user);
 
 			}
 
-			if(isset($_POST['userPasswordConfirmed'])){			
+			if(isset($_POST['userNewPassword'])){			
 
-				$test['userPassword'] = $_POST['userNewPassword'];
-				$test['userPasswordConfirmed'] = $_POST['userPasswordConfirmed'];
+				$test['userPasswordModify'] = $_POST['userPasswordModify'];
+				$test['userNewPassword'] = $_POST['userNewPassword'];
+				$test['userEmail'] = $user['email']; //we need to pass user email to check if couple email/password exist
 
-				$this->modifyPassword($test);
+				$this->modifyPassword($test,$user);
 			}
 
 
@@ -370,32 +397,27 @@ class UserController extends Controller
 				";
 
 				//send an email
-				//$this->sendEmail($accountManager, $userEmail, $subject, $mailContent);
 				//$mail = new \Service\SendMails;
-				$mail = new \PHPMailer;
+				//$mail->sendEmail($accountManager, $userEmail, $subject, $mailContent);
 				//TODO ->Créer un Service
+				$mail = new \PHPMailer;
 				//Ajouter les données à la conf. 
 				$accountManagerMail = 'contact.mcqcm@gmail.com';	
 				$accountManagerPwd  = '123456mcqcm';
-				$accountManagerName = "Jean Valjean";
+				$accountManagerName = "MCQCM";
 
-				$mail->isSMTP();                                      // Set mailer to use SMTP
-				$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-				$mail->SMTPAuth = true;                               // Enable SMTP authentication
-				$mail->Username = $accountManagerMail;          // SMTP username - > TODO ->a inclure dans un fichier
-				$mail->Password = $accountManagerPwd;                      // SMTP password - > TODO ->a inclure dans un fichier
-				$mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
-				$mail->Port = 465;// 587;                                    // TCP port to connect to
+				$mail->isSMTP();                                     	// Set mailer to use SMTP
+				$mail->Host = 'smtp.gmail.com';  						// Specify main and backup SMTP servers
+				$mail->SMTPAuth = true;                              	// Enable SMTP authentication
+				$mail->Username = $accountManagerMail;          		// SMTP username - > TODO ->a inclure dans un fichier
+				$mail->Password = $accountManagerPwd;                   // SMTP password - > TODO ->a inclure dans un fichier
+				$mail->SMTPSecure = 'ssl';                            	// Enable TLS encryption, `ssl` also accepted
+				$mail->Port = 465;// 587;                               // TCP port to connect to
 				$mail->SMTPDebug = 0;
-				//Set who the message is to be sent from
-				$mail->setFrom($accountManagerMail, $accountManagerName); //- > TODO ->a inclure dans un fichier
-				//Set an alternative reply-to address
-				$mail->addReplyTo($accountManagerMail, $accountManagerName); //- > TODO ->a inclure dans un fichier
-				//Set who the message is to be sent to
-				$mail->addAddress($userEmail);
-				$mail->addAddress('debug.mcqcm@gmail.com', 'The debug Manager');
-				//Set the subject line
-				$mail->Subject = 'Demande de renouvellement de mot de passe MCQCM.com';
+				$mail->setFrom($accountManagerMail, $accountManagerName); //Set who the message is to be sent from
+				$mail->addReplyTo($accountManagerMail, $accountManagerName); //Set an alternative reply-to address
+				$mail->addAddress($userEmail);//Set who the message is to be sent to
+				$mail->Subject = 'Demande de renouvellement de mot de passe MCQCM.com';//Set the subject line
 				//Read an HTML message body from an external file, convert referenced images to embedded,
 				//convert HTML into a basic plain-text alternative body
 				$mail->msgHTML($mailContent); 						//TODO -> Créer un template de message en html css inline style
@@ -404,11 +426,11 @@ class UserController extends Controller
 				//Attach an image file
 				//send the message, check for errors
 				if (!$mail->send()) {
-				    $messageInfo = '<div class="message message--info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
+				    $messageInfo = '<div class="alert alert-info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
 				    //TODO addd error to logs
 				} 
 				else {
-				    $messageInfo = '<div class="message message--info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
+				    $messageInfo = '<div class="alert alert-info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
 				}
 
 				//inform user for success
@@ -438,12 +460,11 @@ class UserController extends Controller
 			$test['password'] = $_POST['userPassword'];
 			$test['passwordConfirmed'] = $_POST['userPasswordConfirmed'];
 			$result = $this->testUserForm($test);
-
 			$isValid = $result[0];
 			$errormessage = $result[1];
 
 			if($isValid) {
-
+				
 				//get user id with the token && the email passed on url
 				if(!empty($token) && !empty($userEmail)){
 
@@ -453,37 +474,54 @@ class UserController extends Controller
 					//compare tokens
 					if(password_verify($token, $user['token'])){
 
+
 						if($user['token_time'] < date('Y-m-d H:i:s')){
 
 							$errormessage = '<div class="message message--error">Le délai de renouvellement de votre demande est dépassé. Vous devez effectuer une nouvelle demande.</div>';
-							$this->redirectToRoute('user_recovery_pwd', ["errormessage" => $errormessage]);
+							$_SESSION['messageInfo'] = $errormessage;
+							
+							$this->redirectToRoute('user_recovery_pwd');
 						}
 						else {
-							//update user
+							
+							//update user & delete token infos
 							$this->userManager->update([
-								"password"   => password_hash($userPassword, PASSWORD_DEFAULT),
+								"password"   => password_hash($test['password'], PASSWORD_DEFAULT),
 								"token"      =>'',
 								"token_time" => ''
 							],$user['id']);
 
 							//create a user Info
 							$messageInfo = 'Modification prise en compte';
-							//redirect to login
+							$user['token_time'] = $messageInfo;
 							$this->redirectToRoute('user_login');
 						}
-						
+
+
+					}
+					else{
+
+					$messageInfo = 'Erreur rencontrée. Renouvelez votre demande';
+					$_SESSION['messageInfo'] = $messageInfo;
+					$this->redirectToRoute('user_login');
 
 					}
 					
 				}
 				else {
 					// URL ERRONNEE
+
+					$messageInfo = 'Erreur rencontrée. Renouvelez votre demande';
+					$_SESSION['messageInfo'] = $messageInfo;
 					$this->redirectToRoute('user_login');
 				} 
 			} else {
 				// invalid pwd
+
 				$this->show('user/renew_pwd', [
-						"errormessage" => $errormessage
+						"errormessage" => $errormessage,
+						"token"      => $token, 
+						"userEmail" => $userEmail
 					]);
 			}
 		}
@@ -550,44 +588,84 @@ class UserController extends Controller
 			}
 		}
 
-		//changing user Email
-		if(isset($test['newEmail'])){
-			if(empty($test['newEmail'])) {
+		//Changing user Email tests
+		//need to check if email is not null
+		//		->			email is valif
+		//		->			email not already exist
+		//		->			password is not empty
+		//		->			couple password / oldemail exist 
+		if(isset($test['userEmailModify'])){
+			if(empty($test['userEmailModify'])) {
 				$isValid = false;
-				$errormessage['newEmail'] = '<div class="message message--error">Adresse Email obligatoire !</div>';
+				$errormessage['userEmailModify'] = '<div class="message message--error">Adresse Email obligatoire !</div>';
 			}
-			elseif(!filter_var($test['email'], FILTER_VALIDATE_EMAIL)) {
+			elseif(!filter_var($test['userEmailModify'], FILTER_VALIDATE_EMAIL)) {
 				$isValid = false;
-				$errormessage['newEmail'] = '<div class="message message--error">Adresse Email invalide !</div>';				
+				$errormessage['userEmailModify'] = '<div class="message message--error">Adresse Email invalide !</div>';				
 
 			}
 			else{
 
-				if($this->userManager->emailExists($test['newEmail'])) {
+				if($this->userManager->emailExists($test['userEmailModify'])) {
 					$isValid = false;
-					$errormessage['newEmail'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div>';
+					$errormessage['userEmailModify'] = '<div class="message message--error">Adresse Email déja utilisée par un autre compte !</div>';
+				}
+			}
+			
+			if(isset($test['userPasswordConfirme'])){
+				if(empty($test['userPasswordConfirme'])) {
+					$isValid = false;
+					$errormessage['userPasswordConfirme'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
 				}
 				else{
-					if(isset($test['password'])){
-						if(empty($test['password'])) {
-							$isValid = false;
-							$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
-						}
-						else{
-							//method is password ok
-							$userId = $this->authentificationManager->isValidLoginInfo( $userEmail, $test['password']);
-						}
-
+					$userId = $this->authentificationManager->isValidLoginInfo( $test['userEmail'], $test['userPasswordConfirme']);
+					if(!$userId){
+						$isValid = false;
+						$errormessage['userPasswordConfirme'] = '<div class="message message--error">Mot de passe incorrect !</div>';
 					}
 				}
-				
+	
 			}
 		}
 
+		//changing password tests
+		if(isset($test['userNewPassword'])){
+
+			if(empty($test['userPasswordModify'])) {
+				$isValid = false;
+				$errormessage['userPasswordModify'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
+			}elseif(strlen($test['password']) > 3 ){
+				$isValid = false;
+				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe trop court !</div>';
+			}
+			else{
+				$userId = $this->authentificationManager->isValidLoginInfo( $test['userEmail'], $test['userPasswordModify']);
+				if(!$userId){
+					$isValid = false;
+					$errormessage['userPasswordModify'] = '<div class="message message--error">Mot de passe incorrect !</div>';
+				}
+
+			}
+
+			if(empty($test['userNewPassword'])) {
+				$isValid = false;
+				$errormessage['userNewPassword'] = '<div class="message message--error">Nouveau mot de passe obligatoire !</div>';
+			}elseif(strlen($test['userNewPassword']) < 3 ){
+				$isValid = false;
+				$errormessage['userNewPassword'] = '<div class="message message--error">Nouveau mot de passe trop court !</div>';
+			}	
+
+		}
+
 		if(isset($test['password'])){
+
 			if(empty($test['password'])) {
 				$isValid = false;
 				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe obligatoire !</div>';
+			}
+			elseif(strlen($test['password']) < 3 ){
+				$isValid = false;
+				$errormessage['userPassword'] = '<div class="message message--error">Mot de passe trop court !</div>';
 			}
 			else {
 				if($test['password'] !== $test['passwordConfirmed']) {

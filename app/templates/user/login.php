@@ -4,6 +4,7 @@
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">
         <h2>Identification</h2>
+         <?php if(!empty($_SESSION['messageInfo'])){ echo $_SESSION['messageInfo']; unset($_SESSION['messageInfo']);}?>
         <form action="" method="post" novalidate class="<?php if(!empty($errormessage)){ echo 'has-error';}?>">
 
 

@@ -193,7 +193,9 @@ class QuizController extends Controller
                 // // Redirect to question creator page
                 // $this->redirectToRoute('question_create', ['quizId' => $this->manager->lastId(), 'alerts' => $this->alerts->getAll()]);
                 // $this->show('quiz/create', ['alerts' => $this->alerts->getAll()]);
-                $this->redirectToRoute('home', ['alerts' => $this->alerts->getAll()]);
+                $this->redirectToRoute('question_build', [
+                    'quizId' => $lastQuizId,
+                ]);
 
             }
             else{

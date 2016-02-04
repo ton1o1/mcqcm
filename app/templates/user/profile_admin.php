@@ -19,7 +19,7 @@
             </div>
         </form>
         <!-- Search Results -->
-        <div id="userResult" class="user-result"></div>
+        <div id="userResult" class="user-result" data-url="<? $this->url('profile_admin');?>"></div>
 
         
         <!-- User list -->

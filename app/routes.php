@@ -37,7 +37,7 @@
 		//Private area
 		['GET|POST', '/profil/modifier/', 'User#modify', 'user_modify'],
 		['GET|POST', '/oubli-mdp/', 'User#recovery_pwd', 'user_recovery_pwd'],
-		['GET|POST', '/renouvellement-mdp/[a:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
+		['GET|POST', '/renouvellement-mdp/[*:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
 
 		//Administrator only area
 		['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
@@ -51,7 +51,8 @@
         ['POST', '/skill/search', 'Skill#search', 'skill_search'],          // search skills by tag (POST data received with ajax requests, submitted by homepage form)
 
         // Question
-       // ['GET|POST', '/question/create', 'Question#create', 'question_create'],
+        //['GET|POST', '/question/create', 'Question#create', 'question_create'],
+
         
         // Session
 
@@ -77,6 +78,25 @@
         ['GET', '/result/user/[i:userId]/[i:sessionId]', 'Result#viewUser', 'result_view_session'],
         ['GET', '/result/individual/[i:userId]', 'Result#viewIndividual', 'result_view_individual'],
         ['GET', '/result/quiz/[i:quizId]?', 'Result#viewQuiz', 'result_view_quiz'],
+
+
+        //Question bis Area
+		//route to question form builder
+		['GET|POST', '/questionediteur/[i:quizId]', 'Question#questionBuild', 'question_build'],
+		//route to question list 
+		['GET', '/questionliste', 'Question#questionList', 'question_list'],
+		//route to question search
+		['GET', '/questionrecherche', 'Question#questionSearch', 'question_search'],
+		//route to add question via the list with ajax
+		['POST', '/questionajouter', 'Question#ajaxAddQuestion', 'question_add'],
+		//route to a question file
+		['GET', '/question/[i:id]', 'Question#questionConsult', 'question_consult'],
+		//route to admin generate data page using Faker
+		['GET|POST', '/admin/datagenerer', 'Data#dataGenerate', 'data_generate'],
+
+
+
+
 
     );
 
