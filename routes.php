@@ -14,7 +14,18 @@
         ['GET|POST', '/reset-password', 'User#resetPassword', 'user_reset_password'], // reset password (email [+ captcha])
         ['GET', '/user/dashboard', 'User#dashboard', 'user_dashboard'],               // display user dashboard
         ['GET|POST', '/user/profile', 'User#profile', 'user_profile'],                // display profile, modify / delete account
-        
+
+        //Private area
+        ['GET|POST', '/profil/modifier/', 'User#modify', 'user_modify'],
+        ['GET|POST', '/oubli-mdp/', 'User#recovery_pwd', 'user_recovery_pwd'],
+        ['GET|POST', '/renouvellement-mdp/[*:token]/[*:userEmail]/', 'User#renew_pwd', 'user_renew_pwd'],
+        //Administrator only area
+        ['GET|POST', '/administrator/', 'Administrator#profil', 'administrator_profile'],
+        ['POST', '/administrator/set-user-status/', 'Administrator#setUserStatus', 'administrator_setUserStatus'],
+        ['POST', '/administrator/change-user/', 'Administrator#changeUser', 'administrator_changeUser'],
+        ['GET|POST', '/administrator/search/', 'Administrator#findUsers', 'administrator_findUsers'],
+        ['GET', '/administrator/find-user/', 'Administrator#getUserInfo', 'administrator_getUserInfo'],
+
         // Quizzes
         ['POST', '/quiz/search', 'Quiz#search', 'quiz_search'],                // search quizzes by skills (POST data received with ajax requests, submitted by homepage form)
         ['GET', '/quiz/[i:quizId]?', 'Quiz#view', 'quiz_view'],                // list all or view one by id

@@ -8,8 +8,7 @@ function completeModal(){
 
 
     $.ajax({
-                "url" : $("#userResult").attr("data-url") + 'find-user/', //NOT WORKING, BUT SHOULD
-        //"url" : '/administrator/find-user/',
+        "url" : $("#userResult").attr("data-url") + 'find-user', //NOT WORKING, BUT SHOULD
         "type": 'GET',
         "dataType" : "json",
         "data" : $currentUserId

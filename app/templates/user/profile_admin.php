@@ -9,7 +9,7 @@
     <div class="row">
         <h3>Recherche</h3>
         
-        <form action="<?= $this->url('administrator_profile');?>search/" method="POST" id="searchUserForm" class="searchUserForm">
+        <form action="<?= $this->url('administrator_profile');?>search" method="POST" id="searchUserForm" class="searchUserForm">
             <label for="searchUser">Recherche</label>
             <div class="input-group">
 
@@ -51,7 +51,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Modification de compte :</h4>
             </div>
-             <form action="<?= $this->url('administrator_profile');?>change-user/" method="POST">
+             <form action="<?= $this->url('administrator_profile');?>change-user" method="POST">
                 <div class="modal-body cf">
                     <h4>Utilisateur : </h4>
                     <p class="bg-info" id="usermodal__userName"></p>

@@ -13,9 +13,9 @@
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/select2.min.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/select2-bootstrap.min.css') ?>">
-    <link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('fonts/mcqcm-font/fonts.css') ?>">
     <link rel="stylesheet" href="<?= $this->assetUrl('css/question_build.css') ?>">
+    <link rel="stylesheet" href="<?= $this->assetUrl('css/styles.css') ?>">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,13 +23,6 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-
-
-
-
-
-
-
 
   <body>
 
@@ -67,7 +60,6 @@
                     class="glyphicon glyphicon-user"></span><?= ucfirst($w_user['first_name']) . ' ' . ucfirst($w_user['last_name']) ?> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= $this->url('user_profile') ?>"><span class="glyphicon glyphicon-user"></span>Profil</a></li>
-                        <li><a href="<?= $this->url('user_profile') ?>"><span class="glyphicon glyphicon-cog"></span>Mon compte</a></li>
                         <li class="divider"></li>
                         <li><a href="<?= $this->url('user_logout') ?>"><span class="glyphicon glyphicon-off"></span>Déconnexion</a></li>
                     </ul>
