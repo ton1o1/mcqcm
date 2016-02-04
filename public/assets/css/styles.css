@@ -61,7 +61,7 @@ body > .container {
       border: 1px solid #cccccc;
       margin: 72px auto 0;
       border-radius: 4px;
-      background: #fff url(error.gif) no-repeat 0 51px;
+      background: #fff url(../img/error.gif) no-repeat 0 51px;
   }
   #block-error div{
       padding: 100px 40px 0 186px;
@@ -91,9 +91,21 @@ body > .container {
     color: white;
   }
 
+
+
+  .visuel{
+    background: url(../img/cover-2048.jpg) center top no-repeat;
+    background-size: cover;
+  }
   .quiz-score{
     font-size: 40px;
   }
+
+  .visuel p,
+  .visuel h2
+  {
+    color: #FFF;
+
 
   #javascript-error{
     width: 100%;

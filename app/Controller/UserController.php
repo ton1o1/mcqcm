@@ -396,44 +396,18 @@ class UserController extends Controller
 				</p>
 				";
 
-				//send an email
-				//$mail = new \Service\SendMails;
-				//$mail->sendEmail($accountManager, $userEmail, $subject, $mailContent);
-				//TODO ->Créer un Service
-				$mail = new \PHPMailer;
-				//Ajouter les données à la conf. 
-				$accountManagerMail = 'contact.mcqcm@gmail.com';	
-				$accountManagerPwd  = '123456mcqcm';
-				$accountManagerName = "MCQCM";
+				$mailSubject = "Demande de renouvellement de mot de passe MCQCM.com";
 
-				$mail->isSMTP();                                     	// Set mailer to use SMTP
-				$mail->Host = 'smtp.gmail.com';  						// Specify main and backup SMTP servers
-				$mail->SMTPAuth = true;                              	// Enable SMTP authentication
-				$mail->Username = $accountManagerMail;          		// SMTP username - > TODO ->a inclure dans un fichier
-				$mail->Password = $accountManagerPwd;                   // SMTP password - > TODO ->a inclure dans un fichier
-				$mail->SMTPSecure = 'ssl';                            	// Enable TLS encryption, `ssl` also accepted
-				$mail->Port = 465;// 587;                               // TCP port to connect to
-				$mail->SMTPDebug = 0;
-				$mail->setFrom($accountManagerMail, $accountManagerName); //Set who the message is to be sent from
-				$mail->addReplyTo($accountManagerMail, $accountManagerName); //Set an alternative reply-to address
-				$mail->addAddress($userEmail);//Set who the message is to be sent to
-				$mail->Subject = 'Demande de renouvellement de mot de passe MCQCM.com';//Set the subject line
-				//Read an HTML message body from an external file, convert referenced images to embedded,
-				//convert HTML into a basic plain-text alternative body
-				$mail->msgHTML($mailContent); 						//TODO -> Créer un template de message en html css inline style
-				//Replace the plain text body with one created manually
-				//$mail->AltBody = 'This is a plain-text message body';
-				//Attach an image file
-				//send the message, check for errors
-				if (!$mail->send()) {
-				    $messageInfo = '<div class="alert alert-info">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
-				    //TODO addd error to logs
-				} 
-				else {
-				    $messageInfo = '<div class="alert alert-info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
-				}
 
-				//inform user for success
+			    $errormessage = '<div class="alert alert-danger">Nous avons rencontré un problème lors de l\'envoi du message de réinitialisation de votre mot de passe.</div>';
+			    $messageInfo = '<div class="alert alert-info">Nous venons de vous envoyer un mail à l\'adresse '. $userEmail . ' contenant un lien vous permettant de changer votre mot de passe. Ce lien est utilisable pendant 48heures. Si vous rencontrez des difficultés, utilisez notre formulaire de contact.</div>';
+			    $fromEmail ="contact.mcqcm@gmail.com";
+			    $fromName = "MCQCM";
+
+				//Send mail to user
+				$mail = new \Service\Sendmails();
+				$mail->sendmails($fromEmail, $userEmail , $fromName, $mailContent, $mailSubject, $errormessage, $messageInfo);
+				
 				
 				$this->show('user/recovery_pwd', ["messageInfo"=> $messageInfo]);
 			}
@@ -493,7 +467,7 @@ class UserController extends Controller
 
 							//create a user Info
 							$messageInfo = 'Modification prise en compte';
-							$user['token_time'] = $messageInfo;
+							$_SESSION['messageInfo'] = $messageInfo;
 							$this->redirectToRoute('user_login');
 						}
 

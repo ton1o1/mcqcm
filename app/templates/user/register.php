@@ -1,10 +1,11 @@
 <?php $this->layout('layout', ['title' => 'Inscription']) ?>
 
 <?php $this->start('main_content') ?>
+ <div class="jumbotron visuel">
+     <h2>Inscription</h2>
+ </div>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">
-    <?php debug($errormessage);?>
-         <h2>Inscription</h2>
         <form action="" method="post" novalidate class="">
             <p class="form__indication">Tous les champs du formulaire sont obligatoires.</p>
             <!-- userLastName -->

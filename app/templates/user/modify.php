@@ -1,11 +1,14 @@
 <?php $this->layout('layout', ['title' => 'Modification de profil']) ?>
 <?php $this->start('main_content') ?>
+     <div class="jumbotron visuel">
+        <h2>Modification de profil</h2>
+        <p>Vous pouvez modifier l'intégralité de vos données ! </p>
+     </div>
 <div class="page page__identification <?= $class =(!empty($errormessage))?'animated shake page__identification--error':'';?>">
     <div class="row">
 
-        <h2><span class="glyphicon glyphicon-cog"></span>Modification de profil</h2>
+
         <!-- modify userInfos -->
-        <p>Vous pouvez modifier l'intégralité de vos données</p>
         <div class="panel panel-default">
             <div class="panel-heading">
             <h3><span class="glyphicon glyphicon-user"></span>Vos données personnelles<button class="pull-right btn btn-info" role="button" data-toggle="collapse" href="#modifyUserInfo" aria-expanded="false" aria-controls="modifyUserInfo"><span class="glyphicon glyphicon-chevron-down"></span> Modifier</button></h3>
